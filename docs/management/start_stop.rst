@@ -18,7 +18,8 @@ commands:
 
 .. code-block:: bash
 
-    $ cd ~/auvsi_suas_competition/src/auvsi_suas_server
+    $ cd ~/interop/server
+    $ source venv/bin/activate
     $ python manage.py runserver 0.0.0.0:8080
 
 View the Server
