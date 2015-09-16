@@ -10,7 +10,7 @@ To run the tests execute the following commands:
 
 .. code-block:: bash
 
-    $ cd ~/auvsi_competition_server/src/auvsi_suas_server
+    $ cd ~/interop/server
     $ python manage.py test auvsi_suas
 
 The tests have executed successfully if you see these lines::
