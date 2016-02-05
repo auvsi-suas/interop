@@ -89,10 +89,7 @@ class Client(object):
         """
         r = self.get('/api/server_info')
         d = r.json()
-
-        return ServerInfo(message=d['message'],
-                          message_timestamp=d['message_timestamp'],
-                          server_time=d['server_time'])
+        return ServerInfo(**d)
 
     def post_telemetry(self, telem):
         """POST new telemetry.
@@ -104,7 +101,7 @@ class Client(object):
             InteropError: Error from server
             requests.Timeout: Request timeout
         """
-        self.post('/api/telemetry', data=telem.serialize())
+        self.post('/api/telemetry', data=telem._asdict())
 
     def get_obstacles(self):
         """GET obstacles.
@@ -123,19 +120,11 @@ class Client(object):
 
         stationary = []
         for o in d['stationary_obstacles']:
-            s = StationaryObstacle(latitude=o['latitude'],
-                                   longitude=o['longitude'],
-                                   cylinder_radius=o['cylinder_radius'],
-                                   cylinder_height=o['cylinder_height'])
-            stationary.append(s)
+            stationary.append(StationaryObstacle(**o))
 
         moving = []
         for o in d['moving_obstacles']:
-            m = MovingObstacle(latitude=o['latitude'],
-                               longitude=o['longitude'],
-                               altitude_msl=o['altitude_msl'],
-                               sphere_radius=o['sphere_radius'])
-            moving.append(m)
+            moving.append(MovingObstacle(**o))
 
         return stationary, moving
 

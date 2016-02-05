@@ -37,7 +37,7 @@ class TestClientLoggedOut(unittest.TestCase):
         """Test connection timeout"""
         # We are assuming that there is no machine at this address.
         addr = "http://10.255.255.254"
-        timeout = 0.1
+        timeout = 0.0001
         with self.assertRaises(requests.Timeout):
             Client(addr, username, password, timeout=timeout)
         with self.assertRaises(requests.Timeout):
@@ -75,10 +75,10 @@ class TestClient(unittest.TestCase):
 
     def test_post_telemetry(self):
         """Test sending some telemetry."""
-        t = Telemetry(latitude=38,
-                      longitude=-76,
-                      altitude_msl=100,
-                      uas_heading=90)
+        t = Telemetry(latitude=38.0,
+                      longitude=-76.0,
+                      altitude_msl=100.0,
+                      uas_heading=90.0)
 
         # Raises an exception on error.
         self.client.post_telemetry(t)
@@ -86,13 +86,13 @@ class TestClient(unittest.TestCase):
 
     def test_post_bad_telemetry(self):
         """Test sending some (incorrect) telemetry."""
-        t0 = Telemetry(latitude=38,
-                       longitude=-76,
-                       altitude_msl=100,
-                       uas_heading=90)
+        t0 = Telemetry(latitude=38.0,
+                       longitude=-76.0,
+                       altitude_msl=100.0,
+                       uas_heading=90.0)
         # The Telemetry constructor prevents us from passing invalid
         # values, but we can still screw things up in an update
-        t0.latitude = 'baz'
+        t0 = t0._replace(latitude='baz')
         with self.assertRaises(InteropError):
             self.client.post_telemetry(t0)
         with self.assertRaises(InteropError):
@@ -101,10 +101,10 @@ class TestClient(unittest.TestCase):
         # We only accept Telemetry objects (or objects that behave like
         # Telemetry, not dicts.
         t1 = {
-            'latitude': 38,
-            'longitude': -76,
-            'altitude_msl': 100,
-            'uas_heading': 90
+            'latitude': 38.0,
+            'longitude': -76.0,
+            'altitude_msl': 100.0,
+            'uas_heading': 90.0
         }
         with self.assertRaises(AttributeError):
             self.client.post_telemetry(t1)
@@ -125,19 +125,19 @@ class TestClient(unittest.TestCase):
 
         # Lat, lon, and altitude of the moving obstacles change, so we don't
         # check those.
-        self.assertEqual(50, moving[0].sphere_radius)
-        self.assertEqual(50, async_moving[0].sphere_radius)
+        self.assertEqual(50.0, moving[0].sphere_radius)
+        self.assertEqual(50.0, async_moving[0].sphere_radius)
 
         radii = [o.cylinder_radius for o in stationary]
         async_radii = [o.cylinder_radius for o in async_stationary]
-        self.assertIn(50, radii)
-        self.assertIn(50, async_radii)
-        self.assertIn(150, radii)
-        self.assertIn(150, async_radii)
+        self.assertIn(50.0, radii)
+        self.assertIn(50.0, async_radii)
+        self.assertIn(150.0, radii)
+        self.assertIn(150.0, async_radii)
 
         heights = [o.cylinder_height for o in stationary]
-        self.assertIn(300, heights)
-        self.assertIn(200, heights)
+        self.assertIn(300.0, heights)
+        self.assertIn(200.0, heights)
         async_heights = [o.cylinder_height for o in async_stationary]
-        self.assertIn(300, async_heights)
-        self.assertIn(200, async_heights)
+        self.assertIn(300.0, async_heights)
+        self.assertIn(200.0, async_heights)
