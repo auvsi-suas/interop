@@ -15,3 +15,6 @@ script:
   - ./tools/build_docs.sh
   # Check formatting
   - ./tools/format.sh --all
+  # Verify Vagrant setup.
+  - sudo apt-get -y install vagrant
+  - (cd setup && vagrant up && vagrant -f destroy)
