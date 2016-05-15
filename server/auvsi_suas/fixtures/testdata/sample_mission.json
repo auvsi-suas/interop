@@ -1,1052 +1,1944 @@
 [
 {
-    "fields": {
-        "username": "user0",
-        "first_name": "",
-        "last_name": "",
-        "is_active": true,
-        "is_superuser": false,
-        "is_staff": false,
-        "last_login": null,
-        "groups": [],
-        "user_permissions": [],
-        "password": "pbkdf2_sha256$20000$xk6ocPQJCnpq$yD4rXhnyL78hQI0sFuHUbVqrEcbl5CZFoY4sby3HeKY=",
-        "email": "testemail@x.com",
-        "date_joined": "2015-05-30T05:02:26.796Z"
-    },
-    "model": "auth.user",
-    "pk": 53
-},
-{
-    "fields": {
-        "username": "user1",
-        "first_name": "",
-        "last_name": "",
-        "is_active": true,
-        "is_superuser": false,
-        "is_staff": false,
-        "last_login": null,
-        "groups": [],
-        "user_permissions": [],
-        "password": "pbkdf2_sha256$20000$ZtcSnmA3obev$DA9L375735NG+xstE6NA0+DBIpA/5WICG5CJAiyXXdE=",
-        "email": "testemail@x.com",
-        "date_joined": "2015-05-30T05:02:27.063Z"
-    },
-    "model": "auth.user",
-    "pk": 54
-},
-{
-    "fields": {
-        "username": "testadmin",
-        "first_name": "",
-        "last_name": "",
-        "is_active": true,
-        "is_superuser": true,
-        "is_staff": true,
-        "last_login": "2016-03-22T11:48:18.571Z",
-        "groups": [],
-        "user_permissions": [],
-        "password": "pbkdf2_sha256$20000$RV69VeSD5TcB$0mKHBGrLECDAHYaG/VBf5RRABdzvSh2rqHGF1YLMAyg=",
-        "email": "testadmin@test.com",
-        "date_joined": "2016-03-22T11:48:10.093Z"
-    },
-    "model": "auth.user",
-    "pk": 55
-},
-{
-    "fields": {
-        "latitude": 38.0,
-        "longitude": -76.0
-    },
-    "model": "auvsi_suas.gpsposition",
-    "pk": 317
-},
-{
-    "fields": {
-        "latitude": 38.0,
-        "longitude": -76.0
-    },
-    "model": "auvsi_suas.gpsposition",
-    "pk": 318
-},
-{
-    "fields": {
-        "latitude": 38.0,
-        "longitude": -76.0
-    },
-    "model": "auvsi_suas.gpsposition",
-    "pk": 319
-},
-{
-    "fields": {
-        "latitude": 38.0,
-        "longitude": -76.0
-    },
-    "model": "auvsi_suas.gpsposition",
-    "pk": 320
-},
-{
-    "fields": {
-        "latitude": 38.0,
-        "longitude": -76.0
-    },
-    "model": "auvsi_suas.gpsposition",
-    "pk": 321
-},
-{
-    "fields": {
-        "latitude": 38.0,
-        "longitude": -76.0
-    },
-    "model": "auvsi_suas.gpsposition",
-    "pk": 322
-},
-{
-    "fields": {
-        "latitude": 38.0,
-        "longitude": -76.0
-    },
-    "model": "auvsi_suas.gpsposition",
-    "pk": 323
-},
-{
-    "fields": {
-        "latitude": 10.0,
-        "longitude": 100.0
-    },
-    "model": "auvsi_suas.gpsposition",
-    "pk": 324
-},
-{
-    "fields": {
-        "latitude": 37.0,
-        "longitude": -75.0
-    },
-    "model": "auvsi_suas.gpsposition",
-    "pk": 325
-},
-{
-    "fields": {
-        "latitude": 39.0,
-        "longitude": -75.0
-    },
-    "model": "auvsi_suas.gpsposition",
-    "pk": 326
-},
-{
-    "fields": {
-        "latitude": 39.0,
-        "longitude": -77.0
-    },
-    "model": "auvsi_suas.gpsposition",
-    "pk": 327
-},
-{
-    "fields": {
-        "latitude": 37.0,
-        "longitude": -77.0
-    },
-    "model": "auvsi_suas.gpsposition",
-    "pk": 328
-},
-{
-    "fields": {
-        "latitude": 38.0,
-        "longitude": -76.0
-    },
-    "model": "auvsi_suas.gpsposition",
-    "pk": 329
-},
-{
-    "fields": {
-        "latitude": 38.0,
-        "longitude": -76.0
-    },
-    "model": "auvsi_suas.gpsposition",
-    "pk": 330
-},
-{
-    "fields": {
-        "latitude": 38.0,
-        "longitude": -76.0
-    },
-    "model": "auvsi_suas.gpsposition",
-    "pk": 331
-},
-{
-    "fields": {
-        "latitude": 39.0,
-        "longitude": -76.0
-    },
-    "model": "auvsi_suas.gpsposition",
-    "pk": 332
-},
-{
-    "fields": {
-        "latitude": 38.0,
-        "longitude": -76.0
-    },
-    "model": "auvsi_suas.gpsposition",
-    "pk": 333
-},
-{
-    "fields": {
-        "latitude": 38.0,
-        "longitude": -76.0
-    },
-    "model": "auvsi_suas.gpsposition",
-    "pk": 334
-},
-{
-    "fields": {
-        "latitude": 39.0,
-        "longitude": -76.0
-    },
-    "model": "auvsi_suas.gpsposition",
-    "pk": 335
-},
-{
-    "fields": {
-        "latitude": 39.0,
-        "longitude": -76.0
-    },
-    "model": "auvsi_suas.gpsposition",
-    "pk": 336
-},
-{
-    "fields": {
-        "altitude_msl": 0.0,
-        "gps_position": 317
-    },
-    "model": "auvsi_suas.aerialposition",
-    "pk": 178
-},
-{
-    "fields": {
-        "altitude_msl": 10.0,
-        "gps_position": 318
-    },
-    "model": "auvsi_suas.aerialposition",
-    "pk": 179
-},
-{
-    "fields": {
-        "altitude_msl": 20.0,
-        "gps_position": 319
-    },
-    "model": "auvsi_suas.aerialposition",
-    "pk": 180
-},
-{
-    "fields": {
-        "altitude_msl": 30.0,
-        "gps_position": 320
-    },
-    "model": "auvsi_suas.aerialposition",
-    "pk": 181
-},
-{
-    "fields": {
-        "altitude_msl": 100.0,
-        "gps_position": 321
-    },
-    "model": "auvsi_suas.aerialposition",
-    "pk": 182
-},
-{
-    "fields": {
-        "altitude_msl": 30.0,
-        "gps_position": 322
-    },
-    "model": "auvsi_suas.aerialposition",
-    "pk": 183
-},
-{
-    "fields": {
-        "altitude_msl": 60.0,
-        "gps_position": 323
-    },
-    "model": "auvsi_suas.aerialposition",
-    "pk": 184
-},
-{
-    "fields": {
-        "altitude_msl": 1000.0,
-        "gps_position": 324
-    },
-    "model": "auvsi_suas.aerialposition",
-    "pk": 185
-},
-{
-    "fields": {
-        "altitude_msl": 0.0,
-        "gps_position": 325
-    },
-    "model": "auvsi_suas.aerialposition",
-    "pk": 186
-},
-{
-    "fields": {
-        "altitude_msl": 0.0,
-        "gps_position": 326
-    },
-    "model": "auvsi_suas.aerialposition",
-    "pk": 187
-},
-{
-    "fields": {
-        "altitude_msl": 0.0,
-        "gps_position": 327
-    },
-    "model": "auvsi_suas.aerialposition",
-    "pk": 188
-},
-{
-    "fields": {
-        "altitude_msl": 0.0,
-        "gps_position": 328
-    },
-    "model": "auvsi_suas.aerialposition",
-    "pk": 189
-},
-{
-    "fields": {
-        "altitude_msl": 30.0,
-        "gps_position": 329
-    },
-    "model": "auvsi_suas.aerialposition",
-    "pk": 190
-},
-{
-    "fields": {
-        "altitude_msl": 60.0,
-        "gps_position": 330
-    },
-    "model": "auvsi_suas.aerialposition",
-    "pk": 191
-},
-{
-    "fields": {
-        "altitude_msl": 0.0,
-        "gps_position": 333
-    },
-    "model": "auvsi_suas.aerialposition",
-    "pk": 192
-},
-{
-    "fields": {
-        "altitude_msl": 10.0,
-        "gps_position": 334
-    },
-    "model": "auvsi_suas.aerialposition",
-    "pk": 193
-},
-{
-    "fields": {
-        "altitude_msl": 0.0,
-        "gps_position": 335
-    },
-    "model": "auvsi_suas.aerialposition",
-    "pk": 194
-},
-{
-    "fields": {
-        "altitude_msl": 10.0,
-        "gps_position": 336
-    },
-    "model": "auvsi_suas.aerialposition",
-    "pk": 195
-},
-{
-    "fields": {
-        "timestamp": "1970-01-01T00:00:00Z",
-        "user": 53
-    },
-    "model": "auvsi_suas.accesslog",
-    "pk": 137
-},
-{
-    "fields": {
-        "timestamp": "1970-01-01T00:00:01Z",
-        "user": 53
-    },
-    "model": "auvsi_suas.accesslog",
-    "pk": 138
-},
-{
-    "fields": {
-        "timestamp": "1970-01-01T00:00:00Z",
-        "user": 53
-    },
-    "model": "auvsi_suas.accesslog",
-    "pk": 139
-},
-{
-    "fields": {
-        "timestamp": "1970-01-01T00:00:00.200Z",
-        "user": 53
-    },
-    "model": "auvsi_suas.accesslog",
-    "pk": 140
-},
-{
-    "fields": {
-        "timestamp": "1970-01-01T00:00:00.300Z",
-        "user": 53
-    },
-    "model": "auvsi_suas.accesslog",
-    "pk": 141
-},
-{
-    "fields": {
-        "timestamp": "1970-01-01T00:00:00.400Z",
-        "user": 53
-    },
-    "model": "auvsi_suas.accesslog",
-    "pk": 142
-},
-{
-    "fields": {
-        "timestamp": "1970-01-01T00:00:00.800Z",
-        "user": 53
-    },
-    "model": "auvsi_suas.accesslog",
-    "pk": 143
-},
-{
-    "fields": {
-        "timestamp": "1970-01-01T00:00:00Z",
-        "user": 53
-    },
-    "model": "auvsi_suas.accesslog",
-    "pk": 144
-},
-{
-    "fields": {
-        "timestamp": "1970-01-01T00:00:00.100Z",
-        "user": 53
-    },
-    "model": "auvsi_suas.accesslog",
-    "pk": 145
-},
-{
-    "fields": {
-        "timestamp": "1970-01-01T00:00:00.600Z",
-        "user": 53
-    },
-    "model": "auvsi_suas.accesslog",
-    "pk": 146
-},
-{
-    "fields": {
-        "timestamp": "1970-01-01T00:00:00.700Z",
-        "user": 53
-    },
-    "model": "auvsi_suas.accesslog",
-    "pk": 147
-},
-{
-    "fields": {
-        "timestamp": "1970-01-01T00:00:00Z",
-        "user": 53
-    },
-    "model": "auvsi_suas.accesslog",
-    "pk": 148
-},
-{
-    "fields": {
-        "timestamp": "1970-01-01T00:00:00.100Z",
-        "user": 53
-    },
-    "model": "auvsi_suas.accesslog",
-    "pk": 149
-},
-{
-    "fields": {
-        "timestamp": "1970-01-01T00:00:00.200Z",
-        "user": 53
-    },
-    "model": "auvsi_suas.accesslog",
-    "pk": 150
-},
-{
-    "fields": {
-        "timestamp": "1970-01-01T00:00:00.300Z",
-        "user": 53
-    },
-    "model": "auvsi_suas.accesslog",
-    "pk": 151
-},
-{
-    "fields": {
-        "timestamp": "1970-01-01T00:00:00.800Z",
-        "user": 53
-    },
-    "model": "auvsi_suas.accesslog",
-    "pk": 152
-},
-{
-    "fields": {
-        "timestamp": "1970-01-01T00:00:01Z",
-        "user": 54
-    },
-    "model": "auvsi_suas.accesslog",
-    "pk": 153
-},
-{
-    "fields": {
-        "timestamp": "1970-01-01T00:00:02Z",
-        "user": 54
-    },
-    "model": "auvsi_suas.accesslog",
-    "pk": 154
-},
-{
-    "fields": {
-        "timestamp": "1970-01-01T00:00:00Z",
-        "user": 54
-    },
-    "model": "auvsi_suas.accesslog",
-    "pk": 155
-},
-{
-    "fields": {
-        "timestamp": "1970-01-01T00:00:01.100Z",
-        "user": 54
-    },
-    "model": "auvsi_suas.accesslog",
-    "pk": 156
-},
-{
-    "fields": {
-        "timestamp": "1970-01-01T00:00:01.500Z",
-        "user": 54
-    },
-    "model": "auvsi_suas.accesslog",
-    "pk": 157
-},
-{
-    "fields": {
-        "timestamp": "1970-01-01T00:00:01.100Z",
-        "user": 54
-    },
-    "model": "auvsi_suas.accesslog",
-    "pk": 158
-},
-{
-    "fields": {
-        "timestamp": "1970-01-01T00:00:01.200Z",
-        "user": 54
-    },
-    "model": "auvsi_suas.accesslog",
-    "pk": 159
-},
-{
-    "fields": {
-        "timestamp": "1970-01-01T00:00:01.600Z",
-        "user": 54
-    },
-    "model": "auvsi_suas.accesslog",
-    "pk": 160
-},
-{
-    "fields": {
-        "timestamp": "1970-01-01T00:00:01Z",
-        "user": 54
-    },
-    "model": "auvsi_suas.accesslog",
-    "pk": 161
-},
-{
-    "fields": {
-        "timestamp": "1970-01-01T00:00:02Z",
-        "user": 54
-    },
-    "model": "auvsi_suas.accesslog",
-    "pk": 162
-},
-{
-    "fields": {
-        "timestamp": "1970-01-01T00:00:03Z",
-        "user": 54
-    },
-    "model": "auvsi_suas.accesslog",
-    "pk": 163
-},
-{
-    "fields": {
-        "timestamp": "1970-01-01T00:00:09Z",
-        "user": 54
-    },
-    "model": "auvsi_suas.accesslog",
-    "pk": 164
-},
-{
-    "fields": {
-        "timestamp": "1970-01-01T00:00:10Z",
-        "user": 54
-    },
-    "model": "auvsi_suas.accesslog",
-    "pk": 165
+  "fields": {
+    "model": "logentry",
+    "app_label": "admin"
+  },
+  "model": "contenttypes.contenttype",
+  "pk": 1
+},
+{
+  "fields": {
+    "model": "permission",
+    "app_label": "auth"
+  },
+  "model": "contenttypes.contenttype",
+  "pk": 2
+},
+{
+  "fields": {
+    "model": "group",
+    "app_label": "auth"
+  },
+  "model": "contenttypes.contenttype",
+  "pk": 3
+},
+{
+  "fields": {
+    "model": "user",
+    "app_label": "auth"
+  },
+  "model": "contenttypes.contenttype",
+  "pk": 4
+},
+{
+  "fields": {
+    "model": "contenttype",
+    "app_label": "contenttypes"
+  },
+  "model": "contenttypes.contenttype",
+  "pk": 5
+},
+{
+  "fields": {
+    "model": "session",
+    "app_label": "sessions"
+  },
+  "model": "contenttypes.contenttype",
+  "pk": 6
+},
+{
+  "fields": {
+    "model": "gpsposition",
+    "app_label": "auvsi_suas"
+  },
+  "model": "contenttypes.contenttype",
+  "pk": 7
+},
+{
+  "fields": {
+    "model": "aerialposition",
+    "app_label": "auvsi_suas"
+  },
+  "model": "contenttypes.contenttype",
+  "pk": 8
+},
+{
+  "fields": {
+    "model": "accesslog",
+    "app_label": "auvsi_suas"
+  },
+  "model": "contenttypes.contenttype",
+  "pk": 9
+},
+{
+  "fields": {
+    "model": "waypoint",
+    "app_label": "auvsi_suas"
+  },
+  "model": "contenttypes.contenttype",
+  "pk": 10
+},
+{
+  "fields": {
+    "model": "flyzone",
+    "app_label": "auvsi_suas"
+  },
+  "model": "contenttypes.contenttype",
+  "pk": 11
+},
+{
+  "fields": {
+    "model": "missionclockevent",
+    "app_label": "auvsi_suas"
+  },
+  "model": "contenttypes.contenttype",
+  "pk": 12
+},
+{
+  "fields": {
+    "model": "movingobstacle",
+    "app_label": "auvsi_suas"
+  },
+  "model": "contenttypes.contenttype",
+  "pk": 13
 },
 {
-    "fields": {
-        "timestamp": "1970-01-01T00:00:00Z",
-        "user": 53
-    },
-    "model": "auvsi_suas.accesslog",
-    "pk": 166
+  "fields": {
+    "model": "obstacleaccesslog",
+    "app_label": "auvsi_suas"
+  },
+  "model": "contenttypes.contenttype",
+  "pk": 14
 },
 {
-    "fields": {
-        "timestamp": "1970-01-01T00:00:02Z",
-        "user": 53
-    },
-    "model": "auvsi_suas.accesslog",
-    "pk": 167
+  "fields": {
+    "model": "serverinfo",
+    "app_label": "auvsi_suas"
+  },
+  "model": "contenttypes.contenttype",
+  "pk": 15
 },
 {
-    "fields": {
-        "timestamp": "1970-01-01T00:00:00Z",
-        "user": 54
-    },
-    "model": "auvsi_suas.accesslog",
-    "pk": 168
+  "fields": {
+    "model": "serverinfoaccesslog",
+    "app_label": "auvsi_suas"
+  },
+  "model": "contenttypes.contenttype",
+  "pk": 16
 },
 {
-    "fields": {
-        "timestamp": "1970-01-01T00:00:03Z",
-        "user": 54
-    },
-    "model": "auvsi_suas.accesslog",
-    "pk": 169
+  "fields": {
+    "model": "stationaryobstacle",
+    "app_label": "auvsi_suas"
+  },
+  "model": "contenttypes.contenttype",
+  "pk": 17
 },
 {
-    "fields": {
-        "timestamp": "1970-01-01T00:00:05Z",
-        "user": 54
-    },
-    "model": "auvsi_suas.accesslog",
-    "pk": 170
+  "fields": {
+    "model": "takeofforlandingevent",
+    "app_label": "auvsi_suas"
+  },
+  "model": "contenttypes.contenttype",
+  "pk": 18
 },
 {
-    "fields": {
-        "timestamp": "1970-01-01T00:00:20Z",
-        "user": 54
-    },
-    "model": "auvsi_suas.accesslog",
-    "pk": 171
-},
-{
-    "fields": {
-        "position": 185,
-        "order": 10
-    },
-    "model": "auvsi_suas.waypoint",
-    "pk": 150
-},
-{
-    "fields": {
-        "position": 186,
-        "order": 0
-    },
-    "model": "auvsi_suas.waypoint",
-    "pk": 151
-},
-{
-    "fields": {
-        "position": 187,
-        "order": 1
-    },
-    "model": "auvsi_suas.waypoint",
-    "pk": 152
-},
-{
-    "fields": {
-        "position": 188,
-        "order": 2
-    },
-    "model": "auvsi_suas.waypoint",
-    "pk": 153
-},
-{
-    "fields": {
-        "position": 189,
-        "order": 3
-    },
-    "model": "auvsi_suas.waypoint",
-    "pk": 154
-},
-{
-    "fields": {
-        "position": 190,
-        "order": 0
-    },
-    "model": "auvsi_suas.waypoint",
-    "pk": 155
-},
-{
-    "fields": {
-        "position": 191,
-        "order": 1
-    },
-    "model": "auvsi_suas.waypoint",
-    "pk": 156
-},
-{
-    "fields": {
-        "position": 192,
-        "order": 0
-    },
-    "model": "auvsi_suas.waypoint",
-    "pk": 157
-},
-{
-    "fields": {
-        "position": 193,
-        "order": 1
-    },
-    "model": "auvsi_suas.waypoint",
-    "pk": 158
-},
-{
-    "fields": {
-        "position": 194,
-        "order": 0
-    },
-    "model": "auvsi_suas.waypoint",
-    "pk": 159
-},
-{
-    "fields": {
-        "position": 195,
-        "order": 1
-    },
-    "model": "auvsi_suas.waypoint",
-    "pk": 160
-},
-{
-    "fields": {
-        "altitude_msl_max": 20.0,
-        "boundary_pts": [
-            151,
-            152,
-            153,
-            154
-        ],
-        "altitude_msl_min": 0.0
-    },
-    "model": "auvsi_suas.flyzone",
-    "pk": 22
+  "fields": {
+    "model": "target",
+    "app_label": "auvsi_suas"
+  },
+  "model": "contenttypes.contenttype",
+  "pk": 19
 },
 {
-    "fields": {
-        "team_on_timeout": false,
-        "team_on_clock": true
-    },
-    "model": "auvsi_suas.missionclockevent",
-    "pk": 166
+  "fields": {
+    "model": "uastelemetry",
+    "app_label": "auvsi_suas"
+  },
+  "model": "contenttypes.contenttype",
+  "pk": 20
 },
 {
-    "fields": {
-        "team_on_timeout": false,
-        "team_on_clock": false
-    },
-    "model": "auvsi_suas.missionclockevent",
-    "pk": 167
+  "fields": {
+    "model": "missionconfig",
+    "app_label": "auvsi_suas"
+  },
+  "model": "contenttypes.contenttype",
+  "pk": 21
 },
 {
-    "fields": {
-        "team_on_timeout": false,
-        "team_on_clock": true
-    },
-    "model": "auvsi_suas.missionclockevent",
-    "pk": 168
+  "fields": {
+    "expire_date": "2016-05-29T19:09:04.979Z",
+    "session_data": "NTc2NjFjZjkwY2NiNzc4ZDgyY2UwMTlhZWYyNDhmZjZkZjliYzQ4YTp7Il9hdXRoX3VzZXJfaGFzaCI6ImFiYjc0YjY1ZjM1OWJjMzBlMDY3Y2ZiNmYzOTZlMzI0YTE1NmNiNjEiLCJfYXV0aF91c2VyX2JhY2tlbmQiOiJkamFuZ28uY29udHJpYi5hdXRoLmJhY2tlbmRzLk1vZGVsQmFja2VuZCIsIl9hdXRoX3VzZXJfaWQiOiI1NSJ9"
+  },
+  "model": "sessions.session",
+  "pk": "jsyu9do0jr37tvzuhrot9x1woiexw6c9"
 },
 {
-    "fields": {
-        "team_on_timeout": true,
-        "team_on_clock": false
-    },
-    "model": "auvsi_suas.missionclockevent",
-    "pk": 169
+  "fields": {
+    "latitude": 38.0,
+    "longitude": -76.0
+  },
+  "model": "auvsi_suas.gpsposition",
+  "pk": 317
 },
 {
-    "fields": {
-        "team_on_timeout": false,
-        "team_on_clock": true
-    },
-    "model": "auvsi_suas.missionclockevent",
-    "pk": 170
+  "fields": {
+    "latitude": 38.0,
+    "longitude": -76.0
+  },
+  "model": "auvsi_suas.gpsposition",
+  "pk": 318
 },
 {
-    "fields": {
-        "team_on_timeout": false,
-        "team_on_clock": false
-    },
-    "model": "auvsi_suas.missionclockevent",
-    "pk": 171
+  "fields": {
+    "latitude": 38.0,
+    "longitude": -76.0
+  },
+  "model": "auvsi_suas.gpsposition",
+  "pk": 319
 },
 {
-    "fields": {
-        "sphere_radius": 15.0,
-        "speed_avg": 1.0,
-        "waypoints": [
-            157,
-            158
-        ]
-    },
-    "model": "auvsi_suas.movingobstacle",
-    "pk": 25
+  "fields": {
+    "latitude": 38.0,
+    "longitude": -76.0
+  },
+  "model": "auvsi_suas.gpsposition",
+  "pk": 320
 },
 {
-    "fields": {
-        "sphere_radius": 20.0,
-        "speed_avg": 1.0,
-        "waypoints": [
-            159,
-            160
-        ]
-    },
-    "model": "auvsi_suas.movingobstacle",
-    "pk": 26
+  "fields": {
+    "latitude": 38.0,
+    "longitude": -76.0
+  },
+  "model": "auvsi_suas.gpsposition",
+  "pk": 321
 },
 {
-    "fields": {},
-    "model": "auvsi_suas.obstacleaccesslog",
-    "pk": 144
+  "fields": {
+    "latitude": 38.0,
+    "longitude": -76.0
+  },
+  "model": "auvsi_suas.gpsposition",
+  "pk": 322
 },
 {
-    "fields": {},
-    "model": "auvsi_suas.obstacleaccesslog",
-    "pk": 145
+  "fields": {
+    "latitude": 38.0,
+    "longitude": -76.0
+  },
+  "model": "auvsi_suas.gpsposition",
+  "pk": 323
 },
 {
-    "fields": {},
-    "model": "auvsi_suas.obstacleaccesslog",
-    "pk": 146
+  "fields": {
+    "latitude": 10.0,
+    "longitude": 100.0
+  },
+  "model": "auvsi_suas.gpsposition",
+  "pk": 324
 },
 {
-    "fields": {},
-    "model": "auvsi_suas.obstacleaccesslog",
-    "pk": 147
+  "fields": {
+    "latitude": 37.0,
+    "longitude": -75.0
+  },
+  "model": "auvsi_suas.gpsposition",
+  "pk": 325
 },
 {
-    "fields": {},
-    "model": "auvsi_suas.obstacleaccesslog",
-    "pk": 158
+  "fields": {
+    "latitude": 39.0,
+    "longitude": -75.0
+  },
+  "model": "auvsi_suas.gpsposition",
+  "pk": 326
 },
 {
-    "fields": {},
-    "model": "auvsi_suas.obstacleaccesslog",
-    "pk": 159
+  "fields": {
+    "latitude": 39.0,
+    "longitude": -77.0
+  },
+  "model": "auvsi_suas.gpsposition",
+  "pk": 327
 },
 {
-    "fields": {},
-    "model": "auvsi_suas.obstacleaccesslog",
-    "pk": 160
+  "fields": {
+    "latitude": 37.0,
+    "longitude": -77.0
+  },
+  "model": "auvsi_suas.gpsposition",
+  "pk": 328
 },
 {
-    "fields": {
-        "timestamp": "1970-01-01T00:00:01Z",
-        "team_msg": "Hello World"
-    },
-    "model": "auvsi_suas.serverinfo",
-    "pk": 1
+  "fields": {
+    "latitude": 38.0,
+    "longitude": -76.0
+  },
+  "model": "auvsi_suas.gpsposition",
+  "pk": 329
 },
 {
-    "fields": {},
-    "model": "auvsi_suas.serverinfoaccesslog",
-    "pk": 139
+  "fields": {
+    "latitude": 38.0,
+    "longitude": -76.0
+  },
+  "model": "auvsi_suas.gpsposition",
+  "pk": 330
 },
 {
-    "fields": {},
-    "model": "auvsi_suas.serverinfoaccesslog",
-    "pk": 140
+  "fields": {
+    "latitude": 38.0,
+    "longitude": -76.0
+  },
+  "model": "auvsi_suas.gpsposition",
+  "pk": 331
 },
 {
-    "fields": {},
-    "model": "auvsi_suas.serverinfoaccesslog",
-    "pk": 141
+  "fields": {
+    "latitude": 39.0,
+    "longitude": -76.0
+  },
+  "model": "auvsi_suas.gpsposition",
+  "pk": 332
 },
 {
-    "fields": {},
-    "model": "auvsi_suas.serverinfoaccesslog",
-    "pk": 142
+  "fields": {
+    "latitude": 38.0,
+    "longitude": -76.0
+  },
+  "model": "auvsi_suas.gpsposition",
+  "pk": 333
 },
 {
-    "fields": {},
-    "model": "auvsi_suas.serverinfoaccesslog",
-    "pk": 143
+  "fields": {
+    "latitude": 38.0,
+    "longitude": -76.0
+  },
+  "model": "auvsi_suas.gpsposition",
+  "pk": 334
 },
 {
-    "fields": {},
-    "model": "auvsi_suas.serverinfoaccesslog",
-    "pk": 155
+  "fields": {
+    "latitude": 39.0,
+    "longitude": -76.0
+  },
+  "model": "auvsi_suas.gpsposition",
+  "pk": 335
 },
 {
-    "fields": {},
-    "model": "auvsi_suas.serverinfoaccesslog",
-    "pk": 156
+  "fields": {
+    "latitude": 39.0,
+    "longitude": -76.0
+  },
+  "model": "auvsi_suas.gpsposition",
+  "pk": 336
 },
 {
-    "fields": {},
-    "model": "auvsi_suas.serverinfoaccesslog",
-    "pk": 157
+  "fields": {
+    "altitude_msl": 0.0,
+    "gps_position": 317
+  },
+  "model": "auvsi_suas.aerialposition",
+  "pk": 178
 },
 {
-    "fields": {
-        "cylinder_height": 10.0,
-        "cylinder_radius": 10.0,
-        "gps_position": 331
-    },
-    "model": "auvsi_suas.stationaryobstacle",
-    "pk": 25
+  "fields": {
+    "altitude_msl": 10.0,
+    "gps_position": 318
+  },
+  "model": "auvsi_suas.aerialposition",
+  "pk": 179
 },
 {
-    "fields": {
-        "cylinder_height": 10.0,
-        "cylinder_radius": 10.0,
-        "gps_position": 332
-    },
-    "model": "auvsi_suas.stationaryobstacle",
-    "pk": 26
+  "fields": {
+    "altitude_msl": 20.0,
+    "gps_position": 319
+  },
+  "model": "auvsi_suas.aerialposition",
+  "pk": 180
 },
 {
-    "fields": {
-        "uas_in_air": true
-    },
-    "model": "auvsi_suas.takeofforlandingevent",
-    "pk": 137
+  "fields": {
+    "altitude_msl": 30.0,
+    "gps_position": 320
+  },
+  "model": "auvsi_suas.aerialposition",
+  "pk": 181
 },
 {
-    "fields": {
-        "uas_in_air": false
-    },
-    "model": "auvsi_suas.takeofforlandingevent",
-    "pk": 138
+  "fields": {
+    "altitude_msl": 100.0,
+    "gps_position": 321
+  },
+  "model": "auvsi_suas.aerialposition",
+  "pk": 182
 },
 {
-    "fields": {
-        "uas_in_air": true
-    },
-    "model": "auvsi_suas.takeofforlandingevent",
-    "pk": 153
+  "fields": {
+    "altitude_msl": 30.0,
+    "gps_position": 322
+  },
+  "model": "auvsi_suas.aerialposition",
+  "pk": 183
 },
 {
-    "fields": {
-        "uas_in_air": false
-    },
-    "model": "auvsi_suas.takeofforlandingevent",
-    "pk": 154
+  "fields": {
+    "altitude_msl": 60.0,
+    "gps_position": 323
+  },
+  "model": "auvsi_suas.aerialposition",
+  "pk": 184
 },
 {
-    "fields": {
-        "uas_in_air": true
-    },
-    "model": "auvsi_suas.takeofforlandingevent",
-    "pk": 164
+  "fields": {
+    "altitude_msl": 1000.0,
+    "gps_position": 324
+  },
+  "model": "auvsi_suas.aerialposition",
+  "pk": 185
 },
 {
-    "fields": {
-        "uas_in_air": false
-    },
-    "model": "auvsi_suas.takeofforlandingevent",
-    "pk": 165
+  "fields": {
+    "altitude_msl": 0.0,
+    "gps_position": 325
+  },
+  "model": "auvsi_suas.aerialposition",
+  "pk": 186
 },
 {
-    "fields": {
-        "uas_position": 178,
-        "uas_heading": 0.0
-    },
-    "model": "auvsi_suas.uastelemetry",
-    "pk": 148
+  "fields": {
+    "altitude_msl": 0.0,
+    "gps_position": 326
+  },
+  "model": "auvsi_suas.aerialposition",
+  "pk": 187
 },
 {
-    "fields": {
-        "uas_position": 179,
-        "uas_heading": 0.0
-    },
-    "model": "auvsi_suas.uastelemetry",
-    "pk": 149
+  "fields": {
+    "altitude_msl": 0.0,
+    "gps_position": 327
+  },
+  "model": "auvsi_suas.aerialposition",
+  "pk": 188
 },
 {
-    "fields": {
-        "uas_position": 180,
-        "uas_heading": 0.0
-    },
-    "model": "auvsi_suas.uastelemetry",
-    "pk": 150
+  "fields": {
+    "altitude_msl": 0.0,
+    "gps_position": 328
+  },
+  "model": "auvsi_suas.aerialposition",
+  "pk": 189
 },
 {
-    "fields": {
-        "uas_position": 181,
-        "uas_heading": 0.0
-    },
-    "model": "auvsi_suas.uastelemetry",
-    "pk": 151
+  "fields": {
+    "altitude_msl": 30.0,
+    "gps_position": 329
+  },
+  "model": "auvsi_suas.aerialposition",
+  "pk": 190
 },
 {
-    "fields": {
-        "uas_position": 182,
-        "uas_heading": 0.0
-    },
-    "model": "auvsi_suas.uastelemetry",
-    "pk": 152
+  "fields": {
+    "altitude_msl": 60.0,
+    "gps_position": 330
+  },
+  "model": "auvsi_suas.aerialposition",
+  "pk": 191
 },
 {
-    "fields": {
-        "uas_position": 183,
-        "uas_heading": 0.0
-    },
-    "model": "auvsi_suas.uastelemetry",
-    "pk": 161
+  "fields": {
+    "altitude_msl": 0.0,
+    "gps_position": 333
+  },
+  "model": "auvsi_suas.aerialposition",
+  "pk": 192
 },
 {
-    "fields": {
-        "uas_position": 184,
-        "uas_heading": 0.0
-    },
-    "model": "auvsi_suas.uastelemetry",
-    "pk": 162
+  "fields": {
+    "altitude_msl": 10.0,
+    "gps_position": 334
+  },
+  "model": "auvsi_suas.aerialposition",
+  "pk": 193
 },
 {
-    "fields": {
-        "uas_position": 184,
-        "uas_heading": 0.0
-    },
-    "model": "auvsi_suas.uastelemetry",
-    "pk": 163
+  "fields": {
+    "altitude_msl": 0.0,
+    "gps_position": 335
+  },
+  "model": "auvsi_suas.aerialposition",
+  "pk": 194
 },
 {
-    "fields": {
-        "stationary_obstacles": [
-            25,
-            26
-        ],
-        "fly_zones": [
-            22
-        ],
-        "off_axis_target_pos": 324,
-        "moving_obstacles": [
-            25,
-            26
-        ],
-        "server_info": 1,
-        "is_active": true,
-        "mission_waypoints": [
-            155,
-            156
-        ],
-        "emergent_last_known_pos": 324,
-        "search_grid_points": [
-            150
-        ],
-        "sric_pos": 324,
-        "home_pos": 324,
-        "air_drop_pos": 324
-    },
-    "model": "auvsi_suas.missionconfig",
-    "pk": 3
+  "fields": {
+    "altitude_msl": 10.0,
+    "gps_position": 336
+  },
+  "model": "auvsi_suas.aerialposition",
+  "pk": 195
+},
+{
+  "fields": {
+    "position": 185,
+    "order": 10
+  },
+  "model": "auvsi_suas.waypoint",
+  "pk": 150
+},
+{
+  "fields": {
+    "position": 186,
+    "order": 0
+  },
+  "model": "auvsi_suas.waypoint",
+  "pk": 151
+},
+{
+  "fields": {
+    "position": 187,
+    "order": 1
+  },
+  "model": "auvsi_suas.waypoint",
+  "pk": 152
+},
+{
+  "fields": {
+    "position": 188,
+    "order": 2
+  },
+  "model": "auvsi_suas.waypoint",
+  "pk": 153
+},
+{
+  "fields": {
+    "position": 189,
+    "order": 3
+  },
+  "model": "auvsi_suas.waypoint",
+  "pk": 154
+},
+{
+  "fields": {
+    "position": 190,
+    "order": 0
+  },
+  "model": "auvsi_suas.waypoint",
+  "pk": 155
+},
+{
+  "fields": {
+    "position": 191,
+    "order": 1
+  },
+  "model": "auvsi_suas.waypoint",
+  "pk": 156
+},
+{
+  "fields": {
+    "position": 192,
+    "order": 0
+  },
+  "model": "auvsi_suas.waypoint",
+  "pk": 157
+},
+{
+  "fields": {
+    "position": 193,
+    "order": 1
+  },
+  "model": "auvsi_suas.waypoint",
+  "pk": 158
+},
+{
+  "fields": {
+    "position": 194,
+    "order": 0
+  },
+  "model": "auvsi_suas.waypoint",
+  "pk": 159
+},
+{
+  "fields": {
+    "position": 195,
+    "order": 1
+  },
+  "model": "auvsi_suas.waypoint",
+  "pk": 160
+},
+{
+  "fields": {
+    "altitude_msl_max": 20.0,
+    "boundary_pts": [
+      151,
+      152,
+      153,
+      154
+    ],
+    "altitude_msl_min": 0.0
+  },
+  "model": "auvsi_suas.flyzone",
+  "pk": 22
+},
+{
+  "fields": {
+    "sphere_radius": 15.0,
+    "speed_avg": 1.0,
+    "waypoints": [
+      158,
+      157
+    ]
+  },
+  "model": "auvsi_suas.movingobstacle",
+  "pk": 25
+},
+{
+  "fields": {
+    "sphere_radius": 20.0,
+    "speed_avg": 1.0,
+    "waypoints": [
+      159,
+      160
+    ]
+  },
+  "model": "auvsi_suas.movingobstacle",
+  "pk": 26
+},
+{
+  "fields": {
+    "timestamp": "1970-01-01T00:00:01Z",
+    "team_msg": "Hello World"
+  },
+  "model": "auvsi_suas.serverinfo",
+  "pk": 1
+},
+{
+  "fields": {
+    "cylinder_height": 10.0,
+    "cylinder_radius": 10.0,
+    "gps_position": 331
+  },
+  "model": "auvsi_suas.stationaryobstacle",
+  "pk": 25
+},
+{
+  "fields": {
+    "cylinder_height": 10.0,
+    "cylinder_radius": 10.0,
+    "gps_position": 332
+  },
+  "model": "auvsi_suas.stationaryobstacle",
+  "pk": 26
+},
+{
+  "fields": {
+    "stationary_obstacles": [
+      25,
+      26
+    ],
+    "fly_zones": [
+      22
+    ],
+    "off_axis_target_pos": 324,
+    "moving_obstacles": [
+      25,
+      26
+    ],
+    "server_info": 1,
+    "is_active": true,
+    "mission_waypoints": [
+      155,
+      156
+    ],
+    "emergent_last_known_pos": 324,
+    "search_grid_points": [
+      150
+    ],
+    "sric_pos": 324,
+    "targets": [
+      1,
+      2
+    ],
+    "home_pos": 324,
+    "air_drop_pos": 324
+  },
+  "model": "auvsi_suas.missionconfig",
+  "pk": 3
+},
+{
+  "fields": {
+    "codename": "add_logentry",
+    "name": "Can add log entry",
+    "content_type": 1
+  },
+  "model": "auth.permission",
+  "pk": 1
+},
+{
+  "fields": {
+    "codename": "change_logentry",
+    "name": "Can change log entry",
+    "content_type": 1
+  },
+  "model": "auth.permission",
+  "pk": 2
+},
+{
+  "fields": {
+    "codename": "delete_logentry",
+    "name": "Can delete log entry",
+    "content_type": 1
+  },
+  "model": "auth.permission",
+  "pk": 3
+},
+{
+  "fields": {
+    "codename": "add_permission",
+    "name": "Can add permission",
+    "content_type": 2
+  },
+  "model": "auth.permission",
+  "pk": 4
+},
+{
+  "fields": {
+    "codename": "change_permission",
+    "name": "Can change permission",
+    "content_type": 2
+  },
+  "model": "auth.permission",
+  "pk": 5
+},
+{
+  "fields": {
+    "codename": "delete_permission",
+    "name": "Can delete permission",
+    "content_type": 2
+  },
+  "model": "auth.permission",
+  "pk": 6
+},
+{
+  "fields": {
+    "codename": "add_group",
+    "name": "Can add group",
+    "content_type": 3
+  },
+  "model": "auth.permission",
+  "pk": 7
+},
+{
+  "fields": {
+    "codename": "change_group",
+    "name": "Can change group",
+    "content_type": 3
+  },
+  "model": "auth.permission",
+  "pk": 8
+},
+{
+  "fields": {
+    "codename": "delete_group",
+    "name": "Can delete group",
+    "content_type": 3
+  },
+  "model": "auth.permission",
+  "pk": 9
+},
+{
+  "fields": {
+    "codename": "add_user",
+    "name": "Can add user",
+    "content_type": 4
+  },
+  "model": "auth.permission",
+  "pk": 10
+},
+{
+  "fields": {
+    "codename": "change_user",
+    "name": "Can change user",
+    "content_type": 4
+  },
+  "model": "auth.permission",
+  "pk": 11
+},
+{
+  "fields": {
+    "codename": "delete_user",
+    "name": "Can delete user",
+    "content_type": 4
+  },
+  "model": "auth.permission",
+  "pk": 12
+},
+{
+  "fields": {
+    "codename": "add_contenttype",
+    "name": "Can add content type",
+    "content_type": 5
+  },
+  "model": "auth.permission",
+  "pk": 13
+},
+{
+  "fields": {
+    "codename": "change_contenttype",
+    "name": "Can change content type",
+    "content_type": 5
+  },
+  "model": "auth.permission",
+  "pk": 14
+},
+{
+  "fields": {
+    "codename": "delete_contenttype",
+    "name": "Can delete content type",
+    "content_type": 5
+  },
+  "model": "auth.permission",
+  "pk": 15
+},
+{
+  "fields": {
+    "codename": "add_session",
+    "name": "Can add session",
+    "content_type": 6
+  },
+  "model": "auth.permission",
+  "pk": 16
+},
+{
+  "fields": {
+    "codename": "change_session",
+    "name": "Can change session",
+    "content_type": 6
+  },
+  "model": "auth.permission",
+  "pk": 17
+},
+{
+  "fields": {
+    "codename": "delete_session",
+    "name": "Can delete session",
+    "content_type": 6
+  },
+  "model": "auth.permission",
+  "pk": 18
+},
+{
+  "fields": {
+    "codename": "add_gpsposition",
+    "name": "Can add gps position",
+    "content_type": 7
+  },
+  "model": "auth.permission",
+  "pk": 19
+},
+{
+  "fields": {
+    "codename": "change_gpsposition",
+    "name": "Can change gps position",
+    "content_type": 7
+  },
+  "model": "auth.permission",
+  "pk": 20
+},
+{
+  "fields": {
+    "codename": "delete_gpsposition",
+    "name": "Can delete gps position",
+    "content_type": 7
+  },
+  "model": "auth.permission",
+  "pk": 21
+},
+{
+  "fields": {
+    "codename": "add_aerialposition",
+    "name": "Can add aerial position",
+    "content_type": 8
+  },
+  "model": "auth.permission",
+  "pk": 22
+},
+{
+  "fields": {
+    "codename": "change_aerialposition",
+    "name": "Can change aerial position",
+    "content_type": 8
+  },
+  "model": "auth.permission",
+  "pk": 23
+},
+{
+  "fields": {
+    "codename": "delete_aerialposition",
+    "name": "Can delete aerial position",
+    "content_type": 8
+  },
+  "model": "auth.permission",
+  "pk": 24
+},
+{
+  "fields": {
+    "codename": "add_accesslog",
+    "name": "Can add access log",
+    "content_type": 9
+  },
+  "model": "auth.permission",
+  "pk": 25
+},
+{
+  "fields": {
+    "codename": "change_accesslog",
+    "name": "Can change access log",
+    "content_type": 9
+  },
+  "model": "auth.permission",
+  "pk": 26
+},
+{
+  "fields": {
+    "codename": "delete_accesslog",
+    "name": "Can delete access log",
+    "content_type": 9
+  },
+  "model": "auth.permission",
+  "pk": 27
+},
+{
+  "fields": {
+    "codename": "add_waypoint",
+    "name": "Can add waypoint",
+    "content_type": 10
+  },
+  "model": "auth.permission",
+  "pk": 28
+},
+{
+  "fields": {
+    "codename": "change_waypoint",
+    "name": "Can change waypoint",
+    "content_type": 10
+  },
+  "model": "auth.permission",
+  "pk": 29
+},
+{
+  "fields": {
+    "codename": "delete_waypoint",
+    "name": "Can delete waypoint",
+    "content_type": 10
+  },
+  "model": "auth.permission",
+  "pk": 30
+},
+{
+  "fields": {
+    "codename": "add_flyzone",
+    "name": "Can add fly zone",
+    "content_type": 11
+  },
+  "model": "auth.permission",
+  "pk": 31
+},
+{
+  "fields": {
+    "codename": "change_flyzone",
+    "name": "Can change fly zone",
+    "content_type": 11
+  },
+  "model": "auth.permission",
+  "pk": 32
+},
+{
+  "fields": {
+    "codename": "delete_flyzone",
+    "name": "Can delete fly zone",
+    "content_type": 11
+  },
+  "model": "auth.permission",
+  "pk": 33
+},
+{
+  "fields": {
+    "codename": "add_missionclockevent",
+    "name": "Can add mission clock event",
+    "content_type": 12
+  },
+  "model": "auth.permission",
+  "pk": 34
+},
+{
+  "fields": {
+    "codename": "change_missionclockevent",
+    "name": "Can change mission clock event",
+    "content_type": 12
+  },
+  "model": "auth.permission",
+  "pk": 35
+},
+{
+  "fields": {
+    "codename": "delete_missionclockevent",
+    "name": "Can delete mission clock event",
+    "content_type": 12
+  },
+  "model": "auth.permission",
+  "pk": 36
+},
+{
+  "fields": {
+    "codename": "add_movingobstacle",
+    "name": "Can add moving obstacle",
+    "content_type": 13
+  },
+  "model": "auth.permission",
+  "pk": 37
+},
+{
+  "fields": {
+    "codename": "change_movingobstacle",
+    "name": "Can change moving obstacle",
+    "content_type": 13
+  },
+  "model": "auth.permission",
+  "pk": 38
+},
+{
+  "fields": {
+    "codename": "delete_movingobstacle",
+    "name": "Can delete moving obstacle",
+    "content_type": 13
+  },
+  "model": "auth.permission",
+  "pk": 39
+},
+{
+  "fields": {
+    "codename": "add_obstacleaccesslog",
+    "name": "Can add obstacle access log",
+    "content_type": 14
+  },
+  "model": "auth.permission",
+  "pk": 40
+},
+{
+  "fields": {
+    "codename": "change_obstacleaccesslog",
+    "name": "Can change obstacle access log",
+    "content_type": 14
+  },
+  "model": "auth.permission",
+  "pk": 41
+},
+{
+  "fields": {
+    "codename": "delete_obstacleaccesslog",
+    "name": "Can delete obstacle access log",
+    "content_type": 14
+  },
+  "model": "auth.permission",
+  "pk": 42
+},
+{
+  "fields": {
+    "codename": "add_serverinfo",
+    "name": "Can add server info",
+    "content_type": 15
+  },
+  "model": "auth.permission",
+  "pk": 43
+},
+{
+  "fields": {
+    "codename": "change_serverinfo",
+    "name": "Can change server info",
+    "content_type": 15
+  },
+  "model": "auth.permission",
+  "pk": 44
+},
+{
+  "fields": {
+    "codename": "delete_serverinfo",
+    "name": "Can delete server info",
+    "content_type": 15
+  },
+  "model": "auth.permission",
+  "pk": 45
+},
+{
+  "fields": {
+    "codename": "add_serverinfoaccesslog",
+    "name": "Can add server info access log",
+    "content_type": 16
+  },
+  "model": "auth.permission",
+  "pk": 46
+},
+{
+  "fields": {
+    "codename": "change_serverinfoaccesslog",
+    "name": "Can change server info access log",
+    "content_type": 16
+  },
+  "model": "auth.permission",
+  "pk": 47
+},
+{
+  "fields": {
+    "codename": "delete_serverinfoaccesslog",
+    "name": "Can delete server info access log",
+    "content_type": 16
+  },
+  "model": "auth.permission",
+  "pk": 48
+},
+{
+  "fields": {
+    "codename": "add_stationaryobstacle",
+    "name": "Can add stationary obstacle",
+    "content_type": 17
+  },
+  "model": "auth.permission",
+  "pk": 49
+},
+{
+  "fields": {
+    "codename": "change_stationaryobstacle",
+    "name": "Can change stationary obstacle",
+    "content_type": 17
+  },
+  "model": "auth.permission",
+  "pk": 50
+},
+{
+  "fields": {
+    "codename": "delete_stationaryobstacle",
+    "name": "Can delete stationary obstacle",
+    "content_type": 17
+  },
+  "model": "auth.permission",
+  "pk": 51
+},
+{
+  "fields": {
+    "codename": "add_takeofforlandingevent",
+    "name": "Can add takeoff or landing event",
+    "content_type": 18
+  },
+  "model": "auth.permission",
+  "pk": 52
+},
+{
+  "fields": {
+    "codename": "change_takeofforlandingevent",
+    "name": "Can change takeoff or landing event",
+    "content_type": 18
+  },
+  "model": "auth.permission",
+  "pk": 53
+},
+{
+  "fields": {
+    "codename": "delete_takeofforlandingevent",
+    "name": "Can delete takeoff or landing event",
+    "content_type": 18
+  },
+  "model": "auth.permission",
+  "pk": 54
+},
+{
+  "fields": {
+    "codename": "add_target",
+    "name": "Can add target",
+    "content_type": 19
+  },
+  "model": "auth.permission",
+  "pk": 55
+},
+{
+  "fields": {
+    "codename": "change_target",
+    "name": "Can change target",
+    "content_type": 19
+  },
+  "model": "auth.permission",
+  "pk": 56
+},
+{
+  "fields": {
+    "codename": "delete_target",
+    "name": "Can delete target",
+    "content_type": 19
+  },
+  "model": "auth.permission",
+  "pk": 57
+},
+{
+  "fields": {
+    "codename": "add_uastelemetry",
+    "name": "Can add uas telemetry",
+    "content_type": 20
+  },
+  "model": "auth.permission",
+  "pk": 58
+},
+{
+  "fields": {
+    "codename": "change_uastelemetry",
+    "name": "Can change uas telemetry",
+    "content_type": 20
+  },
+  "model": "auth.permission",
+  "pk": 59
+},
+{
+  "fields": {
+    "codename": "delete_uastelemetry",
+    "name": "Can delete uas telemetry",
+    "content_type": 20
+  },
+  "model": "auth.permission",
+  "pk": 60
+},
+{
+  "fields": {
+    "codename": "add_missionconfig",
+    "name": "Can add mission config",
+    "content_type": 21
+  },
+  "model": "auth.permission",
+  "pk": 61
+},
+{
+  "fields": {
+    "codename": "change_missionconfig",
+    "name": "Can change mission config",
+    "content_type": 21
+  },
+  "model": "auth.permission",
+  "pk": 62
+},
+{
+  "fields": {
+    "codename": "delete_missionconfig",
+    "name": "Can delete mission config",
+    "content_type": 21
+  },
+  "model": "auth.permission",
+  "pk": 63
+},
+{
+  "fields": {
+    "username": "user0",
+    "first_name": "",
+    "last_name": "",
+    "is_active": true,
+    "is_superuser": false,
+    "is_staff": false,
+    "last_login": null,
+    "groups": [],
+    "user_permissions": [],
+    "password": "pbkdf2_sha256$20000$xk6ocPQJCnpq$yD4rXhnyL78hQI0sFuHUbVqrEcbl5CZFoY4sby3HeKY=",
+    "email": "testemail@x.com",
+    "date_joined": "2015-05-30T05:02:26.796Z"
+  },
+  "model": "auth.user",
+  "pk": 53
+},
+{
+  "fields": {
+    "username": "user1",
+    "first_name": "",
+    "last_name": "",
+    "is_active": true,
+    "is_superuser": false,
+    "is_staff": false,
+    "last_login": null,
+    "groups": [],
+    "user_permissions": [],
+    "password": "pbkdf2_sha256$20000$ZtcSnmA3obev$DA9L375735NG+xstE6NA0+DBIpA/5WICG5CJAiyXXdE=",
+    "email": "testemail@x.com",
+    "date_joined": "2015-05-30T05:02:27.063Z"
+  },
+  "model": "auth.user",
+  "pk": 54
+},
+{
+  "fields": {
+    "username": "testadmin",
+    "first_name": "",
+    "last_name": "",
+    "is_active": true,
+    "is_superuser": true,
+    "is_staff": true,
+    "last_login": "2016-05-15T19:09:04.977Z",
+    "groups": [],
+    "user_permissions": [],
+    "password": "pbkdf2_sha256$20000$RV69VeSD5TcB$0mKHBGrLECDAHYaG/VBf5RRABdzvSh2rqHGF1YLMAyg=",
+    "email": "testadmin@test.com",
+    "date_joined": "2016-03-22T11:48:10.093Z"
+  },
+  "model": "auth.user",
+  "pk": 55
+},
+{
+  "fields": {
+    "timestamp": "1970-01-01T00:00:00Z",
+    "user": 53
+  },
+  "model": "auvsi_suas.accesslog",
+  "pk": 137
+},
+{
+  "fields": {
+    "timestamp": "1970-01-01T00:00:01Z",
+    "user": 53
+  },
+  "model": "auvsi_suas.accesslog",
+  "pk": 138
+},
+{
+  "fields": {
+    "timestamp": "1970-01-01T00:00:00Z",
+    "user": 53
+  },
+  "model": "auvsi_suas.accesslog",
+  "pk": 139
+},
+{
+  "fields": {
+    "timestamp": "1970-01-01T00:00:00.200Z",
+    "user": 53
+  },
+  "model": "auvsi_suas.accesslog",
+  "pk": 140
+},
+{
+  "fields": {
+    "timestamp": "1970-01-01T00:00:00.300Z",
+    "user": 53
+  },
+  "model": "auvsi_suas.accesslog",
+  "pk": 141
+},
+{
+  "fields": {
+    "timestamp": "1970-01-01T00:00:00.400Z",
+    "user": 53
+  },
+  "model": "auvsi_suas.accesslog",
+  "pk": 142
+},
+{
+  "fields": {
+    "timestamp": "1970-01-01T00:00:00.800Z",
+    "user": 53
+  },
+  "model": "auvsi_suas.accesslog",
+  "pk": 143
+},
+{
+  "fields": {
+    "timestamp": "1970-01-01T00:00:00Z",
+    "user": 53
+  },
+  "model": "auvsi_suas.accesslog",
+  "pk": 144
+},
+{
+  "fields": {
+    "timestamp": "1970-01-01T00:00:00.100Z",
+    "user": 53
+  },
+  "model": "auvsi_suas.accesslog",
+  "pk": 145
+},
+{
+  "fields": {
+    "timestamp": "1970-01-01T00:00:00.600Z",
+    "user": 53
+  },
+  "model": "auvsi_suas.accesslog",
+  "pk": 146
+},
+{
+  "fields": {
+    "timestamp": "1970-01-01T00:00:00.700Z",
+    "user": 53
+  },
+  "model": "auvsi_suas.accesslog",
+  "pk": 147
+},
+{
+  "fields": {
+    "timestamp": "1970-01-01T00:00:00Z",
+    "user": 53
+  },
+  "model": "auvsi_suas.accesslog",
+  "pk": 148
+},
+{
+  "fields": {
+    "timestamp": "1970-01-01T00:00:00.100Z",
+    "user": 53
+  },
+  "model": "auvsi_suas.accesslog",
+  "pk": 149
+},
+{
+  "fields": {
+    "timestamp": "1970-01-01T00:00:00.200Z",
+    "user": 53
+  },
+  "model": "auvsi_suas.accesslog",
+  "pk": 150
+},
+{
+  "fields": {
+    "timestamp": "1970-01-01T00:00:00.300Z",
+    "user": 53
+  },
+  "model": "auvsi_suas.accesslog",
+  "pk": 151
+},
+{
+  "fields": {
+    "timestamp": "1970-01-01T00:00:00.800Z",
+    "user": 53
+  },
+  "model": "auvsi_suas.accesslog",
+  "pk": 152
+},
+{
+  "fields": {
+    "timestamp": "1970-01-01T00:00:01Z",
+    "user": 54
+  },
+  "model": "auvsi_suas.accesslog",
+  "pk": 153
+},
+{
+  "fields": {
+    "timestamp": "1970-01-01T00:00:02Z",
+    "user": 54
+  },
+  "model": "auvsi_suas.accesslog",
+  "pk": 154
+},
+{
+  "fields": {
+    "timestamp": "1970-01-01T00:00:00Z",
+    "user": 54
+  },
+  "model": "auvsi_suas.accesslog",
+  "pk": 155
+},
+{
+  "fields": {
+    "timestamp": "1970-01-01T00:00:01.100Z",
+    "user": 54
+  },
+  "model": "auvsi_suas.accesslog",
+  "pk": 156
+},
+{
+  "fields": {
+    "timestamp": "1970-01-01T00:00:01.500Z",
+    "user": 54
+  },
+  "model": "auvsi_suas.accesslog",
+  "pk": 157
+},
+{
+  "fields": {
+    "timestamp": "1970-01-01T00:00:01.100Z",
+    "user": 54
+  },
+  "model": "auvsi_suas.accesslog",
+  "pk": 158
+},
+{
+  "fields": {
+    "timestamp": "1970-01-01T00:00:01.200Z",
+    "user": 54
+  },
+  "model": "auvsi_suas.accesslog",
+  "pk": 159
+},
+{
+  "fields": {
+    "timestamp": "1970-01-01T00:00:01.600Z",
+    "user": 54
+  },
+  "model": "auvsi_suas.accesslog",
+  "pk": 160
+},
+{
+  "fields": {
+    "timestamp": "1970-01-01T00:00:01Z",
+    "user": 54
+  },
+  "model": "auvsi_suas.accesslog",
+  "pk": 161
+},
+{
+  "fields": {
+    "timestamp": "1970-01-01T00:00:02Z",
+    "user": 54
+  },
+  "model": "auvsi_suas.accesslog",
+  "pk": 162
+},
+{
+  "fields": {
+    "timestamp": "1970-01-01T00:00:03Z",
+    "user": 54
+  },
+  "model": "auvsi_suas.accesslog",
+  "pk": 163
+},
+{
+  "fields": {
+    "timestamp": "1970-01-01T00:00:09Z",
+    "user": 54
+  },
+  "model": "auvsi_suas.accesslog",
+  "pk": 164
+},
+{
+  "fields": {
+    "timestamp": "1970-01-01T00:00:10Z",
+    "user": 54
+  },
+  "model": "auvsi_suas.accesslog",
+  "pk": 165
+},
+{
+  "fields": {
+    "timestamp": "1970-01-01T00:00:00Z",
+    "user": 53
+  },
+  "model": "auvsi_suas.accesslog",
+  "pk": 166
+},
+{
+  "fields": {
+    "timestamp": "1970-01-01T00:00:02Z",
+    "user": 53
+  },
+  "model": "auvsi_suas.accesslog",
+  "pk": 167
+},
+{
+  "fields": {
+    "timestamp": "1970-01-01T00:00:00Z",
+    "user": 54
+  },
+  "model": "auvsi_suas.accesslog",
+  "pk": 168
+},
+{
+  "fields": {
+    "timestamp": "1970-01-01T00:00:03Z",
+    "user": 54
+  },
+  "model": "auvsi_suas.accesslog",
+  "pk": 169
+},
+{
+  "fields": {
+    "timestamp": "1970-01-01T00:00:05Z",
+    "user": 54
+  },
+  "model": "auvsi_suas.accesslog",
+  "pk": 170
+},
+{
+  "fields": {
+    "timestamp": "1970-01-01T00:00:20Z",
+    "user": 54
+  },
+  "model": "auvsi_suas.accesslog",
+  "pk": 171
+},
+{
+  "fields": {
+    "team_on_timeout": false,
+    "team_on_clock": true
+  },
+  "model": "auvsi_suas.missionclockevent",
+  "pk": 166
+},
+{
+  "fields": {
+    "team_on_timeout": false,
+    "team_on_clock": false
+  },
+  "model": "auvsi_suas.missionclockevent",
+  "pk": 167
+},
+{
+  "fields": {
+    "team_on_timeout": false,
+    "team_on_clock": true
+  },
+  "model": "auvsi_suas.missionclockevent",
+  "pk": 168
+},
+{
+  "fields": {
+    "team_on_timeout": true,
+    "team_on_clock": false
+  },
+  "model": "auvsi_suas.missionclockevent",
+  "pk": 169
+},
+{
+  "fields": {
+    "team_on_timeout": false,
+    "team_on_clock": true
+  },
+  "model": "auvsi_suas.missionclockevent",
+  "pk": 170
+},
+{
+  "fields": {
+    "team_on_timeout": false,
+    "team_on_clock": false
+  },
+  "model": "auvsi_suas.missionclockevent",
+  "pk": 171
+},
+{
+  "fields": {},
+  "model": "auvsi_suas.obstacleaccesslog",
+  "pk": 144
+},
+{
+  "fields": {},
+  "model": "auvsi_suas.obstacleaccesslog",
+  "pk": 145
+},
+{
+  "fields": {},
+  "model": "auvsi_suas.obstacleaccesslog",
+  "pk": 146
+},
+{
+  "fields": {},
+  "model": "auvsi_suas.obstacleaccesslog",
+  "pk": 147
+},
+{
+  "fields": {},
+  "model": "auvsi_suas.obstacleaccesslog",
+  "pk": 158
+},
+{
+  "fields": {},
+  "model": "auvsi_suas.obstacleaccesslog",
+  "pk": 159
+},
+{
+  "fields": {},
+  "model": "auvsi_suas.obstacleaccesslog",
+  "pk": 160
+},
+{
+  "fields": {},
+  "model": "auvsi_suas.serverinfoaccesslog",
+  "pk": 139
+},
+{
+  "fields": {},
+  "model": "auvsi_suas.serverinfoaccesslog",
+  "pk": 140
+},
+{
+  "fields": {},
+  "model": "auvsi_suas.serverinfoaccesslog",
+  "pk": 141
+},
+{
+  "fields": {},
+  "model": "auvsi_suas.serverinfoaccesslog",
+  "pk": 142
+},
+{
+  "fields": {},
+  "model": "auvsi_suas.serverinfoaccesslog",
+  "pk": 143
+},
+{
+  "fields": {},
+  "model": "auvsi_suas.serverinfoaccesslog",
+  "pk": 155
+},
+{
+  "fields": {},
+  "model": "auvsi_suas.serverinfoaccesslog",
+  "pk": 156
+},
+{
+  "fields": {},
+  "model": "auvsi_suas.serverinfoaccesslog",
+  "pk": 157
+},
+{
+  "fields": {
+    "uas_in_air": true
+  },
+  "model": "auvsi_suas.takeofforlandingevent",
+  "pk": 137
+},
+{
+  "fields": {
+    "uas_in_air": false
+  },
+  "model": "auvsi_suas.takeofforlandingevent",
+  "pk": 138
+},
+{
+  "fields": {
+    "uas_in_air": true
+  },
+  "model": "auvsi_suas.takeofforlandingevent",
+  "pk": 153
+},
+{
+  "fields": {
+    "uas_in_air": false
+  },
+  "model": "auvsi_suas.takeofforlandingevent",
+  "pk": 154
+},
+{
+  "fields": {
+    "uas_in_air": true
+  },
+  "model": "auvsi_suas.takeofforlandingevent",
+  "pk": 164
+},
+{
+  "fields": {
+    "uas_in_air": false
+  },
+  "model": "auvsi_suas.takeofforlandingevent",
+  "pk": 165
+},
+{
+  "fields": {
+    "orientation": 1,
+    "alphanumeric_color": 1,
+    "thumbnail_approved": true,
+    "description": "",
+    "creation_time": "2016-05-15T19:10:00.890Z",
+    "target_type": 1,
+    "alphanumeric": "A",
+    "shape": 1,
+    "location": 336,
+    "last_modified_time": "2016-05-15T19:10:00.890Z",
+    "autonomous": false,
+    "background_color": 1,
+    "thumbnail": "",
+    "user": 55
+  },
+  "model": "auvsi_suas.target",
+  "pk": 1
+},
+{
+  "fields": {
+    "orientation": 5,
+    "alphanumeric_color": null,
+    "thumbnail_approved": true,
+    "description": "Hello",
+    "creation_time": "2016-05-15T19:10:38.386Z",
+    "target_type": 2,
+    "alphanumeric": "",
+    "shape": null,
+    "location": 334,
+    "last_modified_time": "2016-05-15T19:10:38.386Z",
+    "autonomous": false,
+    "background_color": null,
+    "thumbnail": "",
+    "user": 55
+  },
+  "model": "auvsi_suas.target",
+  "pk": 2
+},
+{
+  "fields": {
+    "orientation": 1,
+    "alphanumeric_color": 6,
+    "thumbnail_approved": true,
+    "description": "",
+    "creation_time": "2016-05-15T19:11:10.660Z",
+    "target_type": 1,
+    "alphanumeric": "A",
+    "shape": 7,
+    "location": 336,
+    "last_modified_time": "2016-05-15T19:11:10.660Z",
+    "autonomous": false,
+    "background_color": 2,
+    "thumbnail": "",
+    "user": 53
+  },
+  "model": "auvsi_suas.target",
+  "pk": 3
+},
+{
+  "fields": {
+    "orientation": 5,
+    "alphanumeric_color": null,
+    "thumbnail_approved": true,
+    "description": "Hell",
+    "creation_time": "2016-05-15T19:11:41.188Z",
+    "target_type": 2,
+    "alphanumeric": "",
+    "shape": null,
+    "location": 334,
+    "last_modified_time": "2016-05-15T19:11:41.188Z",
+    "autonomous": false,
+    "background_color": null,
+    "thumbnail": "",
+    "user": 53
+  },
+  "model": "auvsi_suas.target",
+  "pk": 4
+},
+{
+  "fields": {
+    "uas_position": 178,
+    "uas_heading": 0.0
+  },
+  "model": "auvsi_suas.uastelemetry",
+  "pk": 148
+},
+{
+  "fields": {
+    "uas_position": 179,
+    "uas_heading": 0.0
+  },
+  "model": "auvsi_suas.uastelemetry",
+  "pk": 149
+},
+{
+  "fields": {
+    "uas_position": 180,
+    "uas_heading": 0.0
+  },
+  "model": "auvsi_suas.uastelemetry",
+  "pk": 150
+},
+{
+  "fields": {
+    "uas_position": 181,
+    "uas_heading": 0.0
+  },
+  "model": "auvsi_suas.uastelemetry",
+  "pk": 151
+},
+{
+  "fields": {
+    "uas_position": 182,
+    "uas_heading": 0.0
+  },
+  "model": "auvsi_suas.uastelemetry",
+  "pk": 152
+},
+{
+  "fields": {
+    "uas_position": 183,
+    "uas_heading": 0.0
+  },
+  "model": "auvsi_suas.uastelemetry",
+  "pk": 161
+},
+{
+  "fields": {
+    "uas_position": 184,
+    "uas_heading": 0.0
+  },
+  "model": "auvsi_suas.uastelemetry",
+  "pk": 162
+},
+{
+  "fields": {
+    "uas_position": 184,
+    "uas_heading": 0.0
+  },
+  "model": "auvsi_suas.uastelemetry",
+  "pk": 163
+},
+{
+  "fields": {
+    "action_flag": 1,
+    "action_time": "2016-05-15T19:10:00.894Z",
+    "object_repr": "Target(description=None, alphanumeric_color=white, creation_time=2016-05-15 19:10:00.890585+00:00, alphanumeric=A, shape=circle, user=55, last_modified_time=2016-05-15 19:10:00.890627+00:00, backgroun",
+    "object_id": "1",
+    "change_message": "",
+    "user": 55,
+    "content_type": 19
+  },
+  "model": "admin.logentry",
+  "pk": 1
+},
+{
+  "fields": {
+    "action_flag": 1,
+    "action_time": "2016-05-15T19:10:38.388Z",
+    "object_repr": "Target(description=Hello, alphanumeric_color=None, creation_time=2016-05-15 19:10:38.386691+00:00, alphanumeric=None, shape=None, user=55, last_modified_time=2016-05-15 19:10:38.386730+00:00, backgrou",
+    "object_id": "2",
+    "change_message": "",
+    "user": 55,
+    "content_type": 19
+  },
+  "model": "admin.logentry",
+  "pk": 2
+},
+{
+  "fields": {
+    "action_flag": 2,
+    "action_time": "2016-05-15T19:10:40.167Z",
+    "object_repr": "MissionConfig (pk:3, is_active: True, home_pos:GpsPosition (pk:324, lat:10.0, lon:100.0), mission_waypoints:[u'Waypoint (pk:155, order:0, pos:AerialPosition (pk:190, alt:30.0, gps:GpsPosition (pk:329,",
+    "object_id": "3",
+    "change_message": "Changed targets.",
+    "user": 55,
+    "content_type": 21
+  },
+  "model": "admin.logentry",
+  "pk": 3
+},
+{
+  "fields": {
+    "action_flag": 1,
+    "action_time": "2016-05-15T19:11:10.662Z",
+    "object_repr": "Target(description=None, alphanumeric_color=green, creation_time=2016-05-15 19:11:10.660147+00:00, alphanumeric=A, shape=trapezoid, user=53, last_modified_time=2016-05-15 19:11:10.660188+00:00, backgr",
+    "object_id": "3",
+    "change_message": "",
+    "user": 55,
+    "content_type": 19
+  },
+  "model": "admin.logentry",
+  "pk": 4
+},
+{
+  "fields": {
+    "action_flag": 1,
+    "action_time": "2016-05-15T19:11:41.190Z",
+    "object_repr": "Target(description=Hell, alphanumeric_color=None, creation_time=2016-05-15 19:11:41.188703+00:00, alphanumeric=None, shape=None, user=53, last_modified_time=2016-05-15 19:11:41.188748+00:00, backgroun",
+    "object_id": "4",
+    "change_message": "",
+    "user": 55,
+    "content_type": 19
+  },
+  "model": "admin.logentry",
+  "pk": 5
 }
 ]

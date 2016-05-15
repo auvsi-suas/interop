@@ -150,7 +150,7 @@ class TestMissionConfigModelSampleMission(TestCase):
                         'targets']
                 for key in keys:
                     self.assertIn(key, val['targets'][target_set])
-                for t in val['targets'][target_set]['targets']:
+                for t in val['targets'][target_set]['targets'].values():
                     keys = ['match_value', 'image_approved', 'classifications',
                             'location_accuracy']
                     for key in keys:
