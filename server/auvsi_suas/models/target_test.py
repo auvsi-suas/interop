@@ -340,6 +340,14 @@ class TestTargetEvaluator(TestCase):
         self.assertEqual(0, e.match_value(self.submit3, self.real3))
         self.assertEqual(0, e.match_value(self.submit4, self.real4))
 
+    def test_match_targets_no_eligible(self):
+        """Tests matching with no eligible matches."""
+        e = TargetEvaluator([], [])
+        self.assertEqual({}, e.match_targets([], []))
+        self.assertEqual({}, e.match_targets(self.submitted_targets, []))
+        self.assertEqual({}, e.match_targets([], self.real_targets))
+        self.assertEqual({}, e.match_targets([self.submit1], [self.real4]))
+
     def test_match_targets(self):
         """Tests that matching targets produce maximal matches."""
         e = TargetEvaluator([], [])
