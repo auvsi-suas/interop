@@ -12,6 +12,7 @@ from django.http import HttpResponse
 from django.http import HttpResponseBadRequest
 from django.http import HttpResponseNotFound
 from django.http import HttpResponseServerError
+from django.http import JsonResponse
 from django.utils.decorators import method_decorator
 from django.views.generic import View
 
@@ -76,48 +77,6 @@ def mission_for_request(request_params):
     # Mission not specified, get the single active mission.
     return active_mission()
 
-class MissionSetWaypoints(View):
-
-    @method_decorator(require_superuser)
-    def post(self, request):
-        try:
-            sent_json = json.loads(request.body)
-        except ValueError:
-            return HttpResponseBadRequest('Body is not a valid json')
-
-        try:
-            pk = sent_json['pk']
-            waypoints = sent_json['waypoints']
-            assert type(pk) == int
-            assert type(waypoints) == list
-            assert all(type(w) == dict and 'latitude' in w and 'longitude' in w and 'altitude_msl' in w for w in waypoints)
-        except (KeyError, AssertionError):
-            return HttpResponseBadRequest('JSON does not contain properly formatted fields')
-
-        try:
-            mission = MissionConfig.objects.get(pk=pk)
-        except MissionConfig.DoesNotExist:
-            return HttpResponseNotFound('Mission %s not found.' % pk)
-
-        waypoints_objects = []
-        for i, waypoint in enumerate(waypoints):
-            gps_position = GpsPosition.objects.create(
-                latitude=waypoint['latitude'],
-                longitude=waypoint['longitude'])
-
-            aerial_position = AerialPosition.objects.create(
-                gps_position=gps_position,
-                altitude_msl=waypoint['altitude_msl'])
-
-            new_wp_object = Waypoint.objects.create(
-                position=aerial_position,
-                order=(i+1))
-
-            waypoints_objects.append(new_wp_object)
-
-        mission.mission_waypoints = waypoints_objects
-        mission.save()
-        return HttpResponse("Successfully changed mission waypoints")
 
 class Missions(View):
     """Handles requests for all missions."""
@@ -132,7 +91,9 @@ class Missions(View):
         for mission in missions:
             out.append(mission.json(request.user.is_superuser))
 
-        return HttpResponse(json.dumps(out), content_type="application/json")
+        # Older versions of JS allow hijacking the Array constructor to steal
+        # JSON data. It is not a problem in recent versions.
+        return JsonResponse(out, safe=False)
 
 
 class MissionsId(View):
