@@ -31,6 +31,11 @@ auvsiSuasApp.config(['$routeProvider', function($routeProvider) {
             controller: 'TargetReviewCtrl',
             controllerAs: 'targetReviewCtrl'
         }).
+        when('/mission/:missionId/evaluate', {
+            templateUrl: '/static/auvsi_suas/pages/evaluate-teams/evaluate-teams.html',
+            controller: 'EvaluateTeamsCtrl',
+            controllerAs: 'evaluateTeamsCtrl'
+        }).
         otherwise({
             redirectTo: '/'
         });

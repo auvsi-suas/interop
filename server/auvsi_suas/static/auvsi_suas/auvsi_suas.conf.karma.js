@@ -37,6 +37,7 @@ module.exports = function(config) {
       'pages/mission-dashboard/mission-dashboard-controller.js',
       'pages/mission-list/mission-list-controller.js',
       'pages/target-review/target-review-controller.js',
+      'pages/evaluate-teams/evaluate-teams-controller.js',
       // Test files.
       'components/settings/settings-service_test.js',
       'components/navigation/navigation_test.js',
@@ -46,6 +47,7 @@ module.exports = function(config) {
       'pages/mission-dashboard/mission-dashboard-controller_test.js',
       'pages/mission-list/mission-list-controller_test.js',
       'pages/target-review/target-review-controller_test.js',
+      'pages/evaluate-teams/evaluate-teams-controller_test.js',
     ],
 
 

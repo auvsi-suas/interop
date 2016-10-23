@@ -1,0 +1,31 @@
+<div class="row text-center">
+  <div class="small-2 columns">
+    <div class="row text-center text-middle">
+      <h4>Evaluate Teams</h4>
+    </div>
+
+    <hr></hr>
+
+    <div class="row">
+        <label>Team
+            <select ng-model="evaluateTeamsCtrl.selectedTeamId">
+                <option value=-1>All</option>
+                <option ng-repeat="t in evaluateTeamsCtrl.teams" ng-value="t.id">{{t.name}}</option>
+            </select>
+        </label>
+    </div>
+
+    <div class="row">
+        <label>Format
+            <select ng-model="evaluateTeamsCtrl.selectedExtension">
+                <option value="Json">Json</option>
+                <option value="Csv">Csv</option>
+            </select>
+        </label>
+    </div>
+
+    <div class="row">
+        <button type="button" class="success button" ng-click="evaluateTeamsCtrl.evaluate()">Evaluate</button>
+    </div>
+  </div>
+</div>

@@ -139,7 +139,7 @@ MissionDashboardCtrl.prototype.update_ = function() {
 
 /**
  * Sets the teams.
- * @param {!Object} teams The teams to set.
+ * @param {Array<Object>} teams The teams to set.
  * @private
  */
 MissionDashboardCtrl.prototype.setTeams_ = function(teams) {

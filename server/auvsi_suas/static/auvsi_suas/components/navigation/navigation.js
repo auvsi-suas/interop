@@ -91,9 +91,9 @@ NavigationCtrl.prototype.updateMissionLinks_ = function() {
             target: "_self"
         },
         {
-            text: "Evaluate Teams (CSV)",
-            url: "/auvsi_admin/evaluate_teams.csv?mission=" + this.mission_,
-            target: "_blank"
+            text: "Evaluate Teams",
+            url: "/#/mission/" + this.mission_ + "/evaluate",
+            target: "_self"
         },
     ];
 };
