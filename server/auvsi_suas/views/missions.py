@@ -2,7 +2,7 @@
 
 import json
 import logging
-from auvsi_suas.models import MissionConfig
+from auvsi_suas.models import MissionConfig, GpsPosition, AerialPosition, Waypoint
 from auvsi_suas.views import logger
 from auvsi_suas.views.decorators import require_login
 from auvsi_suas.views.decorators import require_superuser
@@ -76,6 +76,59 @@ def mission_for_request(request_params):
 
     # Mission not specified, get the single active mission.
     return active_mission()
+
+
+class MissionSetWaypoints(View):
+    @method_decorator(require_superuser)
+    def post(self, request):
+        try:
+            sent_json = json.loads(request.body)
+        except ValueError:
+            return HttpResponseBadRequest('Body is not a valid json')
+
+        try:
+            pk = sent_json['pk']
+            waypoints = sent_json['waypoints']
+            assert type(pk) == int
+            assert type(waypoints) == list
+            assert all(type(w) == dict and 'latitude' in w and
+                       'longitude' in w and 'altitude_msl' in w
+                       for w in waypoints)
+        except (KeyError, AssertionError):
+            return HttpResponseBadRequest(
+                'JSON does not contain properly formatted fields')
+
+        try:
+            # if the pk is 0, edit the currently active mission
+            if pk == 0:
+                active = active_mission()
+                if active[0] == None:
+                    return active[1]
+                else:
+                    mission = active[0]
+            else:
+                mission = MissionConfig.objects.get(pk=pk)
+        except MissionConfig.DoesNotExist:
+            return HttpResponseNotFound('Mission %s not found.' % pk)
+
+        waypoints_objects = []
+        for i, waypoint in enumerate(waypoints):
+            gps_position = GpsPosition.objects.create(
+                latitude=waypoint['latitude'],
+                longitude=waypoint['longitude'])
+
+            aerial_position = AerialPosition.objects.create(
+                gps_position=gps_position,
+                altitude_msl=waypoint['altitude_msl'])
+
+            new_wp_object = Waypoint.objects.create(position=aerial_position,
+                                                    order=(i + 1))
+
+            waypoints_objects.append(new_wp_object)
+
+        mission.mission_waypoints = waypoints_objects
+        mission.save()
+        return HttpResponse("Successfully changed mission waypoints")
 
 
 class Missions(View):

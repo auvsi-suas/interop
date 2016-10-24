@@ -1,6 +1,6 @@
 from auvsi_suas.views.clear_cache import ClearCache
 from auvsi_suas.views.login import Login
-from auvsi_suas.views.missions import Missions, MissionsId
+from auvsi_suas.views.missions import Missions, MissionsId, MissionSetWaypoints
 from auvsi_suas.views.obstacles import Obstacles
 from auvsi_suas.views.targets import Targets, TargetsId, TargetsIdImage, TargetsAdminReview
 from auvsi_suas.views.teams import Teams, TeamsId
@@ -28,6 +28,7 @@ urlpatterns = patterns(
         name='targets_id_image'),
     # Admin API
     url(r'^api/missions$', Missions.as_view(), name='missions'),
+    url(r'^api/missions/set_waypoints$', MissionSetWaypoints.as_view(), name='mission_add'),
     url(r'^api/missions/(?P<pk>\d+)$', MissionsId.as_view(), name='missions_id'),
     url(r'^api/targets/review$', TargetsAdminReview.as_view(),
         name='targets_review'),
