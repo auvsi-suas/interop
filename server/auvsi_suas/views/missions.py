@@ -77,8 +77,8 @@ def mission_for_request(request_params):
     # Mission not specified, get the single active mission.
     return active_mission()
 
-class MissionSetWaypoints(View):
 
+class MissionSetWaypoints(View):
     @method_decorator(require_superuser)
     def post(self, request):
         try:
@@ -91,9 +91,11 @@ class MissionSetWaypoints(View):
             waypoints = sent_json['waypoints']
             assert type(pk) == int
             assert type(waypoints) == list
-            assert all(type(w) == dict and 'latitude' in w and 'longitude' in w and 'altitude_msl' in w for w in waypoints)
+            assert all(type(w) == dict and 'latitude' in w and 'longitude' in w
+                       and 'altitude_msl' in w for w in waypoints)
         except (KeyError, AssertionError):
-            return HttpResponseBadRequest('JSON does not contain properly formatted fields')
+            return HttpResponseBadRequest(
+                'JSON does not contain properly formatted fields')
 
         try:
             mission = MissionConfig.objects.get(pk=pk)
@@ -110,15 +112,15 @@ class MissionSetWaypoints(View):
                 gps_position=gps_position,
                 altitude_msl=waypoint['altitude_msl'])
 
-            new_wp_object = Waypoint.objects.create(
-                position=aerial_position,
-                order=(i+1))
+            new_wp_object = Waypoint.objects.create(position=aerial_position,
+                                                    order=(i + 1))
 
             waypoints_objects.append(new_wp_object)
 
         mission.mission_waypoints = waypoints_objects
         mission.save()
         return HttpResponse("Successfully changed mission waypoints")
+
 
 class Missions(View):
     """Handles requests for all missions."""
