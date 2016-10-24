@@ -91,8 +91,9 @@ class MissionSetWaypoints(View):
             waypoints = sent_json['waypoints']
             assert type(pk) == int
             assert type(waypoints) == list
-            assert all(type(w) == dict and 'latitude' in w and 'longitude' in w
-                       and 'altitude_msl' in w for w in waypoints)
+            assert all(type(w) == dict and 'latitude' in w and
+                       'longitude' in w and 'altitude_msl' in w
+                       for w in waypoints)
         except (KeyError, AssertionError):
             return HttpResponseBadRequest(
                 'JSON does not contain properly formatted fields')
