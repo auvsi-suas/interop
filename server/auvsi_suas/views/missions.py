@@ -99,7 +99,15 @@ class MissionSetWaypoints(View):
                 'JSON does not contain properly formatted fields')
 
         try:
-            mission = MissionConfig.objects.get(pk=pk)
+            # if the pk is 0, edit the currently active mission
+            if pk == 0:
+                active = active_mission()
+                if active[0] == None:
+                    return active[1]
+                else:
+                    mission = active[0]
+            else:
+                mission = MissionConfig.objects.get(pk=pk)
         except MissionConfig.DoesNotExist:
             return HttpResponseNotFound('Mission %s not found.' % pk)
 
