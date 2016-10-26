@@ -1,0 +1,17 @@
+[  
+    {  
+        "altitude_msl":0,
+        "latitude":0,
+        "longitude":0
+    },
+    {  
+        "altitude_msl":101.4252,
+        "latitude":-35.36305236816406,
+        "longitude":149.16424560546875
+    },
+    {  
+        "altitude_msl":328.084,
+        "latitude":-35.36159133911133,
+        "longitude":149.15956115722656
+    }
+]
