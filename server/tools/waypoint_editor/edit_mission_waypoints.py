@@ -1,7 +1,12 @@
+from __future__ import print_function
+
 import os
 import sys
-sys.path.append("../..")
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "server.settings")
+this_dir = os.path.dirname(os.path.abspath(__file__))
+server_dir = os.path.join(this_dir, '..', '..')
+sys.path = [server_dir] + sys.path
+
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'server.settings')
 from django.core.wsgi import get_wsgi_application
 get_wsgi_application()
 
@@ -11,27 +16,38 @@ import auvsi_suas.models as models
 
 
 def active_mission():
-    '''Returns the current active mission - modified from views/mission.py'''
+    '''Get the active mission.
+
+    Returns:
+        MissionConfig for active mission or None if there is no activate mission.
+
+    Raises:
+        ValueError: The server has multiple active missions.
+'''
     missions = models.mission_config.MissionConfig.objects.filter(
         is_active=True)
-    if len(missions) != 1:
-        print('Error: Invalid number of active missions. Missions: %s.',
-              str(missions))
-        return None
+    if len(missions) > 1:
+        raise ValueError('Multiple active missions: %s' % missions)
 
-    return missions[0]
+    return missions[0] if missions else None
 
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(
-        usage=
-        'Edits an interop server mission to include the waypoints specified in a JSON. See the example JSON for reference\nUse the --help flag for more information')
-    parser.add_argument("json_file",
-                        help='The file to load the mission waypoints from')
+        description=
+        '''Edits an interop server mission to include the waypoints specified in a JSON.
+
+See the example_waypoints.json for reference.''',
+        formatter_class=argparse.RawDescriptionHelpFormatter)
+
+    parser.add_argument('json_file',
+                        help='The file to load the mission waypoints from',
+                        nargs='?',
+                        default='/dev/stdin')
     parser.add_argument(
         '--pk',
         type=int,
-        default=0,
+        default=None,
         help='Edit the specified pk rather than the currently active mission')
 
     args = parser.parse_args()
@@ -42,7 +58,7 @@ if __name__ == '__main__':
             wp_string = f.read()
     except IOError as e:
         print('Error: Could not read JSON file')
-        print e
+        print(e)
         sys.exit(1)
 
     # Convert json string to list of waypoints
@@ -52,26 +68,13 @@ if __name__ == '__main__':
         print('Error: File is not a valid json')
         sys.exit(1)
 
-    # Confirm all arguments are formatted correctly
-    try:
-        assert type(args.pk) == int
-        assert type(waypoints) == list
-        assert all(type(w) == dict and 'latitude' in w and 'longitude' in w and
-                   'altitude_msl' in w for w in waypoints)
-    except (KeyError, AssertionError) as e:
-        print(
-            'Error: JSON does not contain properly formatted fields or invalid pk format'
-        )
-        print e
-        sys.exit(1)
-
     # Get the mission object to edit
-
     # If the pk is 0, edit the currently active mission
-    if args.pk == 0:
+    if args.pk == None:
         mission = active_mission()
         if mission == None:
-            print 'Error: Active mission not found or multiple active missions'
+            print(
+                'Error: Active mission not found or multiple active missions')
             sys.exit(1)
     else:
         try:
@@ -100,3 +103,4 @@ if __name__ == '__main__':
     # Set the mission waypoints to the new list of objects and save it
     mission.mission_waypoints = waypoints_objects
     mission.save()
+    print('Successfully saved mission waypoints')
