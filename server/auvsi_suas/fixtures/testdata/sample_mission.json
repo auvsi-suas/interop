@@ -473,6 +473,42 @@
 },
 {
     "fields": {
+        "mission": 3,
+        "user": 53,
+        "flight_time": "00:00:01",
+        "post_process_time": "00:00:02",
+        "used_timeout": false,
+        "safety_pilot_takeovers": 0,
+        "manual_flight_time": "00:00:00",
+        "waypoints_captured": 2,
+        "out_of_bounds": 2,
+        "unsafe_out_of_bounds": 1,
+        "air_delivery_accuracy_ft": null,
+        "operational_excellence_percent": 80
+    },
+    "model": "auvsi_suas.missionjudgefeedback",
+    "pk": 1
+},
+{
+    "fields": {
+        "mission": 3,
+        "user": 54,
+        "flight_time": "00:00:02",
+        "post_process_time": "00:00:01",
+        "used_timeout": true,
+        "safety_pilot_takeovers": 1,
+        "manual_flight_time": "00:00:02",
+        "waypoints_captured": 1,
+        "out_of_bounds": 0,
+        "unsafe_out_of_bounds": 0,
+        "air_delivery_accuracy_ft": 10,
+        "operational_excellence_percent": 80
+    },
+    "model": "auvsi_suas.missionjudgefeedback",
+    "pk": 2
+},
+{
+    "fields": {
         "stationary_obstacles": [
             25,
             26
@@ -686,7 +722,7 @@
         "thumbnail_approved": null,
         "description": "Test target 3",
         "creation_time": "2016-05-12T04:46:59.370Z",
-        "target_type": 2,
+        "target_type": 3,
         "alphanumeric": "",
         "shape": null,
         "location": 339,
@@ -711,7 +747,7 @@
         "shape": 5,
         "location": 337,
         "last_modified_time": "1970-01-01T00:00:00.500Z",
-        "autonomous": false,
+        "autonomous": true,
         "background_color": 2,
         "thumbnail": "",
         "user": 53
@@ -746,7 +782,7 @@
         "thumbnail_approved": true,
         "description": "Incorrect description",
         "creation_time": "1970-01-01T00:00:00.100Z",
-        "target_type": 2,
+        "target_type": 3,
         "alphanumeric": "",
         "shape": null,
         "location": 337,

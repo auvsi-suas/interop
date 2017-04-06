@@ -8,6 +8,7 @@ python-memcached
 networkx
 numpy
 pillow
+protobuf>=3.2
 psycopg2
 pyproj
 PyYAML # for loaddata

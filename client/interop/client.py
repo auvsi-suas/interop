@@ -31,7 +31,7 @@ class Client(object):
     AsyncClient uses this base Client to add performance features.
     """
 
-    def __init__(self, url, username, password, timeout=1):
+    def __init__(self, url, username, password, timeout=10, max_retries=10):
         """Create a new Client and login.
 
         Args:
@@ -40,11 +40,15 @@ class Client(object):
             username: Interoperability username.
             password: Interoperability password.
             timeout: Individual session request timeout (seconds).
+            max_retries: Maximum attempts to establish a connection.
         """
         self.url = url
         self.timeout = timeout
 
         self.session = requests.Session()
+        self.session.mount(
+            'http://',
+            requests.adapters.HTTPAdapter(max_retries=max_retries))
 
         # All endpoints require authentication, so always login.
         self.post('/api/login',
@@ -292,7 +296,7 @@ class AsyncClient(object):
     Future response or error is received prior to making another request.
     """
 
-    def __init__(self, url, username, password, timeout=1, workers=8):
+    def __init__(self, url, username, password, timeout=10, workers=8):
         """Create a new AsyncClient and login.
 
         Args:

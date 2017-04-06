@@ -1,0 +1,162 @@
+// Descriptors for Mission evaluation.
+
+import "target.proto";
+
+package auvsi_suas.proto;
+
+// Multi-user mission evaluation.
+message MultiUserMissionEvaluation {
+    repeated MissionEvaluation teams = 1;
+}
+
+// Evaluation data for a mission.
+message MissionEvaluation {
+    // The team which this evaluation describes.
+    optional string team = 1;
+
+    // Warnings generated during the evaluation process.
+    repeated string warnings = 2;
+
+    // Feedback provided to the team.
+    optional MissionFeedback feedback = 3;
+
+    // Scoring data.
+    optional MissionScore score = 4;
+}
+
+// Data which was basis for score, provided as feedback for the team.
+message MissionFeedback {
+    // Time spent on mission clock (seconds) measured by interop.
+    optional double mission_clock_time_sec = 1;
+
+    // Max time between telemetry uploads (seconds).
+    optional double uas_telemetry_time_max_sec = 2;
+    // Avg time between telemetry uploads (seconds).
+    optional double uas_telemetry_time_avg_sec = 3;
+
+    // Time spent out of bounds (seconds).
+    optional double out_of_bounds_time_sec = 4;
+    // Number of boundary violations.
+    optional int32 boundary_violations = 5;
+
+    // Waypoint evaluation data.
+    repeated WaypointEvaluation waypoints = 6;
+
+    // Obstacle evaluation data.
+    repeated ObstacleEvaluation stationary_obstacles = 7;
+    repeated ObstacleEvaluation moving_obstacles = 8;
+
+    // Target evaluation data.
+    optional MultiTargetEvaluation target = 9;
+
+    // Feedback from judges.
+    optional MissionJudgeFeedback judge = 10;
+}
+
+// Data provided manually by the judges.
+message MissionJudgeFeedback {
+    // Time spent on the flight clock.
+    optional double flight_time_sec = 1;
+    // Time spent on the post-processing clock.
+    optional double post_process_time_sec = 2;
+    // Whether a timeout was used.
+    optional bool used_timeout = 3;
+
+    // Number of safety pilot manual takeovers.
+    optional int32 safety_pilot_takeovers = 4;
+    // Time spent in manual flight.
+    optional double manual_flight_time_sec = 5;
+    // Number of waypoints captured.
+    optional int32 waypoints_captured = 6;
+    // Number of times gone out of bounds.
+    optional int32 out_of_bounds = 7;
+    // Number of times gone out of bounds where it compromised safety.
+    optional int32 unsafe_out_of_bounds = 8;
+
+    // Air delivery accuracy.
+    optional double air_delivery_accuracy_ft = 9;
+
+    // Operational excellence score.
+    optional double operational_excellence_percent = 10;
+}
+
+// Evaluation data for waypoints.
+message WaypointEvaluation {
+    // ID of the waypoint.
+    optional int64 id = 1;
+    // Ratio of points for the waypoint [0, 1].
+    optional double score_ratio = 2;
+    // Closest distance for scored approach (feet).
+    optional double closest_for_scored_approach_ft = 3;
+    // Closest distance during mission (feet).
+    optional double closest_for_mission_ft = 4;
+}
+
+// Evaluation data for obstacles.
+message ObstacleEvaluation {
+    // ID of the obstacle.
+    optional int64 id = 1;
+    // Whether it was hit.
+    optional bool hit = 2;
+}
+
+// Scoring data for entire mission. All scores are ratios [0, 1].
+message MissionScore {
+    // Total score for the mission.
+    optional double score_ratio = 1;
+
+    // The subcomponent scores.
+    optional TimelineScore timeline = 2;
+    optional AutonomousFlightScore autonomous_flight = 3;
+    optional ObstacleAvoidanceScore obstacle_avoidance = 4;
+    optional ObjectScore object = 5;
+    optional AirDeliveryScore air_delivery = 6;
+    optional OperationalExcellenceScore operational_excellence = 7;
+}
+
+// Scoring data for timeline.
+message TimelineScore {
+    optional double score_ratio = 1;
+    optional double mission_time = 2;
+    optional double mission_penalty = 3;
+    optional double timeout = 4;
+}
+
+// Scoring data for autonomous flight.
+message AutonomousFlightScore {
+    optional double score_ratio = 1;
+    optional double flight = 2;
+    optional double waypoint_capture = 3;
+    optional double waypoint_accuracy = 4;
+    optional double out_of_bounds_penalty = 5;
+}
+
+// Scoring data for obstacle avoidance.
+message ObstacleAvoidanceScore {
+    optional bool telemetry_prerequisite = 1;
+    optional double score_ratio = 2;
+    optional double stationary_obstacle = 3;
+    optional double moving_obstacle = 4;
+}
+
+// Scoring data for objects.
+message ObjectScore {
+    optional double score_ratio = 1;
+    optional double characteristics = 2;
+    optional double geolocation = 3;
+    optional double actionable = 4;
+    optional double autonomy = 5;
+    optional double interoperability = 6;
+    optional double extra_object_penalty = 7;
+}
+
+// Scoring data for air delivery.
+message AirDeliveryScore {
+    optional double score_ratio = 1;
+    optional double delivery_accuracy = 2;
+}
+
+// Scoring data for operational excellence.
+message OperationalExcellenceScore {
+    optional double score_ratio = 1;
+}

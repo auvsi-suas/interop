@@ -1,6 +1,6 @@
 """Tests for the gps_position model."""
 
-from auvsi_suas.models import GpsPosition
+from auvsi_suas.models.gps_position import GpsPosition
 from django.test import TestCase
 
 

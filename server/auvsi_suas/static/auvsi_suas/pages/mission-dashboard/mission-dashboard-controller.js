@@ -74,6 +74,17 @@ MissionDashboardCtrl.prototype.getMission = function() {
 
 
 /**
+ * @param {!Object} The team.
+ * @return {!boolean} Whether the team is active.
+ * @export
+ */
+MissionDashboardCtrl.prototype.isActive = function(team) {
+    return !!team.telemetry &&
+        new Date() - new Date(team.telemetry.timestamp) < 3000;
+};
+
+
+/**
  * @param {!Object} mission The mission data.
  */
 MissionDashboardCtrl.prototype.setMission_ = function(mission) {
@@ -90,8 +101,8 @@ MissionDashboardCtrl.prototype.update_ = function() {
     var requests = [];
     requests.push(this.backend_.teamsResource.query({}).$promise
         .then(angular.bind(this, this.setTeams_)));
-    requests.push(this.backend_.obstaclesResource.get({}).$promise.then(
-            angular.bind(this, this.setObstacles_)));
+    requests.push(this.backend_.obstaclesResource.get({}).$promise
+        .then(angular.bind(this, this.setObstacles_)));
 
     // Update display when requests finished.
     this.q_.all(requests).then(angular.bind(this, this.rebuildMissionScene_));
@@ -131,7 +142,7 @@ MissionDashboardCtrl.prototype.rebuildMissionScene_ = function() {
     if (this.teams) {
         for (var i = 0; i < this.teams.length; i++) {
             var team = this.teams[i];
-            if (team.telemetry) {
+            if (team.telemetry && this.isActive(team)) {
                 telemetry.push(team.telemetry);
             }
         }

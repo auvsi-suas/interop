@@ -1,6 +1,6 @@
 import datetime
 from collections import namedtuple
-from auvsi_suas.models import TimePeriod
+from auvsi_suas.models.time_period import TimePeriod
 from django.test import TestCase
 from django.utils import timezone
 

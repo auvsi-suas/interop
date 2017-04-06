@@ -1,5 +1,4 @@
-01	STD	N30 35 34.123	W075 48 47.123	N	rectangle	red	A	orange	A.jpg	
-02	STD	S34 00 12.345	E002 01 12.345	SE	square	orange	4	yellow	A.jpg	Actionable Intel
-03	QRC	N51 28 40.125	W000 00 05.310						A.jpg	www.example.edu
-04	EMG	N38 53 19.680	W077 01 12.000						A.jpg	Fire fighter
-05	OAX			E	triangle	green	F	white	A.jpg	
+01	STD	N30 35 34.123	W075 48 47.123	N	rectangle	red	A	orange	1.jpg	
+02	STD	S34 00 12.345	E002 01 12.345	SE	square	orange	4	yellow	1.jpg	Actionable Intel
+04	EMG	N38 53 19.680	W077 01 12.000						1.jpg	Fire fighter
+05	OAX			E	triangle	green	F	white	1.jpg	

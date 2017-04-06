@@ -2,7 +2,7 @@
 
 import json
 import logging
-from auvsi_suas.models import MissionConfig
+from auvsi_suas.models.mission_config import MissionConfig
 from auvsi_suas.views import logger
 from auvsi_suas.views.decorators import require_login
 from auvsi_suas.views.decorators import require_superuser

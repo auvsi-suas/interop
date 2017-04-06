@@ -4,8 +4,8 @@ AUVSI SUAS: Interoperability Client Tools
 interop_cli.py
 --------------
 
-This command line tool can be used to get mission details, upload targets, and
-probe the server with dummy data.
+This command line tool can be used to get mission details, upload targets,
+probe the server with dummy data, and forward MAVLink packets to interop.
 
 ```
 URL=http://10.10.130.2:8000
@@ -15,10 +15,11 @@ USER=testuser
     --target_filepath tools/testdata/targets.txt \
     --imagery_dir tools/testdata/
 ./interop_cli.py --url $URL --username $USER probe
+./interop_cli.py --url $URL --username $USER mavlink --device 127.0.0.1:14550
 ```
 
-The target upload currently uses the old text file "Electronic Target Data
-Format" as defined by the competition 2016 rules.
+Target Uploads
+--------------
 
 Uploader Limitations:
 * Only non-ADLC targets.
@@ -28,3 +29,13 @@ Uploader Limitations:
   reject it.
 * Does not detect duplicates- executing the script twice will upload two sets
   of targets.
+
+MAVLink Forward
+---------------
+
+The MAVLink forwarding will quit on an error. To automatically retry, wrap the
+command in a while loop.
+
+```
+while true; do [command]; done
+```

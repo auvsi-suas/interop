@@ -1,13 +1,13 @@
 """Tests for the fly_zone module."""
 
 import datetime
-from auvsi_suas.models import AerialPosition
-from auvsi_suas.models import FlyZone
-from auvsi_suas.models import GpsPosition
-from auvsi_suas.models import UasTelemetry
-from auvsi_suas.models import Waypoint
+from auvsi_suas.models.aerial_position import AerialPosition
+from auvsi_suas.models.fly_zone import FlyZone
+from auvsi_suas.models.gps_position import GpsPosition
+from auvsi_suas.models.uas_telemetry import UasTelemetry
+from auvsi_suas.models.waypoint import Waypoint
 from django.contrib.auth.models import User
-from django.test import TestCase
+from django.test import TestCase, override_settings
 from django.utils import timezone
 
 TESTDATA_FLYZONE_CONTAINSPOS = [
@@ -117,24 +117,50 @@ TESTDATA_FLYZONE_CONTAINSPOS = [
 ]
 
 # ((alt_min, alt_max, [fly_zone_waypoints]),
-#  [(uas_out_bounds_time, [uas_logs])])
+#  [(uas_num_boundary_violations, uas_out_bounds_time, [uas_logs])])
 TESTDATA_FLYZONE_EVALBOUNDS = (
     [(0, 100, [(38, -76), (39, -76), (39, -77), (38, -77)]),
      (100, 700, [(38, -76), (39, -76), (39, -77), (38, -77)])
      ],
-    [(0.0,
+     [(0,
+      0.0,
       [(38.5, -76.5, 50, 0), (38.5, -76.5, 50, 1.0)]),
-     (1.0,
+     (1,
+      1.0,
       [(38.5, -76.5, 50, 0), (40, -76.5, 50, 1.0)]),
-     (2.0,
+     (1,
+      2.0,
       [(38.5, -76.5, 50, 0), (40, -76.5, 50, 1.0), (41, -76.5, 50, 2.0)]),
-     (3.0,
+     (3,
+      3.0,
       [(38.5, -76.5, 50, 0),
        (40, -76, 50, 1.0),
        (38.5, -76.5, 100, 2.0),
        (38.5, -76.5, 800, 3.0),
        (38.5, -76.5, 600, 4.0),
-       (38.5, -78, 100, 5.0)])
+       (38.5, -78, 100, 5.0)]),
+     (1,
+      1.25,
+      [(38.5, -76.5, 700, 0),
+       (38.5, -76.5, 750, 0.25),
+       (38.5, -76.5, 700, 0.5),
+       (38.5, -76.5, 650, 0.6),
+       (38.5, -76.5, 800, 0.75),
+       (38.5, -76.5, 800, 1.0),
+       (38.5, -76.5, 800, 1.25),
+       (38.5, -76.5, 650, 1.5)]),
+     (2,
+      1.5,
+      [(38.5, -76.5, 700, 0),
+       (38.5, -76.5, 800, 1.0),
+       (38.5, -76.5, 700, 2.0),
+       (38.5, -76.5, 750, 2.5)]),
+     (1,
+      1.0,
+      [(38.5, -76.5, 700, 0),
+       (38.5, -76.5, 800, 0.5),
+       (38.5, -76.5, 700, 1.0),
+       (38.5, -76.5, 500, 2.0)])
      ]
 )  # yapf: disable
 
@@ -229,6 +255,7 @@ class TestFlyZone(TestCase):
             self.assertEqual(
                 zone.contains_many_pos(aerial_pos_list), expected_results)
 
+    @override_settings(OUT_OF_BOUNDS_DEBOUNCE_SEC=1.0)
     def test_out_of_bounds(self):
         """Tests the UAS out of bounds method."""
         (zone_details, uas_details) = TESTDATA_FLYZONE_EVALBOUNDS
@@ -266,13 +293,13 @@ class TestFlyZone(TestCase):
                                        minute=0,
                                        second=0,
                                        microsecond=0)
-        for exp_out_of_bounds_time, uas_log_details in uas_details:
+        for exp_violations, exp_out_of_bounds_time, log_details in uas_details:
             # Create the logs
             user = User.objects.create_user('testuser%d' % user_id,
                                             'testemail@x.com', 'testpass')
             user_id += 1
             uas_logs = []
-            for (lat, lon, alt, timestamp) in uas_log_details:
+            for (lat, lon, alt, timestamp) in log_details:
                 gpos = GpsPosition()
                 gpos.latitude = lat
                 gpos.longitude = lon
@@ -290,5 +317,8 @@ class TestFlyZone(TestCase):
                 log.save()
                 uas_logs.append(log)
             # Assert out of bounds time matches expected
-            out_of_bounds_time = FlyZone.out_of_bounds(zones, uas_logs)
-            self.assertAlmostEqual(out_of_bounds_time, exp_out_of_bounds_time)
+            num_violations, out_of_bounds_time = \
+                FlyZone.out_of_bounds(zones, uas_logs)
+            self.assertEqual(num_violations, exp_violations)
+            self.assertAlmostEqual(out_of_bounds_time.total_seconds(),
+                                   exp_out_of_bounds_time)

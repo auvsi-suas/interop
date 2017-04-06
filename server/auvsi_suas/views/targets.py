@@ -5,7 +5,13 @@ from PIL import Image
 import os
 import os.path
 
-from auvsi_suas.models import GpsPosition, Target, TargetType, Color, Shape, Orientation, MissionClockEvent
+from auvsi_suas.models.gps_position import GpsPosition
+from auvsi_suas.models.mission_clock_event import MissionClockEvent
+from auvsi_suas.models.target import Color
+from auvsi_suas.models.target import Orientation
+from auvsi_suas.models.target import Shape
+from auvsi_suas.models.target import Target
+from auvsi_suas.models.target import TargetType
 from auvsi_suas.views import logger
 from auvsi_suas.views.decorators import require_login
 from auvsi_suas.views.decorators import require_superuser
@@ -109,6 +115,11 @@ def normalize_data(data):
         if data['autonomous'] is not True and data['autonomous'] is not False:
             raise ValueError('"autonmous" must be true or false')
 
+    if 'actionable_override' in data:
+        if (data['actionable_override'] is not True and
+            data['actionable_override'] is not False): # yapf: disable
+            raise ValueError('"actionable_override" must be true or false')
+
     return data
 
 
@@ -135,9 +146,22 @@ class Targets(View):
         except ValueError:
             return HttpResponseBadRequest('Request body is not valid JSON.')
 
+        # Must be a json dictionary.
+        if not isinstance(data, dict):
+            return HttpResponseBadRequest('Request body not a JSON dict.')
+
         # Target type is required.
         if 'type' not in data:
             return HttpResponseBadRequest('Target type required.')
+
+        # Team id can only be specified if superuser.
+        user = request.user
+        if 'team_id' in data:
+            if request.user.is_superuser:
+                user = User.objects.get(username=data['team_id'])
+            else:
+                return HttpResponseForbidden(
+                    'Non-admin users cannot send team_id')
 
         latitude = data.get('latitude')
         longitude = data.get('longitude')
@@ -147,6 +171,11 @@ class Targets(View):
             (latitude is None and longitude is not None):
             return HttpResponseBadRequest(
                 'Either none or both of latitude and longitude required.')
+
+        # Cannot submit JSON with actionable_override if not superuser.
+        if 'actionable_override' in data and not request.user.is_superuser:
+            return HttpResponseForbidden(
+                'Non-admin users cannot submit actionable override.')
 
         try:
             data = normalize_data(data)
@@ -160,7 +189,7 @@ class Targets(View):
             l.save()
 
         # Use the dictionary get() method to default non-existent values to None.
-        t = Target(user=request.user,
+        t = Target(user=user,
                    target_type=data['type'],
                    location=l,
                    orientation=data.get('orientation'),
@@ -169,7 +198,8 @@ class Targets(View):
                    alphanumeric=data.get('alphanumeric', ''),
                    alphanumeric_color=data.get('alphanumeric_color'),
                    description=data.get('description', ''),
-                   autonomous=data.get('autonomous', False))
+                   autonomous=data.get('autonomous', False),
+                   actionable_override=data.get('actionable_override', False))
         t.save()
 
         return JsonResponse(
@@ -230,6 +260,15 @@ class TargetsId(View):
         except ValueError:
             return HttpResponseBadRequest('Request body is not valid JSON.')
 
+        # Must be a json dictionary.
+        if not isinstance(data, dict):
+            return HttpResponseBadRequest('Request body not a JSON dict.')
+
+        # Cannot submit JSON with actionable_override if not superuser.
+        if 'actionable_override' in data and not request.user.is_superuser:
+            return HttpResponseForbidden(
+                'Non-admin users cannot submit actionable override.')
+
         try:
             data = normalize_data(data)
         except ValueError as e:
@@ -252,6 +291,8 @@ class TargetsId(View):
             target.description = data['description']
         if 'autonomous' in data:
             target.autonomous = data['autonomous']
+        if 'actionable_override' in data:
+            target.actionable_override = data['actionable_override']
 
         # Location is special because it is in a GpsPosition model
 
@@ -444,7 +485,10 @@ class TargetsAdminReview(View):
         """Updates the review status of a target."""
         try:
             data = json.loads(request.body)
-            approved = bool(data['thumbnail_approved'])
+            thumbnail_approved = bool(data['thumbnail_approved'])
+            description_approved = bool(data['description_approved'])
+        except TypeError:
+            return HttpResponseBadRequest('JSON not a dict.')
         except KeyError:
             return HttpResponseBadRequest('Failed to get required field.')
         except ValueError:
@@ -456,7 +500,8 @@ class TargetsAdminReview(View):
             return HttpResponseNotFound('Target %s not found' % pk)
         except ValueError as e:
             return HttpResponseForbidden(str(e))
-        target.thumbnail_approved = approved
+        target.thumbnail_approved = thumbnail_approved
+        target.description_approved = description_approved
         target.save()
         return JsonResponse(target.json(is_superuser=
                                         request.user.is_superuser))

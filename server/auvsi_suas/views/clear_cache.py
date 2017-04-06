@@ -1,11 +1,11 @@
 """Admin view to clear the cache."""
 
 import logging
-from auvsi_suas.models import FlyZone
-from auvsi_suas.models import MissionConfig
-from auvsi_suas.models import MovingObstacle
-from auvsi_suas.models import StationaryObstacle
-from auvsi_suas.models import Waypoint
+from auvsi_suas.models.fly_zone import FlyZone
+from auvsi_suas.models.mission_config import MissionConfig
+from auvsi_suas.models.moving_obstacle import MovingObstacle
+from auvsi_suas.models.stationary_obstacle import StationaryObstacle
+from auvsi_suas.models.waypoint import Waypoint
 from auvsi_suas.views import logger
 from auvsi_suas.views.decorators import require_superuser
 from django.contrib.auth.decorators import user_passes_test

@@ -5,8 +5,7 @@ from auvsi_suas.views.obstacles import Obstacles
 from auvsi_suas.views.targets import Targets, TargetsId, TargetsIdImage, TargetsAdminReview
 from auvsi_suas.views.teams import Teams, TeamsId
 from auvsi_suas.views.telemetry import Telemetry
-from auvsi_suas.views.auvsi_admin.evaluate_teams import EvaluateTeamsCsv
-from auvsi_suas.views.auvsi_admin.evaluate_teams import EvaluateTeamsJson
+from auvsi_suas.views.auvsi_admin.evaluate_teams import EvaluateTeams
 from auvsi_suas.views.auvsi_admin.export_kml import ExportKml
 from auvsi_suas.views.auvsi_admin.index import Index
 from auvsi_suas.views.auvsi_admin.live_kml import LiveKml, LiveKmlUpdate
@@ -38,10 +37,8 @@ urlpatterns = patterns(
     url(r'^api/clear_cache$', ClearCache.as_view(), name='clear_cache'),
     # Admin access views
     url(r'^$', Index.as_view(), name='index'),
-    url(r'^auvsi_admin/evaluate_teams$', EvaluateTeamsJson.as_view(),
-        name='evaluate_teams'),
-    url(r'^auvsi_admin/evaluate_teams\.csv$',
-        EvaluateTeamsCsv.as_view(), name='evaluate_teams_csv'),
+    url(r'^auvsi_admin/evaluate_teams\.zip$',
+        EvaluateTeams.as_view(), name='evaluate_teams'),
     url(r'^auvsi_admin/export_data\.kml$', ExportKml.as_view(),
         name='export_data'),
     url(r'^auvsi_admin/live\.kml$', LiveKml.as_view(), name='live_kml'),

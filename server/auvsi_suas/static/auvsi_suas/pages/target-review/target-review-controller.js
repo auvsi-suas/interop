@@ -97,44 +97,41 @@ TargetReviewCtrl.prototype.getTargetButtonClass = function(target) {
 TargetReviewCtrl.prototype.setReviewTarget = function(target) {
     this.target_ = target;
 
-    if (target == null) {
-        this.targetDetails_ = null;
+    if (this.target_ == null) {
         return;
     }
 
     this.targetDetails_ = [
         {'key': 'ID',
-         'value': target.id},
+         'value': this.target_.id},
         {'key': 'Type',
-         'value': target.type},
+         'value': this.target_.type},
     ];
-    if (target.type == 'standard' || target.type == 'off_axis') {
+    if (this.target_.type == 'standard' || this.target_.type == 'off_axis') {
         this.targetDetails_ = this.targetDetails_.concat([
             {'key': 'Alpha Color',
-             'value': target.alphanumeric_color},
+             'value': this.target_.alphanumeric_color},
             {'key': 'Alpha',
-             'value': target.alphanumeric},
+             'value': this.target_.alphanumeric},
             {'key': 'Shape Color',
-             'value': target.background_color},
+             'value': this.target_.background_color},
             {'key': 'Shape',
-             'value': target.shape}
+             'value': this.target_.shape}
         ]);
     } else {
         this.targetDetails_ = this.targetDetails_.concat([
             {'key': 'Desc',
-             'value': target.description}
+             'value': this.target_.description}
         ]);
     }
 };
 
 
 /**
- * Sets the review status for the target under review. Advances to
+ * Saves the review status for the target under review. Advances to
  * the next target for review.
- * @param {bool} approved The review status to set.
  */
-TargetReviewCtrl.prototype.setReview = function(approved) {
-    this.target_.thumbnail_approved = approved;
+TargetReviewCtrl.prototype.saveReview = function() {
     this.target_.$put().then(
             angular.bind(this, this.nextTarget_));
 };
@@ -167,9 +164,9 @@ TargetReviewCtrl.prototype.getTargetImgHeight = function() {
 TargetReviewCtrl.prototype.setTargets_ = function(targets) {
     this.targets_ = targets;
     if (this.targets_.length > 0) {
-        this.target_ = this.targets_[0];
+        this.setReviewTarget(this.targets_[0]);
     } else {
-        this.target_ = null;
+        this.setReviewTarget(null);
     }
 };
 

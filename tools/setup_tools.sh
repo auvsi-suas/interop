@@ -9,6 +9,8 @@ log "Installing APT packages."
 apt-get -qq update
 apt-get -qq install -y \
     graphviz \
+    postgresql-client \
+    protobuf-compiler \
     python-matplotlib \
     python-nose \
     python-numpy \
@@ -21,4 +23,4 @@ apt-get -qq install -y \
 log "Building tools virtualenv."
 (cd ${REPO}/tools && \
     virtualenv -p /usr/bin/python2 venv && \
-    pip install -r requirements.txt)
+    pip install -U -r requirements.txt)

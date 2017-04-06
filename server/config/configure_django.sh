@@ -10,4 +10,3 @@ sudo service postgresql start
 cd ${CONFIG}/..
 python manage.py collectstatic --noinput
 python manage.py migrate
-python manage.py loaddata fixtures/test_fixture.yaml

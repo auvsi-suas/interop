@@ -189,61 +189,52 @@ TEST_RUNNER = 'auvsi_suas.test_runner.AuvsiSuasTestRunner'
 
 # Whether tests can/should generate plots (requires window access)
 TEST_ENABLE_PLOTTING = False
-
 # Whether to perform load tests (slower)
 TEST_ENABLE_LOADTEST = True
-
 # The time to execute each loadtest for
 TEST_LOADTEST_TIME = 2.0
 # The minimum rate of an individual interop interface
 # (1.5x safety factor, 10Hz, 4 interfaces)
 TEST_LOADTEST_INTEROP_MIN_RATE = 1.5 * 10.0 * 4
 
+# The time window (in seconds) in which a plane cannot be counted as going out
+# of bounds multiple times. This prevents noisy input data from recording
+# significant more violations than a human observer.
+OUT_OF_BOUNDS_DEBOUNCE_SEC = 10.0
 # The max distance for a waypoint to be considered satisfied.
-SATISFIED_WAYPOINT_DIST_MAX_FT = 50
+SATISFIED_WAYPOINT_DIST_MAX_FT = 100
 
-# The max distance for a UAS to diverge from the waypoint track.
-WAYPOINT_TRACK_DIST_MAX_FT = 100
+# Ratio of object points to lose for every extra unmatched object submitted.
+EXTRA_OBJECT_PENALTY_RATIO = 0.05
+# The weight of classification accuracy when calculating a target match score.
+CHARACTERISTICS_WEIGHT = 0.2
+# The lowest allowed location accuracy (in feet)
+TARGET_LOCATION_THRESHOLD = 150
+# The weight of geolocation accuracy when calculating a target match score.
+GEOLOCATION_WEIGHT = 0.2
+# The weight of actionable intelligence when calculating a target match score.
+ACTIONABLE_WEIGHT = 0.1
+# The weight of autonomy when calculating a target match score.
+AUTONOMY_WEIGHT = 0.2
+# The weight of submission over interop when calculating a target match score.
+INTEROPERABILITY_WEIGHT = 0.3
 
-# The max number of autonomous targets.
-TARGET_MAX_NUM_AUTONOMOUS = 6
+# Weight of timeline points for mission time.
+MISSION_TIME_WEIGHT = 0.8
+# Weight of timeline points for not taking a timeout.
+TIMEOUT_WEIGHT = 0.2
+# Max mission time.
+MISSION_MAX_TIME_SEC = 45.0 * 60.0
+# Points for flight time in mission time score.
+FLIGHT_TIME_SEC_TO_POINTS = 5.0 / 60.0
+# Points for post-processing time in mission time score.
+PROCESS_TIME_SEC_TO_POINTS = 1.0 / 60.0
+# Total points possible for mission time.
+MISSION_TIME_TOTAL_POINTS = MISSION_MAX_TIME_SEC * max(
+    FLIGHT_TIME_SEC_TO_POINTS, PROCESS_TIME_SEC_TO_POINTS)
+# Mission time points lost due for every second over time.
+MISSION_TIME_PENALTY_FROM_SEC = MISSION_TIME_WEIGHT * 0.01
 
-# The target classification match values: [start, end) -> value
-TARGET_CLASSIFY_RANGES = [
-    {"start": float("-inf"),
-     "end": 2. / 5,
-     "value": 0},
-    {"start": 2. / 5,
-     "end": 1,
-     "value": 1},
-    {"start": 1,
-     "end": float("inf"),
-     "value": 2},
-]
-
-# The location accuracy match values: (start, end] -> value
-TARGET_LOCATION_RANGES = [
-    {"start": float("-inf"),
-     "end": 75,
-     "value": 4},
-    {"start": 75,
-     "end": 150,
-     "value": 2},
-    {"start": 150,
-     "end": float("inf"),
-     "value": 0},
-]
-
-# Actionable Intelligence threshold and objective level parameters.
-TARGET_ACTIONABLE_PARAMS = {
-    "threshold": {
-        "characteristics": 3. / 5.,
-        "location": 150,  # ft
-        "value": 1,
-    },
-    "objective": {
-        "characteristics": 5. / 5.,
-        "location": 75,  # ft
-        "value": 2,
-    },
-}
+# Total mission time 
+# Weight for 
+# Max weighted time.

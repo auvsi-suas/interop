@@ -57,7 +57,8 @@ describe("TargetReviewCtrl controller", function() {
 
         var target = targetReviewCtrl.getReviewTargets()[0];
         targetReviewCtrl.setReviewTarget(target);
-        targetReviewCtrl.setReview(true);
+        target.thumbnail_approved = true;
+        targetReviewCtrl.saveReview();
         httpBackend.flush();
         expect(target.thumbnail_approved).toBe(true);
     });

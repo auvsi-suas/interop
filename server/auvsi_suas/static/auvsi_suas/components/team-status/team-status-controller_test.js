@@ -25,6 +25,7 @@ describe("TeamStatusCtrl controller", function() {
         };
         teamStatusCtrl = new TeamStatusCtrl();
         teamStatusCtrl.team = team;
+        teamStatusCtrl.active = false;
     }));
 
     it("Should get the team color class", function() {
@@ -37,7 +38,7 @@ describe("TeamStatusCtrl controller", function() {
             .toEqual('team-status-in-air');
 
         team.in_air = false;
-        team.telemetry.timestamp = '3000-10-01T00:00:00+00:00';
+        teamStatusCtrl.active = true;
         expect(teamStatusCtrl.getTeamColorClasses())
             .toEqual('team-status-active');
 

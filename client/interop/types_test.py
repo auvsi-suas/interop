@@ -340,11 +340,6 @@ class TestTarget(unittest.TestCase):
                alphanumeric='a',
                alphanumeric_color='black')
 
-        Target(type='qrc',
-               latitude=10,
-               longitude=-10,
-               description='http://test.com')
-
         Target(type='off_axis',
                latitude=10,
                longitude=-10,
@@ -365,16 +360,16 @@ class TestTarget(unittest.TestCase):
         """Test invalid inputs."""
         # Bad latitude.
         with self.assertRaises(ValueError):
-            Target(type='qrc',
+            Target(type='emergent',
                    latitude='a',
                    longitude=-10,
-                   description='http://test.com')
+                   description='Firefighter')
 
         with self.assertRaises(ValueError):
-            Target(type='qrc',
+            Target(type='emergent',
                    latitude=10,
                    longitude='a',
-                   description='http://test.com')
+                   description='Firefighter')
 
     def test_serialize(self):
         """Test serialization."""
@@ -388,10 +383,12 @@ class TestTarget(unittest.TestCase):
                    background_color='white',
                    alphanumeric='a',
                    alphanumeric_color='black',
-                   autonomous=True)
+                   autonomous=True,
+                   actionable_override=True,
+                   team_id='testuser')
         s = o.serialize()
 
-        self.assertEqual(12, len(s))
+        self.assertEqual(13, len(s))
         self.assertEqual(1, s['id'])
         self.assertEqual(2, s['user'])
         self.assertEqual('standard', s['type'])
@@ -403,6 +400,8 @@ class TestTarget(unittest.TestCase):
         self.assertEqual('a', s['alphanumeric'])
         self.assertEqual('black', s['alphanumeric_color'])
         self.assertEqual(True, s['autonomous'])
+        self.assertEqual(True, s['actionable_override'])
+        self.assertEqual('testuser', s['team_id'])
 
     def test_deserialize(self):
         """Test deserialization."""
@@ -416,6 +415,8 @@ class TestTarget(unittest.TestCase):
             'alphanumeric': 'a',
             'alphanumeric_color': 'black',
             'autonomous': True,
+            'actionable_override': True,
+            'team_id': 'testuser'
         })
 
         self.assertEqual('standard', o.type)
@@ -427,7 +428,9 @@ class TestTarget(unittest.TestCase):
         self.assertEqual('a', o.alphanumeric)
         self.assertEqual('black', o.alphanumeric_color)
         self.assertEqual(True, o.autonomous)
+        self.assertEqual(True, o.actionable_override)
+        self.assertEqual('testuser', o.team_id)
 
-        o = Target.deserialize({'type': 'qrc'})
+        o = Target.deserialize({'type': 'emergent'})
 
-        self.assertEqual('qrc', o.type)
+        self.assertEqual('emergent', o.type)

@@ -1,9 +1,9 @@
 """Tests the clear cache view."""
 
 import datetime
-from auvsi_suas.models import GpsPosition
-from auvsi_suas.models import MissionConfig
-from auvsi_suas.models import StationaryObstacle
+from auvsi_suas.models.gps_position import GpsPosition
+from auvsi_suas.models.mission_config import MissionConfig
+from auvsi_suas.models.stationary_obstacle import StationaryObstacle
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
 from django.test import TestCase

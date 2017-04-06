@@ -40,6 +40,22 @@
     speed_avg: 30.0
     sphere_radius: 50.0
     waypoints: [1, 2, 3]
+- model: auvsi_suas.target
+  pk: 1
+  fields:
+      creation_time: 2015-07-31 05:13:44.875561+00:00
+      description: 'SUAS Judge'
+      last_modified_time: 2015-07-31 05:13:44.875561+00:00
+      location: 1
+      target_type: 4
+      thumbnail_approved: True
+      user: 2
+- model: auvsi_suas.flyzone
+  pk: 1
+  fields:
+    altitude_msl_max: 750
+    altitude_msl_min: 0
+    boundary_pts: [1, 2, 3]
 - model: auvsi_suas.waypoint
   pk: 1
   fields: {order: 1, position: 1}
@@ -78,10 +94,12 @@
   fields:
     air_drop_pos: 4
     emergent_last_known_pos: 2
+    fly_zones: [1]
     home_pos: 1
     is_active: true
     mission_waypoints: [1]
+    moving_obstacles: [1]
     off_axis_target_pos: 3
     search_grid_points: [1]
     stationary_obstacles: [1, 2]
-    moving_obstacles: [1]
+    targets: [1]

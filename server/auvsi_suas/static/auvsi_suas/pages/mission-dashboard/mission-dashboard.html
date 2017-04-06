@@ -39,7 +39,7 @@
     <hr></hr>
 
     <div class="row" ng-repeat="team in missionDashboardCtrl.teams">
-        <team-status team="team"></team-status>
+        <team-status team="team" active="missionDashboardCtrl.isActive(team)"></team-status>
     </div>
   </div>
 

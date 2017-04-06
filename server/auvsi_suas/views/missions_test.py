@@ -3,8 +3,8 @@
 import datetime
 import functools
 import json
-from auvsi_suas.models import GpsPosition
-from auvsi_suas.models import MissionConfig
+from auvsi_suas.models.gps_position import GpsPosition
+from auvsi_suas.models.mission_config import MissionConfig
 from auvsi_suas.views.missions import active_mission
 from auvsi_suas.views.missions import mission_for_request
 from django.contrib.auth.models import User

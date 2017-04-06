@@ -747,7 +747,7 @@ Targets
           {
               "id": 2,
               "user": 1,
-              "type": "qrc",
+              "type": "emergent",
               "latitude": 38.1878,
               "longitude": -76.4075,
               "orientation": null,
@@ -755,7 +755,7 @@ Targets
               "background_color": null,
               "alphanumeric": null,
               "alphanumeric_color": null,
-              "description": "http://auvsi-seafarer.org",
+              "description": "Firefighter fighting a fire.",
               "autonomous": false
           }
       ]
@@ -1204,18 +1204,6 @@ Targets
       * ``alphanumeric``
       * ``alphanumeric_color``
       * ``autonomous``
-
-   * ``qrc`` - Quick Response Code (QRC) targets are described in section
-     7.2.8 of the rules.
-
-   Describe the target characteristics with these fields (see
-   :http:post:`/api/targets`):
-
-      * ``latitude``
-      * ``longitude``
-      * ``description``
-
-         * This field should contain the exact QRC message.
 
    * ``off_axis`` - Off-axis targets are described in section 7.5 of the rules.
 

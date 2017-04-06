@@ -1,7 +1,7 @@
 """Tests for the live_kml module."""
 
-from auvsi_suas.models import GpsPosition
-from auvsi_suas.models import MissionConfig
+from auvsi_suas.models.gps_position import GpsPosition
+from auvsi_suas.models.mission_config import MissionConfig
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
 from django.test import TestCase

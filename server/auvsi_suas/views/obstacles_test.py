@@ -4,12 +4,12 @@ import datetime
 import json
 import logging
 import time
-from auvsi_suas.models import AerialPosition
-from auvsi_suas.models import GpsPosition
-from auvsi_suas.models import MissionConfig
-from auvsi_suas.models import MovingObstacle
-from auvsi_suas.models import StationaryObstacle
-from auvsi_suas.models import Waypoint
+from auvsi_suas.models.aerial_position import AerialPosition
+from auvsi_suas.models.gps_position import GpsPosition
+from auvsi_suas.models.mission_config import MissionConfig
+from auvsi_suas.models.moving_obstacle import MovingObstacle
+from auvsi_suas.models.stationary_obstacle import StationaryObstacle
+from auvsi_suas.models.waypoint import Waypoint
 from django.conf import settings
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse

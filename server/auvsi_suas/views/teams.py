@@ -1,8 +1,8 @@
 """Teams view."""
 import json
-from auvsi_suas.models import MissionClockEvent
-from auvsi_suas.models import UasTelemetry
-from auvsi_suas.models import TakeoffOrLandingEvent
+from auvsi_suas.models.mission_clock_event import MissionClockEvent
+from auvsi_suas.models.uas_telemetry import UasTelemetry
+from auvsi_suas.models.takeoff_or_landing_event import TakeoffOrLandingEvent
 from auvsi_suas.views import logger
 from auvsi_suas.views.decorators import require_superuser
 from django.contrib.auth.models import User

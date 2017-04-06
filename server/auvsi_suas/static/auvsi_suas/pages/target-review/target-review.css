@@ -34,10 +34,6 @@
     text-decoration: underline;
 }
 
-#target-approve-deny {
-    text-align: center;
-}
-
-#target-approve-deny button {
+#target-review button {
     display: inline-block;
 }

@@ -2,8 +2,8 @@
 
 import iso8601
 import json
-from auvsi_suas.models import MovingObstacle
-from auvsi_suas.models import StationaryObstacle
+from auvsi_suas.models.moving_obstacle import MovingObstacle
+from auvsi_suas.models.stationary_obstacle import StationaryObstacle
 from auvsi_suas.views import boolean_param
 from auvsi_suas.views import logger
 from auvsi_suas.views.decorators import require_login

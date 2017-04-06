@@ -18,15 +18,24 @@
     </div>
   </div>
 
-  <div id="target-detail" class="small-3 columns panel"
+  <div id="target-detail" class="small-3 columns"
        ng-show="targetReviewCtrl.getReviewTarget()">
-    <div id="target-approve-deny">
-        <button type="button" class="success button" ng-click="targetReviewCtrl.setReview(true)">Approve</button>
-        <button type="button" class="alert button" ng-click="targetReviewCtrl.setReview(false)">Deny</button>
+    <div id="target-review" class="panel">
+        <button type="button" class="success button" ng-click="targetReviewCtrl.saveReview()">Save and Advance</button>
+        <h5>
+            <input type="checkbox" ng-model="targetReviewCtrl.getReviewTarget().thumbnail_approved">
+            Thumbnail Approved
+        </h5>
+        <h5 ng-show="targetReviewCtrl.getReviewTarget().type == 'emergent'">
+            <input type="checkbox" ng-model="targetReviewCtrl.getReviewTarget().description_approved">
+            Emergent Description Approved
+        </h5>
     </div>
-    <div ng-repeat="detail in targetReviewCtrl.getReviewTargetDetails()" >
-        <h4>{{detail.key}}</h4>
-        <h5>{{detail.value}}</h5>
+    <div class="panel">
+        <div ng-repeat="detail in targetReviewCtrl.getReviewTargetDetails()">
+            <h4>{{detail.key}}</h4>
+            <h5>{{detail.value}}</h5>
+        </div>
     </div>
   </div>
 

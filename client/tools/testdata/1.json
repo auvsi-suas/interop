@@ -1,0 +1,11 @@
+{
+    "alphanumeric": "A",
+    "alphanumeric_color": "orange",
+    "autonomous": false,
+    "background_color": "red",
+    "latitude": 30.592811944444442,
+    "longitude": 75.81308972222222,
+    "orientation": "n",
+    "shape": "rectangle",
+    "type": "standard"
+}

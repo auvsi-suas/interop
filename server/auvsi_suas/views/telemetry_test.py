@@ -4,9 +4,9 @@ import datetime
 import iso8601
 import json
 import time
-from auvsi_suas.models import AerialPosition
-from auvsi_suas.models import GpsPosition
-from auvsi_suas.models import UasTelemetry
+from auvsi_suas.models.aerial_position import AerialPosition
+from auvsi_suas.models.gps_position import GpsPosition
+from auvsi_suas.models.uas_telemetry import UasTelemetry
 from django.conf import settings
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse

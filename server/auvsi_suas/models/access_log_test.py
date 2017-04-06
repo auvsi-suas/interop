@@ -1,7 +1,11 @@
 """Tests for the access_log module."""
 
 import datetime
-from auvsi_suas.models import AccessLog, AerialPosition, GpsPosition, TimePeriod, UasTelemetry
+from auvsi_suas.models.access_log import AccessLog
+from auvsi_suas.models.aerial_position import AerialPosition
+from auvsi_suas.models.gps_position import GpsPosition
+from auvsi_suas.models.time_period import TimePeriod
+from auvsi_suas.models.uas_telemetry import UasTelemetry
 from django.contrib.auth.models import User
 from django.test import TestCase
 from django.utils import timezone

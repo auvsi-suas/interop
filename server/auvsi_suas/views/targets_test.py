@@ -3,7 +3,13 @@
 import functools
 import json
 import os.path
-from auvsi_suas.models import Color, GpsPosition, MissionClockEvent, Orientation, Shape, Target, TargetType
+from auvsi_suas.models.gps_position import GpsPosition
+from auvsi_suas.models.mission_clock_event import MissionClockEvent
+from auvsi_suas.models.target import Color
+from auvsi_suas.models.target import Orientation
+from auvsi_suas.models.target import Shape
+from auvsi_suas.models.target import Target
+from auvsi_suas.models.target import TargetType
 from django.conf import settings
 from django.contrib.auth.models import User
 from django.core.files.images import ImageFile
@@ -62,7 +68,7 @@ class TestGetTarget(TestCase):
         t1 = Target(user=self.user, target_type=TargetType.standard)
         t1.save()
 
-        t2 = Target(user=self.user, target_type=TargetType.qrc)
+        t2 = Target(user=self.user, target_type=TargetType.standard)
         t2.save()
 
         response = self.client.get(targets_url)
@@ -80,7 +86,7 @@ class TestGetTarget(TestCase):
         mine = Target(user=self.user, target_type=TargetType.standard)
         mine.save()
 
-        theirs = Target(user=user2, target_type=TargetType.qrc)
+        theirs = Target(user=user2, target_type=TargetType.standard)
         theirs.save()
 
         response = self.client.get(targets_url)
@@ -352,6 +358,66 @@ class TestPostTarget(TestCase):
                                         content_type='application/json')
             self.assertEqual(400, response.status_code)
 
+    def test_create_target_team_id(self):
+        """Request fails if non-admin user specifies team_id."""
+        target = {'type': 'standard', 'team_id': self.user.username}
+        response = self.client.post(targets_url,
+                                    data=json.dumps(target),
+                                    content_type='application/json')
+        self.assertEqual(403, response.status_code)
+
+    def test_superuser_create_target(self):
+        """Admin user can create target on behalf of another team."""
+        # Login as superuser.
+        superuser = User.objects.create_superuser(
+            'testsuperuser', 'testsuperemail@x.com', 'testsuperpass')
+        response = self.client.post(login_url, {
+            'username': 'testsuperuser',
+            'password': 'testsuperpass'
+        })
+        self.assertEqual(200, response.status_code)
+
+        # Create target.
+        target = {'type': 'standard', 'team_id': self.user.username}
+        response = self.client.post(targets_url,
+                                    data=json.dumps(target),
+                                    content_type='application/json')
+        self.assertEqual(201, response.status_code)
+
+        # Ensure target created for proper user.
+        created = json.loads(response.content)
+        self.assertEqual(self.user.id, created['user'])
+
+    def test_actionable_override(self):
+        """Request fails if non-admin user specifies actionable_override."""
+        target = {'type': 'standard', 'actionable_override': True}
+        response = self.client.post(targets_url,
+                                    data=json.dumps(target),
+                                    content_type='application/json')
+        self.assertEqual(403, response.status_code)
+
+    def test_superuser_actionable_override(self):
+        """Admin user can set actionable_override flag."""
+        # Login as superuser.
+        superuser = User.objects.create_superuser(
+            'testsuperuser', 'testsuperemail@x.com', 'testsuperpass')
+        response = self.client.post(login_url, {
+            'username': 'testsuperuser',
+            'password': 'testsuperpass'
+        })
+        self.assertEqual(200, response.status_code)
+
+        # Create target.
+        target = {'type': 'standard', 'actionable_override': True}
+        response = self.client.post(targets_url,
+                                    data=json.dumps(target),
+                                    content_type='application/json')
+        self.assertEqual(201, response.status_code)
+
+        # Ensure target has actionable_override flag set.
+        created = json.loads(response.content)
+        self.assertEqual(True, created['actionable_override'])
+
 
 class TestTargetsIdLoggedOut(TestCase):
     """Tests logged out targets_id."""
@@ -595,6 +661,42 @@ class TestTargetId(TestCase):
 
         t.refresh_from_db()
         self.assertEqual(True, t.autonomous)
+
+    def test_put_change_actionable_override(self):
+        """PUT fails if non-admin user tries to change actionable_override."""
+        t = Target(user=self.user, target_type=TargetType.standard)
+        t.save()
+
+        data = {'actionable_override': True}
+
+        response = self.client.put(
+            targets_id_url(args=[t.pk]),
+            data=json.dumps(data))
+        self.assertEqual(403, response.status_code)
+
+    def test_put_superuser_change_actionable_override(self):
+        """Admin user can update actionable_override flag."""
+        # Login as superuser.
+        superuser = User.objects.create_superuser(
+            'testsuperuser', 'testsuperemail@x.com', 'testsuperpass')
+        response = self.client.post(login_url, {
+            'username': 'testsuperuser',
+            'password': 'testsuperpass'
+        })
+        self.assertEqual(200, response.status_code)
+
+        t = Target(user=self.user, target_type=TargetType.standard)
+        t.save()
+
+        data = {'actionable_override': True}
+
+        response = self.client.put(
+            targets_id_url(args=[t.pk]),
+            data=json.dumps(data))
+        self.assertEqual(200, response.status_code)
+
+        t.refresh_from_db()
+        self.assertEqual(True, t.actionable_override)
 
     def test_delete_own(self):
         """Test DELETEing a target owned by the correct user."""
@@ -877,7 +979,7 @@ class TestTargetsAdminReview(TestCase):
         MissionClockEvent(user=self.team,
                           team_on_clock=True,
                           team_on_timeout=False).save()
-        Target(user=self.team, target_type=TargetType.qrc).save()
+        Target(user=self.team, target_type=TargetType.standard).save()
 
         response = self.client.get(targets_review_url)
         self.assertEqual(200, response.status_code)
@@ -891,7 +993,7 @@ class TestTargetsAdminReview(TestCase):
         MissionClockEvent(user=self.team,
                           team_on_clock=False,
                           team_on_timeout=False).save()
-        target = Target(user=self.team, target_type=TargetType.qrc)
+        target = Target(user=self.team, target_type=TargetType.standard)
         target.save()
 
         response = self.client.get(targets_review_url)
@@ -907,7 +1009,7 @@ class TestTargetsAdminReview(TestCase):
         MissionClockEvent(user=self.team,
                           team_on_clock=False,
                           team_on_timeout=False).save()
-        target = Target(user=self.team, target_type=TargetType.qrc)
+        target = Target(user=self.team, target_type=TargetType.standard)
         target.save()
 
         with open(test_image('A.jpg')) as f:
@@ -919,11 +1021,11 @@ class TestTargetsAdminReview(TestCase):
         data = json.loads(response.content)
         self.assertEqual(1, len(data))
         self.assertIn('type', data[0])
-        self.assertEqual('qrc', data[0]['type'])
+        self.assertEqual('standard', data[0]['type'])
 
     def test_put_review_no_approved(self):
         """Test PUT review with no approved field."""
-        target = Target(user=self.team, target_type=TargetType.qrc)
+        target = Target(user=self.team, target_type=TargetType.standard)
         target.save()
 
         response = self.client.put(targets_review_id_url(args=[target.pk]))
@@ -933,23 +1035,31 @@ class TestTargetsAdminReview(TestCase):
         """Test PUT reivew with invalid pk."""
         response = self.client.put(
             targets_review_id_url(args=[1]),
-            data=json.dumps({'thumbnail_approved': False}))
+            data=json.dumps({
+                'thumbnail_approved': True,
+                'description_approved': True,
+            }))
         self.assertEqual(404, response.status_code)
 
     def test_put_review(self):
         """Test PUT review is saved."""
-        target = Target(user=self.team, target_type=TargetType.qrc)
+        target = Target(user=self.team, target_type=TargetType.standard)
         target.save()
 
         response = self.client.put(
             targets_review_id_url(args=[target.pk]),
-            data=json.dumps({'thumbnail_approved': False}))
+            data=json.dumps({
+                'thumbnail_approved': True,
+                'description_approved': True,
+            }))
         self.assertEqual(200, response.status_code)
         data = json.loads(response.content)
         self.assertIn('id', data)
         self.assertEqual(target.pk, data['id'])
         self.assertIn('thumbnail_approved', data)
-        self.assertFalse(data['thumbnail_approved'])
+        self.assertTrue(data['thumbnail_approved'])
+        self.assertTrue(data['description_approved'])
 
         target.refresh_from_db()
-        self.assertFalse(target.thumbnail_approved)
+        self.assertTrue(target.thumbnail_approved)
+        self.assertTrue(target.description_approved)

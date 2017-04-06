@@ -26,14 +26,16 @@ Object Configuration
 The following describes the individual model objects in greater
 detail than what is presented in :doc:`getting_started`.
 
-.. autoclass:: auvsi_suas.models.GpsPosition
-.. autoclass:: auvsi_suas.models.AerialPosition
-.. autoclass:: auvsi_suas.models.UasTelemetry
-.. autoclass:: auvsi_suas.models.Target
-.. autoclass:: auvsi_suas.models.Waypoint
-.. autoclass:: auvsi_suas.models.StationaryObstacle
-.. autoclass:: auvsi_suas.models.MovingObstacle
-.. autoclass:: auvsi_suas.models.FlyZone
-.. autoclass:: auvsi_suas.models.MissionConfig
-.. autoclass:: auvsi_suas.models.MissionClockEvent
-.. autoclass:: auvsi_suas.models.TakeoffOrLandingEvent
+.. autoclass:: auvsi_suas.models.gps_position.GpsPosition
+.. autoclass:: auvsi_suas.models.aerial_position.AerialPosition
+.. autoclass:: auvsi_suas.models.uas_telemetry.UasTelemetry
+.. autoclass:: auvsi_suas.models.target.Target
+.. autoclass:: auvsi_suas.models.waypoint.Waypoint
+.. autoclass:: auvsi_suas.models.stationary_obstacle.StationaryObstacle
+.. autoclass:: auvsi_suas.models.moving_obstacle.MovingObstacle
+.. autoclass:: auvsi_suas.models.fly_zone.FlyZone
+.. autoclass:: auvsi_suas.models.mission_config.MissionConfig
+.. autoclass:: auvsi_suas.models.mission_clock_event.MissionClockEvent
+.. autoclass:: auvsi_suas.models.takeoff_or_landing_event.TakeoffOrLandingEvent
+.. autoclass:: auvsi_suas.models.mission_judge_feedback.MissionJudgeFeedback
+

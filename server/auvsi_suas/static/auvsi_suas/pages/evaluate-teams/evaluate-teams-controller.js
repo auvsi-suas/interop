@@ -24,11 +24,6 @@ EvaluateTeamsCtrl = function($window, Backend) {
     this.selectedTeamId = "-1";
 
     /**
-     * @export {!string} The extension for export.
-     */
-    this.selectedExtension = 'Json';
-
-    /**
      * @private @const {!angular.$window} The window service.
      */
     this.window_ = $window;
@@ -51,14 +46,8 @@ EvaluateTeamsCtrl.prototype.evaluate = function() {
         query = '?team=' + id;
     }
 
-    // Determine extension from selected.
-    var ext = '';
-    if (this.selectedExtension == 'Csv') {
-        ext = '.csv';
-    }
-
     // Open evaluation in new tab.
-    this.window_.open('/auvsi_admin/evaluate_teams' + ext + query, '_blank');
+    this.window_.open('/auvsi_admin/evaluate_teams.zip'+ query, '_blank');
 };
 
 

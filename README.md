@@ -20,7 +20,7 @@ Repository Contents
 
 * `/server`: Interoperability server, implementing the AUVSI SUAS
   Interoperability API specification.
-* `/client`: Client libraries and progrmas for interacting with the server.
+* `/client`: Client libraries and programs for interacting with the server.
 * `/tools`: Tools for development: setup, formatting, etc.
 * `/docs`: The documentation source.
 

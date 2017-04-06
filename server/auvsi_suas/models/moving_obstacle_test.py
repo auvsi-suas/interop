@@ -2,12 +2,12 @@
 
 import datetime
 import time
-from auvsi_suas.models import AerialPosition
-from auvsi_suas.models import GpsPosition
-from auvsi_suas.models import MovingObstacle
-from auvsi_suas.models import UasTelemetry
 from auvsi_suas.models import units
-from auvsi_suas.models import Waypoint
+from auvsi_suas.models.aerial_position import AerialPosition
+from auvsi_suas.models.gps_position import GpsPosition
+from auvsi_suas.models.moving_obstacle import MovingObstacle
+from auvsi_suas.models.uas_telemetry import UasTelemetry
+from auvsi_suas.models.waypoint import Waypoint
 from auvsi_suas.patches.simplekml_patch import Kml
 from django.conf import settings
 from django.contrib.auth.models import User

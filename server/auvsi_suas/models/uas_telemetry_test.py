@@ -7,11 +7,13 @@ from django.test import TestCase
 from django.utils import timezone
 from simplekml import Kml
 
-from auvsi_suas.models import AerialPosition
-from auvsi_suas.models import GpsPosition
-from auvsi_suas.models import TakeoffOrLandingEvent
-from auvsi_suas.models import UasTelemetry
 from auvsi_suas.models import units
+from auvsi_suas.models.aerial_position import AerialPosition
+from auvsi_suas.models.gps_position import GpsPosition
+from auvsi_suas.models.takeoff_or_landing_event import TakeoffOrLandingEvent
+from auvsi_suas.models.uas_telemetry import UasTelemetry
+from auvsi_suas.models.waypoint import Waypoint
+from auvsi_suas.proto.mission_pb2 import WaypointEvaluation
 
 
 class TestUasTelemetryBase(TestCase):
@@ -159,6 +161,248 @@ class TestUasTelemetryDedupe(TestUasTelemetryBase):
                 self.log4, self.log4]
         expect = [self.log1, self.log2, self.log3, self.log4]
         self.assertEqual(UasTelemetry.dedupe(orig), expect)
+
+    def create_uas_logs(self, user, entries):
+        """Create a list of uas telemetry logs.
+
+        Args:
+            user: User to create logs for.
+            entries: List of (lat, lon, alt) tuples for each entry.
+
+        Returns:
+            List of UasTelemetry objects
+        """
+        ret = []
+
+        for (lat, lon, alt) in entries:
+            pos = GpsPosition()
+            pos.latitude = lat
+            pos.longitude = lon
+            pos.save()
+            apos = AerialPosition()
+            apos.altitude_msl = alt
+            apos.gps_position = pos
+            apos.save()
+            log = UasTelemetry()
+            log.user = user
+            log.uas_position = apos
+            log.uas_heading = 0
+            log.save()
+            ret.append(log)
+
+        return ret
+
+    def assertSatisfiedWaypoints(self, expect, got):
+        """Assert two satisfied_waypoints return values are equal."""
+        self.assertEqual(len(expect), len(got))
+        for i in xrange(len(expect)):
+            e = expect[i]
+            g = got[i]
+            self.assertEqual(e.id, g.id)
+            self.assertAlmostEqual(e.score_ratio, g.score_ratio, places=2)
+            self.assertAlmostEqual(e.closest_for_scored_approach_ft,
+                                   g.closest_for_scored_approach_ft,
+                                   places=2)
+            self.assertAlmostEqual(e.closest_for_mission_ft,
+                                   g.closest_for_mission_ft,
+                                   places=2)
+
+    def waypoints_from_data(self, waypoints_data):
+        """Converts tuples of lat/lon/alt to a waypoint."""
+        waypoints = []
+        for i, waypoint in enumerate(waypoints_data):
+            (lat, lon, alt) = waypoint
+            pos = GpsPosition()
+            pos.latitude = lat
+            pos.longitude = lon
+            pos.save()
+            apos = AerialPosition()
+            apos.altitude_msl = alt
+            apos.gps_position = pos
+            apos.save()
+            wpt = Waypoint()
+            wpt.position = apos
+            wpt.order = i
+            wpt.save()
+            waypoints.append(wpt)
+        return waypoints
+
+    def test_satisfied_waypoints(self):
+        """Tests the evaluation of waypoints method."""
+        # Create mission config
+        gpos = GpsPosition()
+        gpos.latitude = 10
+        gpos.longitude = 10
+        gpos.save()
+
+        # Create waypoints for testing.
+        waypoints = self.waypoints_from_data([(38, -76, 100), (39, -77, 200), (
+            40, -78, 0)])
+
+        # Create UAS telemetry logs
+
+        # Only first is valid.
+        entries = [(38, -76, 140), (40, -78, 600), (37, -75, 40)]
+        logs = self.create_uas_logs(self.user, entries)
+        expect = [WaypointEvaluation(id=0,
+                                     score_ratio=0.6,
+                                     closest_for_scored_approach_ft=40,
+                                     closest_for_mission_ft=40),
+                  WaypointEvaluation(id=1,
+                                     score_ratio=0,
+                                     closest_for_mission_ft=460785.17),
+                  WaypointEvaluation(id=2,
+                                     score_ratio=0)]
+        self.assertSatisfiedWaypoints(expect, UasTelemetry.satisfied_waypoints(
+            gpos, waypoints, logs))
+
+        # First and last are valid, but missed second, so third doesn't count.
+        entries = [(38, -76, 140), (40, -78, 600), (40, -78, 40)]
+        logs = self.create_uas_logs(self.user, entries)
+        expect = [WaypointEvaluation(id=0,
+                                     score_ratio=0.6,
+                                     closest_for_scored_approach_ft=40,
+                                     closest_for_mission_ft=40),
+                  WaypointEvaluation(id=1,
+                                     score_ratio=0,
+                                     closest_for_mission_ft=460785.03),
+                  WaypointEvaluation(id=2,
+                                     score_ratio=0)]
+        self.assertSatisfiedWaypoints(expect, UasTelemetry.satisfied_waypoints(
+            gpos, waypoints, logs))
+
+        # Hit all.
+        entries = [(38, -76, 140), (39, -77, 180), (40, -78, 40)]
+        expect = [WaypointEvaluation(id=0,
+                                     score_ratio=0.6,
+                                     closest_for_scored_approach_ft=40,
+                                     closest_for_mission_ft=40),
+                  WaypointEvaluation(id=1,
+                                     score_ratio=0.8,
+                                     closest_for_scored_approach_ft=20,
+                                     closest_for_mission_ft=20),
+                  WaypointEvaluation(id=2,
+                                     score_ratio=0.6,
+                                     closest_for_scored_approach_ft=40,
+                                     closest_for_mission_ft=40)]
+        logs = self.create_uas_logs(self.user, entries)
+        self.assertSatisfiedWaypoints(expect, UasTelemetry.satisfied_waypoints(
+            gpos, waypoints, logs))
+
+        # Only hit the first waypoint on run one, hit all on run two.
+        entries = [(38, -76, 140),
+                   (40, -78, 600),
+                   (37, -75, 40),
+                   # Run two:
+                   (38, -76, 140),
+                   (39, -77, 180),
+                   (40, -78, 40)]
+        logs = self.create_uas_logs(self.user, entries)
+        expect = [WaypointEvaluation(id=0,
+                                     score_ratio=0.6,
+                                     closest_for_scored_approach_ft=40,
+                                     closest_for_mission_ft=40),
+                  WaypointEvaluation(id=1,
+                                     score_ratio=0.8,
+                                     closest_for_scored_approach_ft=20,
+                                     closest_for_mission_ft=20),
+                  WaypointEvaluation(id=2,
+                                     score_ratio=0.6,
+                                     closest_for_scored_approach_ft=40,
+                                     closest_for_mission_ft=40)]
+        self.assertSatisfiedWaypoints(expect, UasTelemetry.satisfied_waypoints(
+            gpos, waypoints, logs))
+
+        # Hit all on run one, only hit the first waypoint on run two.
+        entries = [(38, -76, 140),
+                   (39, -77, 180),
+                   (40, -78, 40),
+                   # Run two:
+                   (38, -76, 140),
+                   (40, -78, 600),
+                   (37, -75, 40)]
+        expect = [WaypointEvaluation(id=0,
+                                     score_ratio=0.6,
+                                     closest_for_scored_approach_ft=40,
+                                     closest_for_mission_ft=40),
+                  WaypointEvaluation(id=1,
+                                     score_ratio=0.8,
+                                     closest_for_scored_approach_ft=20,
+                                     closest_for_mission_ft=20),
+                  WaypointEvaluation(id=2,
+                                     score_ratio=0.6,
+                                     closest_for_scored_approach_ft=40,
+                                     closest_for_mission_ft=40)]
+        logs = self.create_uas_logs(self.user, entries)
+        self.assertSatisfiedWaypoints(expect, UasTelemetry.satisfied_waypoints(
+            gpos, waypoints, logs))
+
+        # Keep flying after hitting all waypoints.
+        entries = [(38, -76, 140), (39, -77, 180), (40, -78, 40),
+                   (30.1, -78.1, 100)]
+        logs = self.create_uas_logs(self.user, entries)
+        expect = [WaypointEvaluation(id=0,
+                                     score_ratio=0.6,
+                                     closest_for_scored_approach_ft=40,
+                                     closest_for_mission_ft=40),
+                  WaypointEvaluation(id=1,
+                                     score_ratio=0.8,
+                                     closest_for_scored_approach_ft=20,
+                                     closest_for_mission_ft=20),
+                  WaypointEvaluation(id=2,
+                                     score_ratio=0.6,
+                                     closest_for_scored_approach_ft=40,
+                                     closest_for_mission_ft=40)]
+        self.assertSatisfiedWaypoints(expect, UasTelemetry.satisfied_waypoints(
+            gpos, waypoints, logs))
+
+        # Hit all in first run, but second is higher scoring.
+        entries = [(38, -76, 140),
+                   (39, -77, 180),
+                   (40, -78, 60),
+                   # Run two:
+                   (38, -76, 100),
+                   (39, -77, 200),
+                   (40, -78, 110)]
+        logs = self.create_uas_logs(self.user, entries)
+        expect = [WaypointEvaluation(id=0,
+                                     score_ratio=1,
+                                     closest_for_scored_approach_ft=0,
+                                     closest_for_mission_ft=0),
+                  WaypointEvaluation(id=1,
+                                     score_ratio=1,
+                                     closest_for_scored_approach_ft=0,
+                                     closest_for_mission_ft=0),
+                  WaypointEvaluation(id=2,
+                                     score_ratio=0,
+                                     closest_for_mission_ft=60)]
+        self.assertSatisfiedWaypoints(expect, UasTelemetry.satisfied_waypoints(
+            gpos, waypoints, logs))
+
+        # Restart waypoint path in the middle.
+        waypoints = self.waypoints_from_data([(38, -76, 100), (39, -77, 200), (
+            40, -78, 0)])
+        entries = [(38, -76, 140),
+                   (39, -77, 180),
+                   # Restart:
+                   (38, -76, 70),
+                   (39, -77, 150),
+                   (40, -78, 10)]
+        logs = self.create_uas_logs(self.user, entries)
+        expect = [WaypointEvaluation(id=0,
+                                     score_ratio=0.7,
+                                     closest_for_scored_approach_ft=30,
+                                     closest_for_mission_ft=30),
+                  WaypointEvaluation(id=1,
+                                     score_ratio=0.5,
+                                     closest_for_scored_approach_ft=50,
+                                     closest_for_mission_ft=20),
+                  WaypointEvaluation(id=2,
+                                     score_ratio=0.9,
+                                     closest_for_scored_approach_ft=10,
+                                     closest_for_mission_ft=10)]
+        self.assertSatisfiedWaypoints(expect, UasTelemetry.satisfied_waypoints(
+            gpos, waypoints, logs))
 
 
 class TestUasTelemetryKML(TestUasTelemetryBase):

@@ -1,8 +1,8 @@
 """Tests for the waypoint module."""
 
-from auvsi_suas.models import AerialPosition
-from auvsi_suas.models import GpsPosition
-from auvsi_suas.models import Waypoint
+from auvsi_suas.models.aerial_position import AerialPosition
+from auvsi_suas.models.gps_position import GpsPosition
+from auvsi_suas.models.waypoint import Waypoint
 from django.test import TestCase
 
 

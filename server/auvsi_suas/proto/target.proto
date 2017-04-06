@@ -1,0 +1,55 @@
+// Descriptors for Target evaluation.
+
+package auvsi_suas.proto;
+
+// Evaluation data for multiple targets.
+message MultiTargetEvaluation {
+    // Total ratio of points for objects.
+    optional double score_ratio = 1;
+    // Ratio of points from matched targets.
+    optional double matched_score_ratio = 2;
+    // Ratio of penalty points from unmatched targets.
+    optional double extra_object_penalty_ratio = 3;
+
+    // Number of targets which weren't matched.
+    optional int32 unmatched_target_count = 4;
+
+    // Individual target evaluation data.
+    repeated TargetEvaluation targets = 5;
+}
+
+// Evaluation data for a single target.
+message TargetEvaluation {
+    // Identifier for the real target.
+    optional int64 real_target = 1;
+    // Identifier for the submitted target.
+    optional int64 submitted_target = 2;
+
+    // Ratio of points for the target [0, 1].
+    optional double score_ratio = 3;
+    // Ratio of points for similar characteristics.
+    optional double classifications_score_ratio = 4;
+    // Ratio of points for geolocation accuracy.
+    optional double geolocation_score_ratio = 5;
+    // Ratio of points for actionable.
+    optional double actionable_score_ratio = 6;
+    // Ratio of points for autonomy.
+    optional double autonomous_score_ratio = 7;
+    // Ratio of points for interop submission.
+    optional double interop_score_ratio = 8;
+
+    // Whether the image was approved by judge.
+    optional bool image_approved = 9;
+    // Whether the emergent description was approved by judge.
+    optional bool description_approved = 10;
+    // Ratio of classifications which matched.
+    optional double classifications_ratio = 11;
+    // Distance of real and submitted target positions (feet).
+    optional double geolocation_accuracy_ft = 12;
+    // Whether the submission is actionable.
+    optional bool actionable_submission = 13;
+    // Whether the submission was autonomous.
+    optional bool autonomous_submission = 14;
+    // Whether the submission was over interop.
+    optional bool interop_submission = 15;
+}

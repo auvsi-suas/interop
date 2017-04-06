@@ -1,14 +1,15 @@
 """Tests for the target module."""
 
 import os.path
-from auvsi_suas.models import GpsPosition
-from auvsi_suas.models import TakeoffOrLandingEvent
-from auvsi_suas.models import Target
-from auvsi_suas.models import TargetEvaluator
-from auvsi_suas.models import TargetType
-from auvsi_suas.models import Color
-from auvsi_suas.models import Shape
-from auvsi_suas.models import Orientation
+from auvsi_suas.models.gps_position import GpsPosition
+from auvsi_suas.models.mission_clock_event import MissionClockEvent
+from auvsi_suas.models.takeoff_or_landing_event import TakeoffOrLandingEvent
+from auvsi_suas.models.target import Color
+from auvsi_suas.models.target import Target
+from auvsi_suas.models.target import TargetEvaluator
+from auvsi_suas.models.target import TargetType
+from auvsi_suas.models.target import Shape
+from auvsi_suas.models.target import Orientation
 from django.conf import settings
 from django.contrib.auth.models import User
 from django.core.files.uploadedfile import SimpleUploadedFile
@@ -141,13 +142,18 @@ class TestTarget(TestCase):
         self.assertNotIn('thumbnail_approved', d)
 
         d = t.json(is_superuser=True)
+        self.assertIn('description_approved', d)
         self.assertIn('thumbnail_approved', d)
 
+        t.description_approved = True
         t.thumbnail_approved = True
+        t.actionable_override = True
         t.save()
         d = t.json(is_superuser=True)
+        self.assertEqual(True, d['description_approved'])
         self.assertEqual(None, d['thumbnail'])
         self.assertEqual(True, d['thumbnail_approved'])
+        self.assertEqual(True, d['actionable_override'])
 
     def test_minimal_json(self):
         """Test target JSON with minimal data."""
@@ -169,8 +175,8 @@ class TestTarget(TestCase):
         self.assertEqual(None, d['description'])
         self.assertEqual(False, d['autonomous'])
 
-    def test_similar_classifications(self):
-        """Tests similar classification counts are computed correctly."""
+    def test_similar_classifications_ratio(self):
+        """Tests similar classification ratios are computed correctly."""
         # Test equal standard targets.
         l = GpsPosition(latitude=38, longitude=-76)
         l.save()
@@ -183,6 +189,7 @@ class TestTarget(TestCase):
                     alphanumeric='ABC',
                     alphanumeric_color=Color.black,
                     description='Test target',
+                    description_approved=True,
                     autonomous=True)
         t1.save()
         t2 = Target(user=self.user,
@@ -194,47 +201,41 @@ class TestTarget(TestCase):
                     alphanumeric='ABC',
                     alphanumeric_color=Color.black,
                     description='Test other target',
+                    description_approved=False,
                     autonomous=True)
         t2.save()
-        self.assertAlmostEqual(1.0, t1.similar_classifications(t2))
+        self.assertAlmostEqual(1.0, t1.similar_classifications_ratio(t2))
 
         # Test unequal standard targets.
         t1.alphanumeric = 'DEF'
         t1.alphanumeric_color = Color.blue
         t1.save()
-        self.assertAlmostEqual(3.0 / 5.0, t1.similar_classifications(t2))
+        self.assertAlmostEqual(3.0 / 5.0, t1.similar_classifications_ratio(t2))
         t1.shape = Shape.circle
         t1.background_color = Color.orange
         t1.save()
-        self.assertAlmostEqual(1.0 / 5.0, t1.similar_classifications(t2))
+        self.assertAlmostEqual(1.0 / 5.0, t1.similar_classifications_ratio(t2))
 
         # Test different types.
         t1.target_type = TargetType.off_axis
         t1.save()
-        self.assertAlmostEqual(0, t1.similar_classifications(t2))
+        self.assertAlmostEqual(0, t1.similar_classifications_ratio(t2))
 
         # Test off_axis is same as standard.
         t2.target_type = TargetType.off_axis
         t2.alphanumeric = 'DEF'
         t2.save()
-        self.assertAlmostEqual(2.0 / 5.0, t1.similar_classifications(t2))
+        self.assertAlmostEqual(2.0 / 5.0, t1.similar_classifications_ratio(t2))
 
-        # Test emergent type is always 1.
+        # Test emergent type based on description approval.
         t1.target_type = TargetType.emergent
         t1.save()
         t2.target_type = TargetType.emergent
         t2.save()
-        self.assertAlmostEqual(1.0, t1.similar_classifications(t2))
-
-        # Test QRC is only description.
-        t1.target_type = TargetType.qrc
-        t1.save()
-        t2.target_type = TargetType.qrc
+        self.assertAlmostEqual(0.0, t1.similar_classifications_ratio(t2))
+        t2.description_approved = True
         t2.save()
-        self.assertAlmostEqual(0.0, t1.similar_classifications(t2))
-        t2.description = 'Test target'
-        t2.save()
-        self.assertAlmostEqual(1.0, t1.similar_classifications(t2))
+        self.assertAlmostEqual(1.0, t1.similar_classifications_ratio(t2))
 
     def test_actionable_submission(self):
         """Tests actionable_submission correctly filters submissions."""
@@ -276,11 +277,100 @@ class TestTarget(TestCase):
         t5.alphanumeric = 'A'
         t5.save()
 
+        # t6 created and updated in second flight.
+        event = TakeoffOrLandingEvent(user=self.user, uas_in_air=True)
+        event.save()
+        t6 = Target(user=self.user, target_type=TargetType.standard)
+        t6.save()
+        t6.alphanumeric = 'A'
+        t6.save()
+        event = TakeoffOrLandingEvent(user=self.user, uas_in_air=False)
+        event.save()
+
+        # t7 with actionable_override set.
+        event = TakeoffOrLandingEvent(user=self.user, uas_in_air=True)
+        event.save()
+        event = TakeoffOrLandingEvent(user=self.user, uas_in_air=False)
+        event.save()
+        t7 = Target(user=self.user,
+                    target_type=TargetType.standard,
+                    actionable_override=True)
+        t7.save()
+
         self.assertFalse(t1.actionable_submission())
         self.assertFalse(t2.actionable_submission())
         self.assertTrue(t3.actionable_submission())
         self.assertFalse(t4.actionable_submission())
         self.assertFalse(t5.actionable_submission())
+        self.assertFalse(t6.actionable_submission())
+        self.assertTrue(t7.actionable_submission())
+
+    def test_interop_submission(self):
+        """Tests interop_submission correctly filters submissions."""
+        # t1 created and updated before mission time starts.
+        t1 = Target(user=self.user, target_type=TargetType.standard)
+        t1.save()
+        t1.alphanumeric = 'A'
+        t1.save()
+
+        # t2 created before mission time starts and updated once it does.
+        t2 = Target(user=self.user, target_type=TargetType.standard)
+        t2.save()
+
+        # Mission time starts.
+        event = MissionClockEvent(user=self.user,
+                                  team_on_clock=True,
+                                  team_on_timeout=False)
+        event.save()
+
+        t2.alphanumeric = 'A'
+        t2.save()
+
+        # t3 created and updated during mission time.
+        t3 = Target(user=self.user, target_type=TargetType.standard)
+        t3.save()
+        t3.alphanumeric = 'A'
+        t3.save()
+
+        # t4 created in in mission time and updated during timeout.
+        t4 = Target(user=self.user, target_type=TargetType.standard)
+        t4.save()
+
+        # Team takes timeout. Mission time stops.
+        event = MissionClockEvent(user=self.user,
+                                  team_on_clock=False,
+                                  team_on_timeout=True)
+        event.save()
+
+        t4.alphanumeric = 'A'
+        t4.save()
+
+        # t5 created and updated during timeout.
+        t5 = Target(user=self.user, target_type=TargetType.standard)
+        t5.save()
+        t5.alphanumeric = 'A'
+        t5.save()
+
+        # t6 created and updated once mission time resumes.
+        event = MissionClockEvent(user=self.user,
+                                  team_on_clock=True,
+                                  team_on_timeout=False)
+        event.save()
+        t6 = Target(user=self.user, target_type=TargetType.standard)
+        t6.save()
+        t6.alphanumeric = 'A'
+        t6.save()
+        event = MissionClockEvent(user=self.user,
+                                  team_on_clock=False,
+                                  team_on_timeout=False)
+        event.save()
+
+        self.assertFalse(t1.interop_submission())
+        self.assertFalse(t2.interop_submission())
+        self.assertTrue(t3.interop_submission())
+        self.assertFalse(t4.interop_submission())
+        self.assertFalse(t5.interop_submission())
+        self.assertTrue(t6.interop_submission())
 
 
 class TestTargetEvaluator(TestCase):
@@ -300,6 +390,11 @@ class TestTargetEvaluator(TestCase):
         l3 = GpsPosition(latitude=-38, longitude=76)
         l3.save()
 
+        event = MissionClockEvent(user=self.user,
+                                  team_on_clock=True,
+                                  team_on_timeout=False)
+        event.save()
+
         event = TakeoffOrLandingEvent(user=self.user, uas_in_air=True)
         event.save()
 
@@ -313,7 +408,8 @@ class TestTargetEvaluator(TestCase):
                               alphanumeric='ABC',
                               alphanumeric_color=Color.black,
                               description='Submit test target 1',
-                              autonomous=False,
+                              description_approved=True,
+                              autonomous=True,
                               thumbnail_approved=True)
         self.submit1.save()
         self.real1 = Target(user=self.user,
@@ -326,6 +422,11 @@ class TestTargetEvaluator(TestCase):
                             alphanumeric_color=Color.black,
                             description='Real target 1')
         self.real1.save()
+
+        event = MissionClockEvent(user=self.user,
+                                  team_on_clock=False,
+                                  team_on_timeout=False)
+        event.save()
 
         # A target worth less than full points.
         self.submit2 = Target(user=self.user,
@@ -351,14 +452,15 @@ class TestTargetEvaluator(TestCase):
                             description='Real test target 2')
         self.real2.save()
 
-        # A target worth no common traits, so unmatched.
+        # A target worth no points, so unmatched.
         self.submit3 = Target(user=self.user,
                               target_type=TargetType.standard,
                               location=l1,
-                              orientation=Orientation.n,
-                              shape=Shape.circle,
-                              background_color=Color.blue,
+                              orientation=Orientation.nw,
+                              shape=Shape.pentagon,
+                              background_color=Color.gray,
                               alphanumeric='XYZ',
+                              alphanumeric_color=Color.orange,
                               description='Incorrect description',
                               autonomous=False,
                               thumbnail_approved=True)
@@ -369,20 +471,21 @@ class TestTargetEvaluator(TestCase):
                             shape=Shape.semicircle,
                             background_color=Color.yellow,
                             alphanumeric='LMN',
+                            # alphanumeric_color set below
                             location=l3,
                             description='Test target 3')
         self.real3.save()
 
-        # Targets without approved image may still match.
+        # Targets without approved image has no match value.
         self.submit4 = Target(user=self.user,
-                              target_type=TargetType.qrc,
+                              target_type=TargetType.emergent,
                               location=l1,
                               description='Test target 4',
                               autonomous=False,
                               thumbnail_approved=False)
         self.submit4.save()
         self.real4 = Target(user=self.user,
-                            target_type=TargetType.qrc,
+                            target_type=TargetType.emergent,
                             location=l1,
                             description='Test target 4')
         self.real4.save()
@@ -410,92 +513,158 @@ class TestTargetEvaluator(TestCase):
                             description='Test target 5')
         self.real5.save()
 
+        # Emergent target with correct description.
+        self.submit6 = Target(user=self.user,
+                              target_type=TargetType.emergent,
+                              location=l1,
+                              description='Submit test target 6',
+                              description_approved=True,
+                              autonomous=True,
+                              thumbnail_approved=True)
+        self.submit6.save()
+        self.real6 = Target(user=self.user,
+                            target_type=TargetType.emergent,
+                            location=l1,
+                            description='Real target 1',
+                            description_approved=True)
+        self.real6.save()
+
         event = TakeoffOrLandingEvent(user=self.user, uas_in_air=False)
         event.save()
 
         # submit2 updated after landing.
         self.submit2.alphanumeric = 'ABC'
         self.submit2.save()
+        self.submit3.alphanumeric_color = Color.yellow
+        self.submit3.save()
+        # Unused but not unmatched target.
+        self.submit7 = Target(user=self.user,
+                              target_type=TargetType.standard,
+                              location=l1,
+                              alphanumeric_color=Color.black,
+                              description='Submit unused test target 1',
+                              autonomous=False,
+                              thumbnail_approved=True)
+        self.submit7.save()
 
-        self.submitted_targets = [self.submit5, self.submit4, self.submit3,
-                                  self.submit2, self.submit1]
+        self.submitted_targets = [self.submit7, self.submit6, self.submit5,
+                                  self.submit4, self.submit3, self.submit2,
+                                  self.submit1]
         self.real_targets = [self.real1, self.real2, self.real3, self.real4,
-                             self.real5]
+                             self.real5, self.real6]
         self.real_matched_targets = [self.real1, self.real2, self.real4,
                                      self.real5]
 
     def test_match_value(self):
         """Tests the match value for two targets."""
         e = TargetEvaluator(self.submitted_targets, self.real_targets)
-        self.assertEqual(8, e.match_value(self.submit1, self.real1))
-        self.assertEqual(3, e.match_value(self.submit2, self.real2))
-        self.assertEqual(0, e.match_value(self.submit3, self.real3))
-        self.assertEqual(6, e.match_value(self.submit4, self.real4))
-        self.assertEqual(2, e.match_value(self.submit5, self.real5))
+        self.assertAlmostEqual(
+            1.0,
+            e.evaluate_match(self.submit1, self.real1).score_ratio,
+            places=3)
+        self.assertAlmostEqual(
+            0.174,
+            e.evaluate_match(self.submit2, self.real2).score_ratio,
+            places=3)
+        self.assertAlmostEqual(
+            0.0,
+            e.evaluate_match(self.submit3, self.real3).score_ratio,
+            places=3)
+        self.assertAlmostEqual(
+            0.0,
+            e.evaluate_match(self.submit4, self.real4).score_ratio,
+            places=3)
+        self.assertAlmostEqual(
+            0.3,
+            e.evaluate_match(self.submit5, self.real5).score_ratio,
+            places=3)
+        self.assertAlmostEqual(
+            0.7,
+            e.evaluate_match(self.submit6, self.real6).score_ratio,
+            places=3)
+        self.assertAlmostEqual(
+            0.240,
+            e.evaluate_match(self.submit7, self.real1).score_ratio,
+            places=3)
 
-        self.assertEqual(3, e.match_value(self.submit1, self.real2))
-        self.assertEqual(5, e.match_value(self.submit2, self.real1))
+        self.assertAlmostEqual(
+            0.814,
+            e.evaluate_match(self.submit1, self.real2).score_ratio,
+            places=3)
+        self.assertAlmostEqual(
+            0.32,
+            e.evaluate_match(self.submit2, self.real1).score_ratio,
+            places=3)
 
     def test_match_targets(self):
         """Tests that matching targets produce maximal matches."""
         e = TargetEvaluator(self.submitted_targets, self.real_targets)
-        self.assertEqual(
+        self.assertDictEqual(
             {
                 self.submit1: self.real1,
                 self.submit2: self.real2,
-                self.submit4: self.real4,
                 self.submit5: self.real5,
+                self.submit6: self.real6,
                 self.real1: self.submit1,
                 self.real2: self.submit2,
-                self.real4: self.submit4,
                 self.real5: self.submit5,
+                self.real6: self.submit6,
             }, e.match_targets(self.submitted_targets, self.real_targets))
 
-    def test_evaluation_dict(self):
-        """Tests that the evaluation dictionary is generated correctly."""
+    def test_evaluate(self):
+        """Tests that the evaluation is generated correctly."""
         e = TargetEvaluator(self.submitted_targets, self.real_targets)
-        d = e.evaluation_dict()
+        d = e.evaluate()
+        td = {t.real_target: t for t in d.targets}
 
-        self.assertIn('matched_target_value', d)
-        self.assertIn('unmatched_target_count', d)
-        self.assertIn('targets', d)
-        for t in d['targets'].values():
-            keys = ['match_value', 'image_approved', 'classifications',
-                    'location_accuracy', 'actionable']
-            for key in keys:
-                self.assertIn(key, t)
-        for s in self.real_targets:
-            self.assertIn(s.pk, d['targets'].keys())
+        self.assertEqual(self.submit1.pk, td[self.real1.pk].submitted_target)
+        self.assertEqual(True, td[self.real1.pk].image_approved)
+        self.assertEqual(1.0, td[self.real1.pk].classifications_ratio)
+        self.assertEqual(0.0, td[self.real1.pk].geolocation_accuracy_ft)
+        self.assertEqual(True, td[self.real1.pk].actionable_submission)
+        self.assertEqual(True, td[self.real1.pk].interop_submission)
+        self.assertEqual(1.0, td[self.real1.pk].classifications_score_ratio)
+        self.assertEqual(1.0, td[self.real1.pk].geolocation_score_ratio)
+        self.assertEqual(1.0, td[self.real1.pk].actionable_score_ratio)
+        self.assertEqual(1.0, td[self.real1.pk].autonomous_score_ratio)
+        self.assertEqual(1.0, td[self.real1.pk].interop_score_ratio)
+        self.assertAlmostEqual(1.0, td[self.real1.pk].score_ratio)
 
-        self.assertEqual(19, d['matched_target_value'])
-        self.assertEqual(1, d['unmatched_target_count'])
-        self.assertEqual(self.submit1.pk,
-                         d['targets'][self.real1.pk]['submitted_target'])
-        self.assertEqual(8, d['targets'][self.real1.pk]['match_value'])
-        self.assertEqual(True, d['targets'][self.real1.pk]['image_approved'])
-        self.assertEqual(1.0, d['targets'][self.real1.pk]['classifications'])
-        self.assertEqual(0.0, d['targets'][self.real1.pk]['location_accuracy'])
-        self.assertEqual('objective',
-                         d['targets'][self.real1.pk]['actionable'])
+        self.assertEqual(self.submit2.pk, td[self.real2.pk].submitted_target)
+        self.assertEqual(True, td[self.real2.pk].image_approved)
+        self.assertEqual(0.6, td[self.real2.pk].classifications_ratio)
+        self.assertAlmostEqual(109.444,
+                               td[self.real2.pk].geolocation_accuracy_ft,
+                               places=3)
+        self.assertEqual(False, td[self.real2.pk].actionable_submission)
+        self.assertEqual(False, td[self.real2.pk].interop_submission)
+        self.assertEqual(0.6, td[self.real2.pk].classifications_score_ratio)
+        self.assertAlmostEqual(0.270,
+                               td[self.real2.pk].geolocation_score_ratio,
+                               places=3)
+        self.assertEqual(0.0, td[self.real2.pk].actionable_score_ratio)
+        self.assertEqual(0.0, td[self.real2.pk].interop_score_ratio)
+        self.assertAlmostEqual(0.174, td[self.real2.pk].score_ratio, places=3)
 
-        self.assertEqual(None, d['targets'][self.real2.pk]['actionable'])
+        self.assertEqual(True, td[self.real6.pk].description_approved)
+        self.assertAlmostEqual(0.262, d.score_ratio, places=3)
+        self.assertEqual(2, d.unmatched_target_count)
 
-    def test_evaluation_dict_no_submitted_targets(self):
-        """Tests that evaluation_dict works with no submitted targets."""
+    def test_evaluate_no_submitted_targets(self):
+        """Tests that evaluation works with no submitted targets."""
         e = TargetEvaluator([], self.real_targets)
-        d = e.evaluation_dict()
+        d = e.evaluate()
 
-        self.assertEqual(0, d['matched_target_value'])
-        self.assertEqual(0, d['unmatched_target_count'])
-        for td in d['targets'].values():
-            for v in td.values():
-                self.assertEqual('', v)
+        self.assertEqual(0, d.matched_score_ratio)
+        self.assertEqual(0, d.unmatched_target_count)
+        self.assertEqual(0, len(d.targets))
 
-    def test_evaluation_dict_no_real_targets(self):
-        """Tests that evaluation_dict works with no real targets."""
+    def test_evaluate_no_real_targets(self):
+        """Tests that evaluation works with no real targets."""
         e = TargetEvaluator(self.submitted_targets, [])
-        d = e.evaluation_dict()
+        d = e.evaluate()
 
-        self.assertEqual(0, d['matched_target_value'])
-        self.assertEqual(5, d['unmatched_target_count'])
-        self.assertEqual({}, d['targets'])
+        self.assertEqual(0, d.matched_score_ratio)
+        self.assertEqual(7, d.unmatched_target_count)
+        self.assertAlmostEqual(-0.35, d.score_ratio, places=3)
+        self.assertEqual(0, len(d.targets))

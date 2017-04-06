@@ -1,13 +1,17 @@
 """UAS Telemetry model."""
 
+from django.conf import settings
 from django.contrib.auth.models import User
 from django.db import models
 from django.utils import timezone
 
 from access_log import AccessLog
 from aerial_position import AerialPosition
+from auvsi_suas.models import distance
+from auvsi_suas.models import units
 from auvsi_suas.patches.simplekml_patch import AltitudeMode
 from auvsi_suas.patches.simplekml_patch import Color
+from auvsi_suas.proto import mission_pb2
 from takeoff_or_landing_event import TakeoffOrLandingEvent
 from moving_obstacle import MovingObstacle
 import units
@@ -30,6 +34,33 @@ class UasTelemetry(AccessLog):
                        (str(self.pk), self.user.__unicode__(),
                         str(self.timestamp), str(self.uas_heading),
                         self.uas_position.__unicode__()))
+
+    def duplicate(self, other):
+        """Determines whether this UasTelemetry is equivalent to another.
+
+        This differs from the Django __eq__() method which simply compares
+        primary keys. This method compares the field values.
+
+        Args:
+            other: The other log for comparison.
+        Returns:
+            True if they are equal.
+        """
+        return (self.uas_position.duplicate(other.uas_position) and
+                self.uas_heading == other.uas_heading)
+
+    def json(self):
+        ret = {
+            'id': self.pk,
+            'user': self.user.pk,
+            'timestamp': self.timestamp.isoformat(),
+            'latitude': self.uas_position.gps_position.latitude,
+            'longitude': self.uas_position.gps_position.longitude,
+            'altitude_msl': self.uas_position.altitude_msl,
+            'heading': self.uas_heading,
+        }
+
+        return ret
 
     @classmethod
     def by_user(cls, *args, **kwargs):
@@ -79,33 +110,6 @@ class UasTelemetry(AccessLog):
                 prev_log = log
 
         return filtered
-
-    def duplicate(self, other):
-        """Determines whether this UasTelemetry is equivalent to another.
-
-        This differs from the Django __eq__() method which simply compares
-        primary keys. This method compares the field values.
-
-        Args:
-            other: The other log for comparison.
-        Returns:
-            True if they are equal.
-        """
-        return (self.uas_position.duplicate(other.uas_position) and
-                self.uas_heading == other.uas_heading)
-
-    def json(self):
-        ret = {
-            'id': self.pk,
-            'user': self.user.pk,
-            'timestamp': self.timestamp.isoformat(),
-            'latitude': self.uas_position.gps_position.latitude,
-            'longitude': self.uas_position.gps_position.longitude,
-            'altitude_msl': self.uas_position.altitude_msl,
-            'heading': self.uas_heading,
-        }
-
-        return ret
 
     @classmethod
     def kml(cls, user, logs, kml, kml_doc):
@@ -201,6 +205,107 @@ class UasTelemetry(AccessLog):
             linestring.style.linestyle.color = Color.blue
             linestring.style.polystyle.color = Color.changealphaint(100,
                                                                     Color.blue)
+
+    @classmethod
+    def satisfied_waypoints(cls, home_pos, waypoints, uas_telemetry_logs):
+        """Determines whether the UAS satisfied the waypoints.
+
+        Waypoints must be satisfied in order. The entire pattern may be
+        restarted at any point. The best (most waypoints satisfied) attempt
+        will be returned.
+
+        Assumes that waypoints are at least
+        settings.SATISFIED_WAYPOINT_DIST_MAX_FT apart.
+
+        Args:
+            home_pos: The home position for projections.
+            waypoints: A list of waypoints to check against.
+            uas_telemetry_logs: A list of UAS Telemetry logs to evaluate.
+        Returns:
+            A list of auvsi_suas.proto.WaypointEvaluation.
+        """
+        # Use a common projection in distance_to_line based on the home
+        # position.
+        zone, north = distance.utm_zone(home_pos.latitude, home_pos.longitude)
+        utm = distance.proj_utm(zone, north)
+
+        best = {}
+        current = {}
+        closest = {}
+
+        def score_waypoint(distance):
+            """Scores a single waypoint."""
+            return max(
+                0, float(settings.SATISFIED_WAYPOINT_DIST_MAX_FT - distance) /
+                settings.SATISFIED_WAYPOINT_DIST_MAX_FT)
+
+        def score_waypoint_sequence(sequence):
+            """Returns scores given distances to a sequence of waypoints."""
+            score = {}
+            for i in range(0, len(waypoints)):
+                score[i] = \
+                    score_waypoint(sequence[i]) if i in sequence else 0.0
+            return score
+
+        def best_run(prev_best, current):
+            """Returns the best of the current run and the previous best."""
+            prev_best_scores = score_waypoint_sequence(prev_best)
+            current_scores = score_waypoint_sequence(current)
+            if sum(current_scores.values()) > sum(prev_best_scores.values()):
+                return current, current_scores
+            return prev_best, prev_best_scores
+
+        prev_wpt, curr_wpt = -1, 0
+
+        for uas_log in uas_telemetry_logs:
+            # At any point the UAV may restart the waypoint pattern, at which
+            # point we reset the counters.
+            d0 = uas_log.uas_position.distance_to(waypoints[0].position)
+            if d0 < settings.SATISFIED_WAYPOINT_DIST_MAX_FT:
+                best = best_run(best, current)[0]
+
+                # Reset current to default values.
+                current = {}
+                prev_wpt, curr_wpt = -1, 0
+
+            # The UAS may pass closer to the waypoint after achieving the capture
+            # threshold. so continue to look for better passes of the previous
+            # waypoint until the next is reched.
+            if prev_wpt >= 0:
+                dp = uas_log.uas_position.distance_to(waypoints[
+                    prev_wpt].position)
+                if dp < closest[prev_wpt]:
+                    closest[prev_wpt] = dp
+                    current[prev_wpt] = dp
+
+            # If the UAS has satisfied all of the waypoints, await starting the
+            # waypoint pattern again.
+            if curr_wpt >= len(waypoints):
+                continue
+
+            d = uas_log.uas_position.distance_to(waypoints[curr_wpt].position)
+            if curr_wpt not in closest or d < closest[curr_wpt]:
+                closest[curr_wpt] = d
+
+            if d < settings.SATISFIED_WAYPOINT_DIST_MAX_FT:
+                current[curr_wpt] = d
+                curr_wpt += 1
+                prev_wpt += 1
+
+        best, scores = best_run(best, current)
+
+        # Convert to evaluation.
+        waypoint_evals = []
+        for ix, waypoint in enumerate(waypoints):
+            waypoint_eval = mission_pb2.WaypointEvaluation()
+            waypoint_eval.id = ix
+            waypoint_eval.score_ratio = scores.get(ix, 0)
+            if ix in best:
+                waypoint_eval.closest_for_scored_approach_ft = best[ix]
+            if ix in closest:
+                waypoint_eval.closest_for_mission_ft = closest[ix]
+            waypoint_evals.append(waypoint_eval)
+        return waypoint_evals
 
     @staticmethod
     def _is_bad_position(log, threshold):

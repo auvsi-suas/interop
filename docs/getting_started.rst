@@ -152,7 +152,6 @@ Engine Installation <https://docs.docker.com/engine/installation/>`__ guide.
 
     cd ~/interop
     sudo ./tools/setup_docker.sh
-    sudo ./tools/setup_tools.sh
 
 
 auvsisuas/interop-server
@@ -302,8 +301,7 @@ button on the mission dashboard to learn how to use this interface.
    * *Dashboard*. Navigates to the dashboard showing all mission elements,
      active team details, etc.
    * *Review Targets*. Navigates to the page to review targets submitted.
-   * *Evaluate Teams (CSV)*. Evaluates the teams for the mission being viewed.
-     This is otherwise the same as the System link.
+   * *Evaluate Teams*. Navigates to the page to download team evaluations.
 
 
 **Django Admin Dashboard**. From the SUAS Admin Dashboard, you can use the menu
@@ -435,30 +433,39 @@ The following shows how to upload a target and it's image.
         client.put_target_image(target.id, image_data)
 
 
-Mission Planner Script
-~~~~~~~~~~~~~~~~~~~~~~
+MAVLink (ArduPilot) Integration
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-The Interop Client Image comes with `Mission Planner
-<http://ardupilot.org/planner/docs/mission-planner-overview.html>`__
-integration. This code lives in the `client/missionplanner
-<https://github.com/auvsi-suas/interop/tree/master/client/missionplanner>`__
-folder, found in the repository or the image.
+The Interop Client Image comes with MAVLink integration. Teams can use the
+``interop_cli.py`` command line tool to forward MAVLink messages to the
+interoperability server.
 
-This code requires that the interoperability client ``interop`` module and its
-dependencies are installed on the system and available in ``PYTHONPATH``.
+**MavProxy**. The competition recommends using `MavProxy
+<https://github.com/ArduPilot/MAVProxy>`__ to tee traffic, so that telemetry
+goes to the Ground Control Station (e.g. `Mission Planner
+<http://ardupilot.org/planner/docs/mission-planner-overview.html>`__) and also
+to the ``interop_cli.py`` tool. See the `Getting Started
+<http://ardupilot.github.io/MAVProxy/html/getting_started/download_and_installation.html>`__
+guide for how to install and use the proxy. The specific command to use depends
+on the setup. An example invocation to proxy one input stream to two output
+streams:
 
-`auvsi_mp.py
-<https://github.com/auvsi-suas/interop/blob/master/client/missionplanner/auvsi_mp.py>`__
-is run as a script inside of Mission Planner. It polls for a change in aircraft
-telemetry, and on change sends the telemetry to the interoperability server. It
-also prints out errors detected and the average upload rate over the last 10
-seconds.
+.. code-block:: bash
 
-Inside Mission Planner, open the script console (under Actions in the Flight
-Data panel) and paste the contents of ``auvsi_mp.py`` into the window. Add a
-line to add the interoperability client library to the system path. Modify
-the script constants to provide settings like the interop server URL. When you
-close the window, the script will immediately start executing.
+    mavproxy.py --out=127.0.0.1:14550 --out=127.0.0.1:14551
+
+**Interop Forwarding**. You can use the ``inteorp_cli.py`` to read a MAVLink
+input stream, convert to telemetry messages, and forward to the
+interoperability server. From the Interop Client Image:
+
+.. code-block:: bash
+
+    ./tools/interop_cli.py --url http://10.10.130.2:8000 --username testuser \
+        mavlink --device 127.0.0.1:14550
+
+**Ground Control Station**. You can use a GCS like Mission Planner to control
+the MAVLink-based autopilot. Configure the program to read the other
+``MavProxy`` output port (in the example, ``14551``).
 
 
 Performance Evaluation

@@ -1,7 +1,7 @@
 """Tests for the aerial_position module."""
 
-from auvsi_suas.models import AerialPosition
-from auvsi_suas.models import GpsPosition
+from auvsi_suas.models.aerial_position import AerialPosition
+from auvsi_suas.models.gps_position import GpsPosition
 from django.test import TestCase
 
 

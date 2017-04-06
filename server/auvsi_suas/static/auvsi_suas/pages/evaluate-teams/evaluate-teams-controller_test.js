@@ -37,8 +37,7 @@ describe("EvaluateTeamsCtrl controller", function() {
     it("Should get evaluate teams", function() {
         httpBackend.flush();
         evaluateTeamsCtrl.selectedTeamId = '1';
-        evaluateTeamsCtrl.selectedExtension = 'Csv';
-        window.expectUrl = '/auvsi_admin/evaluate_teams.csv?team=1';
+        window.expectUrl = '/auvsi_admin/evaluate_teams.zip?team=1';
         evaluateTeamsCtrl.evaluate();
     });
 });

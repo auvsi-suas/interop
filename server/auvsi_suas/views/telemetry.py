@@ -2,9 +2,9 @@
 
 import iso8601
 import json
-from auvsi_suas.models import AerialPosition
-from auvsi_suas.models import GpsPosition
-from auvsi_suas.models import UasTelemetry
+from auvsi_suas.models.aerial_position import AerialPosition
+from auvsi_suas.models.gps_position import GpsPosition
+from auvsi_suas.models.uas_telemetry import UasTelemetry
 from auvsi_suas.views import logger
 from auvsi_suas.views.decorators import require_login
 from auvsi_suas.views.decorators import require_superuser

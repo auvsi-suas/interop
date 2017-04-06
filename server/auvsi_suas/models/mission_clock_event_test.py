@@ -1,8 +1,8 @@
 """Tests for the mission_clock_event module."""
 
 import datetime
-from auvsi_suas.models import MissionClockEvent
-from auvsi_suas.models import TimePeriod
+from auvsi_suas.models.mission_clock_event import MissionClockEvent
+from auvsi_suas.models.time_period import TimePeriod
 from auvsi_suas.models.access_log_test import TestAccessLogCommon
 from django.utils import timezone
 
