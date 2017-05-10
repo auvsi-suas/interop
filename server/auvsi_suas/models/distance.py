@@ -104,7 +104,7 @@ def proj_utm(zone, north):
     """
     ref = "+proj=utm +zone=%d +ellps=WGS84" % zone
     if not north:
-        reg += " +south"
+        ref += " +south"
     return pyproj.Proj(ref)
 
 
