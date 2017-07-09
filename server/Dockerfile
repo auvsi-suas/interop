@@ -62,6 +62,7 @@ COPY . .
 
 # Load initial data.
 RUN sudo service postgresql start && \
+    sleep 10 && \
     python manage.py loaddata fixtures/test_fixture.yaml
 
 # Host-mountable sections.
