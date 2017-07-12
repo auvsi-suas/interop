@@ -11,6 +11,7 @@ import argparse
 import requests
 import retrying
 import socket
+import subprocess
 
 MAX_DELAY = 5 * 60 * 1000  # 5 minutes.
 WAIT = 1 * 1000  # 1 sec.
@@ -18,10 +19,9 @@ WAIT = 1 * 1000  # 1 sec.
 
 @retrying.retry(wait_fixed=WAIT, stop_max_delay=MAX_DELAY)
 def check_postgres(host, port):
-    """Check postgres health by attempting to create a TCP connection."""
-    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    s.connect((host, port))
-    s.close()
+    """Check postgres health by querying pg_isready command line tool."""
+    if subprocess.call(["pg_isready", "-q"]) == 1:
+        raise Exception("PG not ready")
 
 
 @retrying.retry(wait_fixed=WAIT, stop_max_delay=MAX_DELAY)
