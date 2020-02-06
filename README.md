@@ -670,7 +670,7 @@ entirely on one line.
 ```http
 HTTP/1.1 200 OK
 Content-Type: application/json
-[
+[{
   "team": {
     "id": 2,
     "username": "testuser",
@@ -687,7 +687,7 @@ Content-Type: application/json
   "telemetryId": "1278",
   "telemetryAgeSec": 1.064382,
   "telemetryTimestamp": "2019-10-05T20:42:23.643989+00:00"
-]
+}]
 ```
 
 #### Missions
