@@ -2,7 +2,10 @@ version: '3.2'
 
 services:
   interop-db:
-    image: postgres
+    image: postgres:9.6.17
+    environment:
+        POSTGRES_USER: postgres
+        POSTGRES_PASSWORD: postgres
     volumes:
       - ./volumes/var/lib/postgresql/data:/var/lib/postgresql/data
   interop-server:

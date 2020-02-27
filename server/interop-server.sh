@@ -20,8 +20,15 @@ fi
 if [ "$1" == "create_db" ]
 then
     docker-compose run interop-server ./healthcheck.py --postgres_host interop-db --check_postgres
-    docker-compose run interop-server psql -h interop-db -U postgres -c "CREATE DATABASE auvsi_suas_db;"
+    docker-compose run interop-server psql "postgresql://postgres:postgres@interop-db" -c "CREATE DATABASE auvsi_suas_db;"
     docker-compose run interop-server ./manage.py migrate
+fi
+
+# Drops the database. Dangerous!
+if [ "$1" == "drop_db" ]
+then
+    docker-compose run interop-server ./healthcheck.py --postgres_host interop-db --check_postgres
+    docker-compose run interop-server psql "postgresql://postgres:postgres@interop-db" -c "DROP DATABASE auvsi_suas_db;"
 fi
 
 # Loads test data. Optional, only needs to be done once.

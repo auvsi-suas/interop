@@ -73,11 +73,13 @@ TEMPLATES = [
 
 # Database
 # https://docs.djangoproject.com/en/1.11/ref/settings/#databases
+# SECURITY WARNING: change the database superuser password!
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'auvsi_suas_db',
         'USER': 'postgres',
+        'PASSWORD': 'postgres',
         'CONN_MAX_AGE': None,
         'HOST': 'interop-db',
         'PORT': '5432',
