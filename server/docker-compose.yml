@@ -19,6 +19,8 @@ services:
       - ./volumes/mount:/mount
       - ./volumes/logs/uwsgi:/var/log/uwsgi
       - ./volumes/var/www/media/objects:/var/www/media/objects
+      - ./scripts:/interop/scripts
+
     ports:
       - "8000:80"
     depends_on:
