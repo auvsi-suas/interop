@@ -1,12 +1,11 @@
-from django.conf.urls import include
-from django.conf.urls import url
+from django.urls import include, path
 from django.contrib import admin
 
 admin.autodiscover()
 
 # yapf: disable
 urlpatterns = [
-    url(r'^admin/', include(admin.site.urls)),
-    url(r'^', include('auvsi_suas.views.urls', namespace="auvsi_suas")),
+    path('admin/', admin.site.urls),
+    path('', include('auvsi_suas.views.urls', namespace="auvsi_suas")),
 ]
 # yapf: enable

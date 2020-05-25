@@ -5,8 +5,8 @@ import io
 import json
 from auvsi_suas.proto import interop_admin_api_pb2
 from django.contrib.auth.models import User
-from django.core.urlresolvers import reverse
 from django.test import TestCase
+from django.urls import reverse
 from google.protobuf import json_format
 
 gps_conversion_url = reverse('auvsi_suas:gps_conversion')

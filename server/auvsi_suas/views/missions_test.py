@@ -8,9 +8,9 @@ from auvsi_suas.models import test_utils
 from auvsi_suas.models.gps_position import GpsPosition
 from auvsi_suas.models.mission_config import MissionConfig
 from django.contrib.auth.models import User
-from django.core.urlresolvers import reverse
 from django.test import TestCase
 from django.test.client import Client
+from django.urls import reverse
 from xml.etree import ElementTree
 
 missions_url = reverse('auvsi_suas:missions')

@@ -2,7 +2,7 @@ version: '3.2'
 
 services:
   interop-db:
-    image: postgres:9.6.17
+    image: postgres:12.3
     environment:
         POSTGRES_USER: postgres
         POSTGRES_PASSWORD: postgres

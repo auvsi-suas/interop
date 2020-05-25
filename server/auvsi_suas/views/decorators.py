@@ -15,7 +15,7 @@ def require_login(func):
     """
 
     def check_login(user):
-        if not user.is_authenticated():
+        if not user.is_authenticated:
             raise PermissionDenied('Login required.')
         return True
 

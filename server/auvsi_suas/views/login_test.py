@@ -2,8 +2,8 @@
 
 from auvsi_suas.proto.interop_api_pb2 import Credentials
 from django.contrib.auth.models import User
-from django.core.urlresolvers import reverse
 from django.test import TestCase
+from django.urls import reverse
 from google.protobuf import json_format
 
 login_url = reverse('auvsi_suas:login')

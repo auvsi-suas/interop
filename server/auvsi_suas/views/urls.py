@@ -16,7 +16,7 @@ from auvsi_suas.views.teams import Team
 from auvsi_suas.views.telemetry import Telemetry
 from auvsi_suas.views.utils import BulkCreateTeams
 from auvsi_suas.views.utils import GpsConversion
-from django.conf.urls import url
+from django.urls import path
 from django.conf import settings
 from django.conf.urls.static import static
 
@@ -24,24 +24,24 @@ app_name = 'auvsi_suas'
 
 # yapf: disable
 urlpatterns = [
-    url(r'^$', Index.as_view(), name='index'),
-    url(r'^api/login$', Login.as_view(), name='login'),
-    url(r'^api/missions$', Missions.as_view(), name='missions'),
-    url(r'^api/missions/(?P<pk>\d+)$', MissionsId.as_view(), name='missions_id'),
-    url(r'^api/missions/(?P<pk>\d+)/evaluate\.zip$', Evaluate.as_view(), name='evaluate'),
-    url(r'^api/missions/(?P<pk>\d+)/mission.html$', MissionDetails.as_view(), name='details'),
-    url(r'^api/missions/export\.kml$', ExportKml.as_view(), name='export_kml'),
-    url(r'^api/missions/live\.kml$', LiveKml.as_view(), name='live_kml'),
-    url(r'^api/missions/update\.kml$', LiveKmlUpdate.as_view(), name='update_kml'),
-    url(r'^api/odlcs$', Odlcs.as_view(), name='odlcs'),
-    url(r'^api/odlcs/(?P<pk>\d+)$', OdlcsId.as_view(), name='odlcs_id'),
-    url(r'^api/odlcs/(?P<pk>\d+)/image$', OdlcsIdImage.as_view(), name='odlcs_id_image'),
-    url(r'^api/odlcs/review$', OdlcsAdminReview.as_view(), name='odlcs_review'),
-    url(r'^api/odlcs/review/(?P<pk>\d+)$', OdlcsAdminReview.as_view(), name='odlcs_review_id'),
-    url(r'^api/teams$', Teams.as_view(), name='teams'),
-    url(r'^api/teams/(?P<username>.+)$', Team.as_view(), name='team'),
-    url(r'^api/telemetry$', Telemetry.as_view(), name='telemetry'),
-    url(r'^api/utils/gps_conversion$', GpsConversion.as_view(), name='gps_conversion'),
-    url(r'^api/utils/bulk_create_teams$', BulkCreateTeams.as_view(), name='bulk_create_teams'),
+    path('', Index.as_view(), name='index'),
+    path('api/login', Login.as_view(), name='login'),
+    path('api/missions', Missions.as_view(), name='missions'),
+    path('api/missions/<int:pk>', MissionsId.as_view(), name='missions_id'),
+    path('api/missions/<int:pk>/evaluate.zip', Evaluate.as_view(), name='evaluate'),
+    path('api/missions/<int:pk>/mission.html', MissionDetails.as_view(), name='details'),
+    path('api/missions/export.kml', ExportKml.as_view(), name='export_kml'),
+    path('api/missions/live.kml', LiveKml.as_view(), name='live_kml'),
+    path('api/missions/update.kml', LiveKmlUpdate.as_view(), name='update_kml'),
+    path('api/odlcs', Odlcs.as_view(), name='odlcs'),
+    path('api/odlcs/<int:pk>', OdlcsId.as_view(), name='odlcs_id'),
+    path('api/odlcs/<int:pk>/image', OdlcsIdImage.as_view(), name='odlcs_id_image'),
+    path('api/odlcs/review', OdlcsAdminReview.as_view(), name='odlcs_review'),
+    path('api/odlcs/review/<int:pk>', OdlcsAdminReview.as_view(), name='odlcs_review_id'),
+    path('api/teams', Teams.as_view(), name='teams'),
+    path('api/teams/<str:username>', Team.as_view(), name='team'),
+    path('api/telemetry', Telemetry.as_view(), name='telemetry'),
+    path('api/utils/gps_conversion', GpsConversion.as_view(), name='gps_conversion'),
+    path('api/utils/bulk_create_teams', BulkCreateTeams.as_view(), name='bulk_create_teams'),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 # yapf: enable

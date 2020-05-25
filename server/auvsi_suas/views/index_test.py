@@ -1,7 +1,7 @@
 """Tests for the index module."""
 from django.contrib.auth.models import User
-from django.core.urlresolvers import reverse
 from django.test import TestCase
+from django.urls import reverse
 
 index_url = reverse('auvsi_suas:index')
 

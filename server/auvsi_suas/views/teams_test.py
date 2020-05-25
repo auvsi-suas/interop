@@ -10,8 +10,8 @@ from auvsi_suas.models.takeoff_or_landing_event import TakeoffOrLandingEvent
 from auvsi_suas.models.uas_telemetry import UasTelemetry
 from auvsi_suas.models.waypoint import Waypoint
 from django.contrib.auth.models import User
-from django.core.urlresolvers import reverse
 from django.test import TestCase
+from django.urls import reverse
 from django.utils import timezone
 
 teams_url = reverse('auvsi_suas:teams')

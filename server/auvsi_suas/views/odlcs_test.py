@@ -12,8 +12,8 @@ from auvsi_suas.proto import interop_api_pb2
 from django.conf import settings
 from django.contrib.auth.models import User
 from django.core.files.images import ImageFile
-from django.core.urlresolvers import reverse
 from django.test import TestCase
+from django.urls import reverse
 
 odlcs_url = reverse('auvsi_suas:odlcs')
 odlcs_id_url = functools.partial(reverse, 'auvsi_suas:odlcs_id')

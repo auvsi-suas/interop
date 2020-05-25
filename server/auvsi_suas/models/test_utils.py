@@ -17,8 +17,8 @@ from auvsi_suas.models.takeoff_or_landing_event import TakeoffOrLandingEvent
 from auvsi_suas.models.waypoint import Waypoint
 from auvsi_suas.proto import interop_admin_api_pb2
 from auvsi_suas.proto import interop_api_pb2
-from django.core.urlresolvers import reverse
 from django.test import Client
+from django.urls import reverse
 from google.protobuf import json_format
 
 logger = logging.getLogger(__name__)
