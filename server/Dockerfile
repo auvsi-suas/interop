@@ -1,4 +1,4 @@
-FROM ubuntu:18.04
+FROM ubuntu:20.04
 WORKDIR /interop/server
 
 # Set the time zone to the competition time zone.
