@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # CLI for interacting with interop server.
 
 from __future__ import print_function

@@ -4,4 +4,4 @@
 CLIENT=$(dirname ${BASH_SOURCE[0]})
 
 export PYTHONPATH=$CLIENT
-source ${CLIENT}/venv2/bin/activate
+source ${CLIENT}/venv/bin/activate

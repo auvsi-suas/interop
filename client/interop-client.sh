@@ -39,16 +39,10 @@ then
     docker run --net="host" -it auvsisuas/interop-client bash -c \
         "export PYTHONPATH=/interop/client && \
          cd /interop/client && \
-         source venv2/bin/activate && \
-         python /usr/bin/nosetests auvsi_suas.client && \
+         source venv/bin/activate && \
+         python3 /usr/bin/nosetests3 auvsi_suas.client && \
          deactivate && \
-         source venv3/bin/activate && \
-         python /usr/bin/nosetests auvsi_suas.client && \
-         deactivate && \
-         source venv2/bin/activate && \
-         python /usr/bin/nosetests tools && \
-         deactivate && \
-         source venv3/bin/activate && \
-         python /usr/bin/nosetests tools && \
+         source venv/bin/activate && \
+         python3 /usr/bin/nosetests3 tools && \
          deactivate"
 fi

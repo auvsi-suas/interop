@@ -8,15 +8,9 @@ RUN apt-get -qq update && apt-get -qq install -y \
         libxml2-dev \
         libxslt-dev \
         protobuf-compiler \
-        python \
-        python-dev \
-        python-lxml \
-        python-nose \
-        python-pip \
-        python-pyproj \
-        python-virtualenv \
         python3 \
         python3-dev \
+        python3-venv \
         python3-nose \
         python3-pip \
         python3-pyproj \
@@ -26,24 +20,15 @@ RUN apt-get -qq update && apt-get -qq install -y \
 COPY client/requirements.txt .
 
 RUN bash -c "cd /interop/client && \
-        virtualenv --system-site-packages -p /usr/bin/python2 venv2 && \
-        source venv2/bin/activate && \
-        pip install -r requirements.txt && \
-        deactivate" && \
-    bash -c "cd /interop/client && \
-        virtualenv --system-site-packages -p /usr/bin/python3 venv3 && \
-        source venv3/bin/activate && \
+        python3 -m venv --system-site-packages venv && \
+        source venv/bin/activate && \
         pip3 install -r requirements.txt && \
         deactivate"
 
 COPY proto/ ../proto
 COPY client/ .
 RUN bash -c "cd /interop/client && \
-        source venv2/bin/activate && \
-        python setup.py install && \
-        deactivate" && \
-    bash -c "cd /interop/client && \
-        source venv3/bin/activate && \
+        source venv/bin/activate && \
         python3 setup.py install && \
         deactivate"
 
