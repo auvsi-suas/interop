@@ -48,8 +48,8 @@ class UasTelemetry(AccessLogMixin, AerialPositionMixin):
         Returns:
             True if they are equal.
         """
-        return (super(UasTelemetry, self).duplicate(other) and
-                self.uas_heading == other.uas_heading)
+        return (super(UasTelemetry, self).duplicate(other)
+                and self.uas_heading == other.uas_heading)
 
     @classmethod
     def by_user(cls, *args, **kwargs):
@@ -105,11 +105,10 @@ class UasTelemetry(AccessLogMixin, AerialPositionMixin):
         Returns:
             A list containing the non-bad logs.
         """
-
         def _is_good(log):
             # Positions near (0,0) are likely GPS/autopilot noise.
-            return max(abs(log.latitude),
-                       abs(log.longitude)) > BAD_TELEMETRY_THRESHOLD_DEGREES
+            return max(abs(log.latitude), abs(
+                log.longitude)) > BAD_TELEMETRY_THRESHOLD_DEGREES
 
         return filter(lambda log: _is_good(log), logs)
 
@@ -141,8 +140,8 @@ class UasTelemetry(AccessLogMixin, AerialPositionMixin):
             t = log.timestamp + step
             while t < next_log.timestamp:
                 n_w = (t - log.timestamp).total_seconds() / dt.total_seconds()
-                w = (next_log.timestamp - t
-                     ).total_seconds() / dt.total_seconds()
+                w = (next_log.timestamp -
+                     t).total_seconds() / dt.total_seconds()
                 weighted_avg = lambda v, n_v: w * v + n_w * n_v
 
                 telem = UasTelemetry()
@@ -186,9 +185,10 @@ class UasTelemetry(AccessLogMixin, AerialPositionMixin):
             for iw, waypoint in enumerate(waypoints):
                 dist = log.distance_to(waypoint)
                 best[iw] = min(best.get(iw, dist), dist)
-                score = max(0,
-                            float(SATISFIED_WAYPOINT_DIST_MAX_FT - dist) /
-                            SATISFIED_WAYPOINT_DIST_MAX_FT)
+                score = max(
+                    0,
+                    float(SATISFIED_WAYPOINT_DIST_MAX_FT - dist) /
+                    SATISFIED_WAYPOINT_DIST_MAX_FT)
                 if score > 0:
                     hits.append((iw, dist, score))
         # Remove redundant hits which wouldn't be part of best sequence.

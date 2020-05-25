@@ -35,30 +35,32 @@ class Odlc(models.Model):
     # The mission this is an ODLC for.
     mission = models.ForeignKey('MissionConfig', on_delete=models.CASCADE)
     # The user which submitted and owns this object detection.
-    user = models.ForeignKey(
-        settings.AUTH_USER_MODEL, db_index=True, on_delete=models.CASCADE)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL,
+                             db_index=True,
+                             on_delete=models.CASCADE)
     # Object type.
     odlc_type = models.IntegerField(
         choices=pb_utils.FieldChoicesFromEnum(interop_api_pb2.Odlc.Type))
     # Object location.
-    location = models.ForeignKey(
-        GpsPosition, null=True, blank=True, on_delete=models.CASCADE)
+    location = models.ForeignKey(GpsPosition,
+                                 null=True,
+                                 blank=True,
+                                 on_delete=models.CASCADE)
     # Object orientation.
-    orientation = models.IntegerField(
-        choices=pb_utils.FieldChoicesFromEnum(
-            interop_api_pb2.Odlc.Orientation),
-        null=True,
-        blank=True)
+    orientation = models.IntegerField(choices=pb_utils.FieldChoicesFromEnum(
+        interop_api_pb2.Odlc.Orientation),
+                                      null=True,
+                                      blank=True)
     # Object shape.
-    shape = models.IntegerField(
-        choices=pb_utils.FieldChoicesFromEnum(interop_api_pb2.Odlc.Shape),
-        null=True,
-        blank=True)
+    shape = models.IntegerField(choices=pb_utils.FieldChoicesFromEnum(
+        interop_api_pb2.Odlc.Shape),
+                                null=True,
+                                blank=True)
     # Object background color.
-    shape_color = models.IntegerField(
-        choices=pb_utils.FieldChoicesFromEnum(interop_api_pb2.Odlc.Color),
-        null=True,
-        blank=True)
+    shape_color = models.IntegerField(choices=pb_utils.FieldChoicesFromEnum(
+        interop_api_pb2.Odlc.Color),
+                                      null=True,
+                                      blank=True)
     # Object alphanumeric.
     alphanumeric = models.TextField(default='', blank=True)
     # Object alphanumeric color.
@@ -122,8 +124,8 @@ class Odlc(models.Model):
             interop_api_pb2.Odlc.W: interop_api_pb2.Odlc.E,
             interop_api_pb2.Odlc.NW: interop_api_pb2.Odlc.SE,
         }
-        if (self.alphanumeric in accepts_rotation and
-                rotated[self.orientation] == other.orientation):
+        if (self.alphanumeric in accepts_rotation
+                and rotated[self.orientation] == other.orientation):
             return True
 
         return False
@@ -176,7 +178,6 @@ class Odlc(models.Model):
 
 class OdlcEvaluator(object):
     """Evaluates submitted objects against real judge-made objects."""
-
     def __init__(self, submitted_objects, real_objects, flights):
         """Creates an evaluation of submitted objects against real objects.
 
@@ -250,8 +251,8 @@ class OdlcEvaluator(object):
         # Compute values which influence score and are provided as feedback.
         if submitted.thumbnail_approved is not None:
             object_eval.image_approved = submitted.thumbnail_approved
-        if (submitted.odlc_type == interop_api_pb2.Odlc.EMERGENT and
-                submitted.description_approved is not None):
+        if (submitted.odlc_type == interop_api_pb2.Odlc.EMERGENT
+                and submitted.description_approved is not None):
             object_eval.description_approved = submitted.description_approved
         object_eval.classifications_ratio = real.similar_classifications_ratio(
             submitted)
@@ -338,8 +339,8 @@ class OdlcEvaluator(object):
             for real in real_objects:
                 match_value = self.evaluate_match(submitted, real).score_ratio
                 inverted_autonomy = (
-                    real in matches and
-                    submitted.autonomous != matches[real].autonomous)
+                    real in matches
+                    and submitted.autonomous != matches[real].autonomous)
                 if match_value and inverted_autonomy:
                     # We care about minimizing unmatched, not match weight, so
                     # use weight of 1.

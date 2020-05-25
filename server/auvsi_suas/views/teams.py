@@ -44,7 +44,6 @@ def team_proto(user):
 
 class Teams(View):
     """Gets a list of all teams."""
-
     @method_decorator(require_login)
     def dispatch(self, *args, **kwargs):
         return super(Teams, self).dispatch(*args, **kwargs)
@@ -58,14 +57,12 @@ class Teams(View):
             if not user.is_superuser:
                 teams.append(team_proto(user))
 
-        return HttpResponse(
-            json.dumps(teams, cls=ProtoJsonEncoder),
-            content_type="application/json")
+        return HttpResponse(json.dumps(teams, cls=ProtoJsonEncoder),
+                            content_type="application/json")
 
 
 class Team(View):
     """GET a specific team."""
-
     @method_decorator(require_login)
     def dispatch(self, *args, **kwargs):
         return super(Team, self).dispatch(*args, **kwargs)
@@ -76,6 +73,5 @@ class Team(View):
         except User.DoesNotExist:
             return HttpResponseBadRequest('Unknown team %s' % username)
 
-        return HttpResponse(
-            json_format.MessageToJson(team_proto(user)),
-            content_type="application/json")
+        return HttpResponse(json_format.MessageToJson(team_proto(user)),
+                            content_type="application/json")

@@ -74,8 +74,8 @@ class FlyZone(models.Model):
         for aerial_pos in aerial_pos_list:
             # Check altitude bounds
             alt = aerial_pos.altitude_msl
-            altitude_check = (alt <= self.altitude_msl_max and
-                              alt >= self.altitude_msl_min)
+            altitude_check = (alt <= self.altitude_msl_max
+                              and alt >= self.altitude_msl_min)
             results.append(altitude_check)
 
         # Create a list of positions to test whether inside polygon

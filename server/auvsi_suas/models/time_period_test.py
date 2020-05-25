@@ -10,7 +10,6 @@ Event = namedtuple('Event', ['timestamp', 'start'])
 
 class TestTimePeriod(TestCase):
     """Tests the TimePeriod object."""
-
     def setUp(self):
         self.is_start_func = lambda x: x.start
         self.is_end_func = lambda x: not x.start
@@ -20,15 +19,17 @@ class TestTimePeriod(TestCase):
         # No periods.
         events = []
         expected = []
-        self.assertEqual(expected,
-                         TimePeriod.from_events(events, self.is_start_func,
-                                                self.is_end_func))
+        self.assertEqual(
+            expected,
+            TimePeriod.from_events(events, self.is_start_func,
+                                   self.is_end_func))
         # Standard period.
         events = [Event(0, True), Event(1, False)]
         expected = [TimePeriod(0, 1)]
-        self.assertEqual(expected,
-                         TimePeriod.from_events(events, self.is_start_func,
-                                                self.is_end_func))
+        self.assertEqual(
+            expected,
+            TimePeriod.from_events(events, self.is_start_func,
+                                   self.is_end_func))
         # Multiple periods.
         events = [
             Event(0, True),
@@ -37,36 +38,41 @@ class TestTimePeriod(TestCase):
             Event(3, False)
         ]
         expected = [TimePeriod(0, 1), TimePeriod(2, 3)]
-        self.assertEqual(expected,
-                         TimePeriod.from_events(events, self.is_start_func,
-                                                self.is_end_func))
+        self.assertEqual(
+            expected,
+            TimePeriod.from_events(events, self.is_start_func,
+                                   self.is_end_func))
 
     def test_from_events_invalid(self):
         """Tests from_events() with invalid situations."""
         # No start.
         events = [Event(0, False)]
         expected = [TimePeriod(None, 0)]
-        self.assertEqual(expected,
-                         TimePeriod.from_events(events, self.is_start_func,
-                                                self.is_end_func))
+        self.assertEqual(
+            expected,
+            TimePeriod.from_events(events, self.is_start_func,
+                                   self.is_end_func))
         # No end.
         events = [Event(0, True)]
         expected = [TimePeriod(0, None)]
-        self.assertEqual(expected,
-                         TimePeriod.from_events(events, self.is_start_func,
-                                                self.is_end_func))
+        self.assertEqual(
+            expected,
+            TimePeriod.from_events(events, self.is_start_func,
+                                   self.is_end_func))
         # Multiple start.
         events = [Event(0, True), Event(1, True), Event(2, False)]
         expected = [TimePeriod(0, 2)]
-        self.assertEqual(expected,
-                         TimePeriod.from_events(events, self.is_start_func,
-                                                self.is_end_func))
+        self.assertEqual(
+            expected,
+            TimePeriod.from_events(events, self.is_start_func,
+                                   self.is_end_func))
         # Multiple end.
         events = [Event(0, True), Event(1, False), Event(2, False)]
         expected = [TimePeriod(0, 1)]
-        self.assertEqual(expected,
-                         TimePeriod.from_events(events, self.is_start_func,
-                                                self.is_end_func))
+        self.assertEqual(
+            expected,
+            TimePeriod.from_events(events, self.is_start_func,
+                                   self.is_end_func))
 
     def test_eq(self):
         """Tests TimePeriod equality."""
@@ -101,9 +107,8 @@ class TestTimePeriod(TestCase):
 
     def test_within_standard(self):
         """Tests the within method with defined start and end."""
-        t = TimePeriod(
-            start=datetime.datetime(2000, 1, 1),
-            end=datetime.datetime(2001, 1, 1))
+        t = TimePeriod(start=datetime.datetime(2000, 1, 1),
+                       end=datetime.datetime(2001, 1, 1))
 
         # Clearly within
         self.assertTrue(t.within(datetime.datetime(2000, 6, 1)))
@@ -161,7 +166,6 @@ class TestTimePeriod(TestCase):
 
     def test_duration_finite(self):
         """Tests the duration with endpoints and finite time."""
-        t = TimePeriod(
-            start=datetime.datetime(2000, 1, 1),
-            end=datetime.datetime(2000, 1, 2))
+        t = TimePeriod(start=datetime.datetime(2000, 1, 1),
+                       end=datetime.datetime(2000, 1, 2))
         self.assertEqual(datetime.timedelta(days=1), t.duration())

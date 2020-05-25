@@ -107,7 +107,6 @@ def mission_proto(mission):
 
 class Missions(View):
     """Handles requests for all missions."""
-
     @method_decorator(require_superuser)
     def dispatch(self, *args, **kwargs):
         return super(Missions, self).dispatch(*args, **kwargs)
@@ -118,14 +117,12 @@ class Missions(View):
         for mission in missions:
             out.append(mission_proto(mission))
 
-        return HttpResponse(
-            json.dumps(out, cls=ProtoJsonEncoder),
-            content_type="application/json")
+        return HttpResponse(json.dumps(out, cls=ProtoJsonEncoder),
+                            content_type="application/json")
 
 
 class MissionsId(View):
     """Handles requests for a specific mission."""
-
     @method_decorator(require_login)
     def dispatch(self, *args, **kwargs):
         return super(MissionsId, self).dispatch(*args, **kwargs)
@@ -136,9 +133,8 @@ class MissionsId(View):
         except MissionConfig.DoesNotExist:
             return HttpResponseNotFound('Mission %s not found.' % pk)
 
-        return HttpResponse(
-            json_format.MessageToJson(mission_proto(mission)),
-            content_type="application/json")
+        return HttpResponse(json_format.MessageToJson(mission_proto(mission)),
+                            content_type="application/json")
 
 
 def fly_zone_kml(fly_zone, kml):
@@ -216,8 +212,8 @@ def mission_kml(mission, kml, kml_doc):
         waypoints.append(coord)
 
         # Add waypoint marker
-        p = waypoints_folder.newpoint(
-            name='Waypoint %d' % (i + 1), coords=[coord])
+        p = waypoints_folder.newpoint(name='Waypoint %d' % (i + 1),
+                                      coords=[coord])
         p.iconstyle.icon.href = KML_WAYPOINT_ICON
         p.description = str(waypoint)
         p.altitudemode = AltitudeMode.absolute
@@ -257,8 +253,8 @@ def mission_kml(mission, kml, kml_doc):
             py = cy + rm * math.sin(angle)
             lon, lat = proj(px, py, inverse=True)
             obst_points.append((lon, lat, hm))
-        pol = stationary_obstacles_folder.newpolygon(
-            name='Obstacle %d' % obst.pk)
+        pol = stationary_obstacles_folder.newpolygon(name='Obstacle %d' %
+                                                     obst.pk)
         pol.outerboundaryis = obst_points
         pol.altitudemode = AltitudeMode.absolute
         pol.extrude = 1
@@ -342,10 +338,9 @@ def uas_telemetry_live_kml(kml, timespan):
         if log.timestamp < timezone.now() - timespan:
             continue
 
-        point = kml.newpoint(
-            name=user.username,
-            coords=[(log.longitude, log.latitude,
-                     units.feet_to_meters(log.altitude_msl))])
+        point = kml.newpoint(name=user.username,
+                             coords=[(log.longitude, log.latitude,
+                                      units.feet_to_meters(log.altitude_msl))])
         point.iconstyle.icon.href = KML_PLANE_ICON
         point.iconstyle.heading = log.uas_heading
         point.extrude = 1  # Extend path to ground
@@ -354,7 +349,6 @@ def uas_telemetry_live_kml(kml, timespan):
 
 class ExportKml(View):
     """ Generates a KML file HttpResponse"""
-
     @method_decorator(require_superuser)
     def dispatch(self, *args, **kwargs):
         return super(ExportKml, self).dispatch(*args, **kwargs)
@@ -372,11 +366,11 @@ class ExportKml(View):
                 flights = TakeoffOrLandingEvent.flights(mission, user)
                 if not flights:
                     continue
-                uas_telemetry_kml(
-                    user=user,
-                    flight_logs=UasTelemetry.by_time_period(user, flights),
-                    kml=kml_flights,
-                    kml_doc=kml.document)
+                uas_telemetry_kml(user=user,
+                                  flight_logs=UasTelemetry.by_time_period(
+                                      user, flights),
+                                  kml=kml_flights,
+                                  kml_doc=kml.document)
 
         response = HttpResponse(kml.kml())
         response['Content-Type'] = 'application/vnd.google-earth.kml+xml'
@@ -389,7 +383,6 @@ class LiveKml(View):
     """ Generates a KML for live display.
     This KML uses a network link to update via the update.kml endpoint
     """
-
     @method_decorator(require_superuser)
     def dispatch(self, *args, **kwargs):
         return super(LiveKml, self).dispatch(*args, **kwargs)
@@ -440,7 +433,6 @@ def set_request_session_from_cookie(func):
 
 class LiveKmlUpdate(View):
     """Generates the live update portion of LiveKml"""
-
     @method_decorator(set_request_session_from_cookie)
     @method_decorator(require_superuser)
     def dispatch(self, *args, **kwargs):
@@ -550,11 +542,9 @@ class Evaluate(View):
                     team_json)
                 team_jsons.append(team_json)
 
-            zip_file.writestr('/evaluate_teams/all.html',
-                              self.feedback_template.render({
-                                  'feedbacks':
-                                  team_jsons
-                              }))
+            zip_file.writestr(
+                '/evaluate_teams/all.html',
+                self.feedback_template.render({'feedbacks': team_jsons}))
 
             zip_file.writestr('/evaluate_teams/all.csv',
                               self.csv_from_json(team_jsons))

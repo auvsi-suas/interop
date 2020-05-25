@@ -7,7 +7,6 @@ from django.test import TestCase
 
 class TestWaypointModel(TestCase):
     """Tests the Waypoint model."""
-
     def assertDistanceEqual(self, wpt1, wpt2, dist, threshold=10):
         """Waypoint distances are within threshold (ft)."""
         self.assertAlmostEqual(wpt1.distance_to(wpt2), dist, delta=threshold)

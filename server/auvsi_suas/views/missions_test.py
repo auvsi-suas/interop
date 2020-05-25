@@ -24,7 +24,6 @@ details_url = functools.partial(reverse, 'auvsi_suas:details')
 
 class TestMissionsViewCommon(TestCase):
     """Common test setup"""
-
     def setUp(self):
         self.user0 = User.objects.create_user('user0', 'email@example.com',
                                               'testpass')
@@ -33,8 +32,9 @@ class TestMissionsViewCommon(TestCase):
                                               'testpass')
         self.user1.save()
 
-        self.superuser = User.objects.create_superuser(
-            'testuser2', 'testemail@x.com', 'testpass')
+        self.superuser = User.objects.create_superuser('testuser2',
+                                                       'testemail@x.com',
+                                                       'testpass')
         self.superuser.save()
 
     def Login(self):
@@ -75,7 +75,6 @@ class TestMissionsViewInvalidLogin(TestMissionsViewCommon):
 
 class TestMissionsViewBasic(TestMissionsViewCommon):
     """Tests the missions view with minimal data."""
-
     def test_post(self):
         """POST not allowed"""
         self.LoginSuperuser()
@@ -97,7 +96,6 @@ class TestMissionsViewBasic(TestMissionsViewCommon):
 
 class TestMissionsViewSampleMission(TestMissionsViewCommon):
     """Tests the missions view with sample mission."""
-
     def setUp(self):
         super(TestMissionsViewSampleMission, self).setUp()
         self.mission = test_utils.create_sample_mission(self.superuser)
@@ -182,7 +180,6 @@ class TestGenerateKMLCommon(TestMissionsViewCommon):
 
 class TestGenerateKML(TestGenerateKMLCommon):
     """Tests the generateKML view."""
-
     def setUp(self):
         super(TestGenerateKML, self).setUp()
         self.folders = ['Missions']
@@ -210,7 +207,6 @@ class TestGenerateKML(TestGenerateKMLCommon):
 
 class TestGenerateKMLWithSimulation(TestGenerateKMLCommon):
     """Tests the generateKML view."""
-
     def setUp(self):
         super(TestGenerateKMLWithSimulation, self).setUp()
 
@@ -313,7 +309,6 @@ class TestGenerateLiveKML(TestMissionsViewCommon):
 
 class TestGenerateLiveKMLWithSimulation(TestMissionsViewCommon):
     """Tests the generateKML view."""
-
     def test_generate_live_kml(self):
         """Tests the generate KML method."""
         self.mission = test_utils.create_sample_mission(self.superuser)
@@ -330,7 +325,6 @@ class TestGenerateLiveKMLWithSimulation(TestMissionsViewCommon):
 
 class TestEvaluateTeams(TestMissionsViewCommon):
     """Tests the evaluate_teams view."""
-
     def setUp(self):
         super(TestEvaluateTeams, self).setUp()
         self.mission = test_utils.create_sample_mission(self.superuser)
@@ -382,8 +376,8 @@ class TestEvaluateTeams(TestMissionsViewCommon):
     def test_evaluate_teams_specific_team(self):
         """Tests the eval Json method on a specific team."""
         self.LoginSuperuser()
-        response = self.client.get(
-            evaluate_url(args=[self.mission.pk]), {'team': self.user0.pk})
+        response = self.client.get(evaluate_url(args=[self.mission.pk]),
+                                   {'team': self.user0.pk})
         self.assertEqual(response.status_code, 200)
         data = self.load_json(response)
         self.assertIn('teams', data)
@@ -413,7 +407,6 @@ class TestEvaluateTeams(TestMissionsViewCommon):
 
 class TestMissionDetailsView(TestMissionsViewCommon):
     """Tests the mission details template view."""
-
     def setUp(self, *args, **kwargs):
         super(TestMissionDetailsView, self).setUp()
         self.mission = test_utils.create_sample_mission(self.superuser)

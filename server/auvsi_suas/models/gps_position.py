@@ -48,8 +48,8 @@ class GpsPositionMixin(models.Model):
         Returns:
             True if they are equal.
         """
-        return (self.latitude == other.latitude and
-                self.longitude == other.longitude)
+        return (self.latitude == other.latitude
+                and self.longitude == other.longitude)
 
 
 class GpsPosition(GpsPositionMixin):

@@ -15,8 +15,9 @@ bulk_create_teams_url = reverse('auvsi_suas:bulk_create_teams')
 
 class TestGpsConversion(TestCase):
     def setUp(self):
-        self.superuser = User.objects.create_superuser(
-            'superuser', 'email@example.com', 'superpass')
+        self.superuser = User.objects.create_superuser('superuser',
+                                                       'email@example.com',
+                                                       'superpass')
         self.superuser.save()
 
     def test_not_authenticated(self):
@@ -45,10 +46,9 @@ class TestGpsConversion(TestCase):
         request_proto.latitude = 'ABC'
         request_proto.longitude = 'DEF'
 
-        response = self.client.post(
-            gps_conversion_url,
-            json_format.MessageToJson(request_proto),
-            content_type='application/json')
+        response = self.client.post(gps_conversion_url,
+                                    json_format.MessageToJson(request_proto),
+                                    content_type='application/json')
         self.assertEqual(400, response.status_code)
 
     def test_conversion(self):
@@ -59,10 +59,9 @@ class TestGpsConversion(TestCase):
         request_proto.latitude = 'N38-08-46.57'
         request_proto.longitude = 'W076-25-41.39'
 
-        response = self.client.post(
-            gps_conversion_url,
-            json_format.MessageToJson(request_proto),
-            content_type='application/json')
+        response = self.client.post(gps_conversion_url,
+                                    json_format.MessageToJson(request_proto),
+                                    content_type='application/json')
         self.assertEqual(200, response.status_code)
 
         response_proto = interop_admin_api_pb2.GpsConversionResponse()
@@ -73,8 +72,9 @@ class TestGpsConversion(TestCase):
 
 class TestBulkCreateTeams(TestCase):
     def setUp(self):
-        self.superuser = User.objects.create_superuser(
-            'superuser', 'email@example.com', 'superpass')
+        self.superuser = User.objects.create_superuser('superuser',
+                                                       'email@example.com',
+                                                       'superpass')
         self.superuser.save()
 
     def test_not_authenticated(self):
@@ -95,8 +95,8 @@ class TestBulkCreateTeams(TestCase):
     def test_create(self):
         """Tests sending a valid CSV creates the teams and printable page."""
         csv_buffer = io.StringIO()
-        writer = csv.DictWriter(
-            csv_buffer, fieldnames=['University', 'Name', 'Username'])
+        writer = csv.DictWriter(csv_buffer,
+                                fieldnames=['University', 'Name', 'Username'])
         writer.writeheader()
         writer.writerow({
             'University': 'Test University',
@@ -111,8 +111,8 @@ class TestBulkCreateTeams(TestCase):
         csv_buffer.seek(0)
 
         self.client.force_login(self.superuser)
-        response = self.client.post(
-            bulk_create_teams_url, data={'file': csv_buffer})
+        response = self.client.post(bulk_create_teams_url,
+                                    data={'file': csv_buffer})
         self.assertEqual(200, response.status_code)
 
         content = response.content.decode()

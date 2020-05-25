@@ -11,7 +11,6 @@ login_url = reverse('auvsi_suas:login')
 
 class TestLoginUserView(TestCase):
     """Tests the login_user view."""
-
     def setUp(self):
         """Sets up the test by creating a test user."""
         self.user = User.objects.create_user('testuser', 'testemail@x.com',
@@ -37,10 +36,9 @@ class TestLoginUserView(TestCase):
         self.assertEqual(400, response.status_code)
 
         # Test POST with a missing parameter
-        response = self.client.post(
-            login_url,
-            data=self.login_request_body('testuser'),
-            content_type='application/json')
+        response = self.client.post(login_url,
+                                    data=self.login_request_body('testuser'),
+                                    content_type='application/json')
         self.assertEqual(400, response.status_code)
         response = self.client.post(
             login_url,
@@ -50,16 +48,16 @@ class TestLoginUserView(TestCase):
 
     def test_invalid_credentials(self):
         """Tests invalid credentials for login."""
-        response = self.client.post(
-            login_url,
-            data=self.login_request_body('testuser', 'invalidpass'),
-            content_type='application/json')
+        response = self.client.post(login_url,
+                                    data=self.login_request_body(
+                                        'testuser', 'invalidpass'),
+                                    content_type='application/json')
         self.assertEqual(401, response.status_code)
 
     def test_correct_credentials(self):
         """Tests correct credentials for login."""
-        response = self.client.post(
-            login_url,
-            data=self.login_request_body('testuser', 'testpass'),
-            content_type='application/json')
+        response = self.client.post(login_url,
+                                    data=self.login_request_body(
+                                        'testuser', 'testpass'),
+                                    content_type='application/json')
         self.assertEqual(200, response.status_code)

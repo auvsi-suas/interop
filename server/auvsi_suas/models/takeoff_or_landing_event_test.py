@@ -12,7 +12,6 @@ from auvsi_suas.models.access_log_test import TestAccessLogMixinCommon
 
 class TestTakeoffOrLandingEventModel(TestAccessLogMixinCommon):
     """Tests the TakeoffOrLandingEvent model."""
-
     def setUp(self):
         super(TestTakeoffOrLandingEventModel, self).setUp()
 
@@ -63,8 +62,9 @@ class TestTakeoffOrLandingEventModel(TestAccessLogMixinCommon):
         """Create a TakeoffOrLandingEvent for test user."""
         if mission is None:
             mission = self.mission
-        event = TakeoffOrLandingEvent(
-            user=self.user1, mission=mission, uas_in_air=uas_in_air)
+        event = TakeoffOrLandingEvent(user=self.user1,
+                                      mission=mission,
+                                      uas_in_air=uas_in_air)
         event.save()
         event.timestamp = time
         event.save()

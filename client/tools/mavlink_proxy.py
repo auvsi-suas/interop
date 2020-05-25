@@ -18,7 +18,6 @@ class MavlinkProxy(object):
     forwarded so throughput is limited by RTT of the request. Prints request
     rate.
     """
-
     def __init__(self, device, client):
         """Receives telemetry over the device and forwards via the client.
 
@@ -47,8 +46,9 @@ class MavlinkProxy(object):
                 if not self.healthy:
                     return
             # Get packet.
-            msg = self.mav.recv_match(
-                type='GLOBAL_POSITION_INT', blocking=True, timeout=10.0)
+            msg = self.mav.recv_match(type='GLOBAL_POSITION_INT',
+                                      blocking=True,
+                                      timeout=10.0)
             if msg is None:
                 logger.critical(
                     'Did not receive MAVLink packet for over 10 seconds.')

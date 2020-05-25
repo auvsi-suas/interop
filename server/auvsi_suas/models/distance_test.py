@@ -6,14 +6,13 @@ from django.test import TestCase
 
 class TestHaversine(TestCase):
     """Tests the haversine code correctness."""
-
     def assertCloseEnough(self,
                           distance_actual,
                           distance_received,
                           threshold=0.003048):  # 10 feet in km
         """Determines whether the km distances given are close enough."""
-        self.assertLessEqual(
-            abs(distance_actual - distance_received), threshold)
+        self.assertLessEqual(abs(distance_actual - distance_received),
+                             threshold)
 
     def evaluate_inputs(self, input_output_list):
         """Evaluates a list of inputs and outputs."""

@@ -8,7 +8,6 @@ class TimePeriod(object):
     Describe a continuous period of time.
     A value of None indicates infinity. Both start and end are inclusive.
     """
-
     @classmethod
     def from_events(cls, events, is_start_func, is_end_func):
         """Gets a list of time periods from a list of events.

@@ -168,7 +168,6 @@ TESTDATA_FLYZONE_EVALBOUNDS = (
 
 class TestFlyZone(TestCase):
     """Tests the FlyZone class."""
-
     def setUp(self):
         """Creates test data."""
         # Form test set for contains position
@@ -224,8 +223,8 @@ class TestFlyZone(TestCase):
                 apos.altitude_msl = alt
                 aerial_pos_list.append(apos)
                 expected_results.append(inside)
-            self.assertEqual(
-                zone.contains_many_pos(aerial_pos_list), expected_results)
+            self.assertEqual(zone.contains_many_pos(aerial_pos_list),
+                             expected_results)
 
     def test_out_of_bounds(self):
         """Tests the UAS out of bounds method."""
@@ -251,14 +250,13 @@ class TestFlyZone(TestCase):
 
         # For each user, validate time out of bounds
         user_id = 0
-        epoch = timezone.now().replace(
-            year=1970,
-            month=1,
-            day=1,
-            hour=0,
-            minute=0,
-            second=0,
-            microsecond=0)
+        epoch = timezone.now().replace(year=1970,
+                                       month=1,
+                                       day=1,
+                                       hour=0,
+                                       minute=0,
+                                       second=0,
+                                       microsecond=0)
         for exp_violations, exp_out_of_bounds_time, log_details in uas_details:
             # Create the logs
             user = User.objects.create_user('testuser%d' % user_id,

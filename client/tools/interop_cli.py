@@ -75,10 +75,12 @@ def main():
 
     # Parse command line args.
     parser = argparse.ArgumentParser(description='AUVSI SUAS Interop CLI.')
-    parser.add_argument(
-        '--url', required=True, help='URL for interoperability.')
-    parser.add_argument(
-        '--username', required=True, help='Username for interoperability.')
+    parser.add_argument('--url',
+                        required=True,
+                        help='URL for interoperability.')
+    parser.add_argument('--username',
+                        required=True,
+                        help='Username for interoperability.')
     parser.add_argument('--password', help='Password for interoperability.')
 
     subparsers = parser.add_subparsers(help='Sub-command help.')
@@ -88,11 +90,10 @@ def main():
 
     subparser = subparsers.add_parser('mission', help='Get mission details.')
     subparser.set_defaults(func=mission)
-    subparser.add_argument(
-        '--mission_id',
-        type=int,
-        required=True,
-        help='ID of the mission to get.')
+    subparser.add_argument('--mission_id',
+                           type=int,
+                           required=True,
+                           help='ID of the mission to get.')
 
     subparser = subparsers.add_parser(
         'odlcs',
@@ -113,22 +114,20 @@ There is no deduplication logic. Odlcs will be uploaded multiple times, as
 unique odlcs, if the tool is run multiple times.''',
         formatter_class=argparse.RawDescriptionHelpFormatter)
     subparser.set_defaults(func=odlcs)
-    subparser.add_argument(
-        '--mission_id',
-        type=int,
-        help='Mission ID to restrict ODLCs retrieved.',
-        default=None)
+    subparser.add_argument('--mission_id',
+                           type=int,
+                           help='Mission ID to restrict ODLCs retrieved.',
+                           default=None)
     subparser.add_argument(
         '--odlc_dir',
         help='Enables odlc upload. Directory containing odlc data.')
 
     subparser = subparsers.add_parser('probe', help='Send dummy requests.')
     subparser.set_defaults(func=probe)
-    subparser.add_argument(
-        '--interop_time',
-        type=float,
-        default=1.0,
-        help='Time between sent requests (sec).')
+    subparser.add_argument('--interop_time',
+                           type=float,
+                           default=1.0,
+                           help='Time between sent requests (sec).')
 
     subparser = subparsers.add_parser(
         'mavlink',

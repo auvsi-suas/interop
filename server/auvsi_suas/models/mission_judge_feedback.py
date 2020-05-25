@@ -18,8 +18,8 @@ class MissionJudgeFeedback(models.Model):
     # The mission for which this is feedback.
     mission = models.ForeignKey(MissionConfig, on_delete=models.CASCADE)
     # The user for which this is feedback.
-    user = models.ForeignKey(
-        settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL,
+                             on_delete=models.CASCADE)
 
     # Time spent occupying runway and airspace.
     flight_time = models.DurationField()

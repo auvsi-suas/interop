@@ -18,7 +18,8 @@ class Migration(migrations.Migration):
             name='air_drop_boundary_points',
             field=models.ManyToManyField(
                 related_name='missionconfig_air_drop_boundary_points',
-                to='auvsi_suas.Waypoint'), ),
+                to='auvsi_suas.Waypoint'),
+        ),
         migrations.AddField(
             model_name='missionconfig',
             name='lost_comms_pos',
@@ -27,7 +28,8 @@ class Migration(migrations.Migration):
                 on_delete=django.db.models.deletion.CASCADE,
                 related_name='missionconfig_lost_comms_pos',
                 to='auvsi_suas.GpsPosition'),
-            preserve_default=False, ),
+            preserve_default=False,
+        ),
         migrations.AddField(
             model_name='missionconfig',
             name='ugv_drive_pos',
@@ -36,5 +38,6 @@ class Migration(migrations.Migration):
                 on_delete=django.db.models.deletion.CASCADE,
                 related_name='missionconfig_ugv_drive_pos',
                 to='auvsi_suas.GpsPosition'),
-            preserve_default=False, ),
+            preserve_default=False,
+        ),
     ]

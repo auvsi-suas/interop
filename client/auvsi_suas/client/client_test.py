@@ -22,7 +22,6 @@ admin_password = os.getenv('TEST_INTEROP_ADMIN_PASS', 'testpass')
 
 class TestClientLoggedOut(unittest.TestCase):
     """Test the portions of the Client class used before login."""
-
     def test_login(self):
         """Simple login test."""
         # Simply creating a Client causes a login.
@@ -52,7 +51,6 @@ class TestClient(unittest.TestCase):
     """Test the Client class.
     The Client class is a very thin wrapper, so there is very little to test.
     """
-
     def setUp(self):
         """Create a logged in Client."""
         # Test rest with non-admin clients.
@@ -151,8 +149,8 @@ class TestClient(unittest.TestCase):
         self.assertEquals(async_post_odlc, async_put_odlc)
 
         # Upload odlc image.
-        test_image_filepath = os.path.join(
-            os.path.dirname(__file__), "testdata/A.jpg")
+        test_image_filepath = os.path.join(os.path.dirname(__file__),
+                                           "testdata/A.jpg")
         with open(test_image_filepath, 'rb') as f:
             image_data = f.read()
         self.client.put_odlc_image(post_odlc.id, image_data)

@@ -11,7 +11,6 @@ from django.test import TestCase
 
 class TestStationaryObstacleModel(TestCase):
     """Tests the StationaryObstacle model."""
-
     def setUp(self):
         self.user = User.objects.create_user('testuser', 'testemail@x.com',
                                              'testpass')
@@ -46,8 +45,10 @@ class TestStationaryObstacleModel(TestCase):
 
     def test_clean(self):
         """Tests model validation."""
-        obst = StationaryObstacle(
-            latitude=0, longitude=0, cylinder_radius=30, cylinder_height=10)
+        obst = StationaryObstacle(latitude=0,
+                                  longitude=0,
+                                  cylinder_radius=30,
+                                  cylinder_height=10)
         obst.full_clean()
 
     def test_contains_pos(self):
@@ -79,8 +80,9 @@ class TestStationaryObstacleModel(TestCase):
                      (TESTDATA_STATOBST_CONTAINSPOS_OUTSIDE, False)]
         for (cur_data, cur_contains) in test_data:
             for (lat, lon, alt) in cur_data:
-                apos = AerialPosition(
-                    latitude=lat, longitude=lon, altitude_msl=alt)
+                apos = AerialPosition(latitude=lat,
+                                      longitude=lon,
+                                      altitude_msl=alt)
                 self.assertEqual(obst.contains_pos(apos), cur_contains)
 
     def test_evaluate_collision_with_uas(self):
@@ -105,17 +107,16 @@ class TestStationaryObstacleModel(TestCase):
          outside_pos) = TESTDATA_STATOBST_EVALCOLLISION
         (cyl_lat, cyl_lon, cyl_height, cyl_rad) = cyl_details
 
-        obst = StationaryObstacle(
-            latitude=cyl_lat,
-            longitude=cyl_lon,
-            cylinder_radius=cyl_rad,
-            cylinder_height=cyl_height)
+        obst = StationaryObstacle(latitude=cyl_lat,
+                                  longitude=cyl_lon,
+                                  cylinder_radius=cyl_rad,
+                                  cylinder_height=cyl_height)
         obst.save()
 
         inside_logs = []
         outside_logs = []
-        logs_to_create = [(inside_pos, inside_logs), (outside_pos,
-                                                      outside_logs)]
+        logs_to_create = [(inside_pos, inside_logs),
+                          (outside_pos, outside_logs)]
 
         for (positions, log_list) in logs_to_create:
             log_list += self.create_uas_logs(self.user, positions)
@@ -123,18 +124,17 @@ class TestStationaryObstacleModel(TestCase):
         # Assert collisions correctly evaluated
         collisions = [(inside_logs, True), (outside_logs, False)]
         for (log_list, inside) in collisions:
-            self.assertEqual(
-                obst.evaluate_collision_with_uas(log_list), inside)
+            self.assertEqual(obst.evaluate_collision_with_uas(log_list),
+                             inside)
             for log in log_list:
-                self.assertEqual(
-                    obst.evaluate_collision_with_uas([log]), inside)
+                self.assertEqual(obst.evaluate_collision_with_uas([log]),
+                                 inside)
 
         # Regression test past failed case.
-        obst = StationaryObstacle(
-            latitude=45.4342114,
-            longitude=-71.8538153,
-            cylinder_radius=10.0,
-            cylinder_height=1300.0)
+        obst = StationaryObstacle(latitude=45.4342114,
+                                  longitude=-71.8538153,
+                                  cylinder_radius=10.0,
+                                  cylinder_height=1300.0)
         logs = self.create_uas_logs(self.user, [
             (45.433839, -71.8523434, 770.013137988),
             (45.4338393, -71.8523446, 769.881926415),

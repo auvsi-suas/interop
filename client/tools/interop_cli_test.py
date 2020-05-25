@@ -7,11 +7,10 @@ from pymavlink import mavutil
 
 class InteropCliTestBase(unittest.TestCase):
     """Base for tests."""
-
     def setUp(self):
         """Setup the CLI path and base args."""
-        self.cli_path = os.path.join(
-            os.path.dirname(__file__), "interop_cli.py")
+        self.cli_path = os.path.join(os.path.dirname(__file__),
+                                     "interop_cli.py")
         self.cli_base_args = [
             self.cli_path, '--url', 'http://localhost:8000', '--username',
             'testuser', '--password', 'testpass'
@@ -24,7 +23,6 @@ class InteropCliTestBase(unittest.TestCase):
 
 class TestTeams(InteropCliTestBase):
     """Test able to request statuses of teams."""
-
     def test_get_teams(self):
         """Test getting statuses of teams."""
         self.assertCliOk(self.cli_base_args + ['teams'])
@@ -32,7 +30,6 @@ class TestTeams(InteropCliTestBase):
 
 class TestMissions(InteropCliTestBase):
     """Test able to request mission details."""
-
     def test_get_mission(self):
         """Test getting mission details."""
         self.assertCliOk(self.cli_base_args + ['mission', '--mission_id', '1'])
@@ -40,7 +37,6 @@ class TestMissions(InteropCliTestBase):
 
 class TestOdlcs(InteropCliTestBase):
     """Test able to upload odlcs."""
-
     def setUp(self):
         """Compute the testdata folder."""
         super(TestOdlcs, self).setUp()
@@ -59,7 +55,6 @@ class TestOdlcs(InteropCliTestBase):
 
 class TestProbe(InteropCliTestBase):
     """Test able to probe server."""
-
     def setUp(self):
         """Setup process to probe server."""
         super(TestProbe, self).setUp()
@@ -86,13 +81,12 @@ class TestProbe(InteropCliTestBase):
 
 class TestMavlink(InteropCliTestBase):
     """Tests proxying MAVLink packets."""
-
     def setUp(self):
         """Creates a playback and forward of MAVLink packets."""
         super(TestMavlink, self).setUp()
         # Create input and output logs to simulate a source.
-        log_filepath = os.path.join(
-            os.path.dirname(__file__), "testdata/mav.tlog")
+        log_filepath = os.path.join(os.path.dirname(__file__),
+                                    "testdata/mav.tlog")
         self.mlog = mavutil.mavlink_connection(log_filepath)
         self.mout = mavutil.mavlink_connection('127.0.0.1:14550', input=False)
         # Start the forwarding on the CLI.

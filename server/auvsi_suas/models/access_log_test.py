@@ -15,14 +15,12 @@ from django.utils import timezone
 
 class TestSanity(TestCase):
     """Make sure UasTelemetry is a canonical AccessLogMixin."""
-
     def test_uas_telemetry_access_log(self):
         self.assertTrue(issubclass(UasTelemetry, AccessLogMixin))
 
 
 class TestAccessLogMixinCommon(TestCase):
     """Common code for AccessLogMixin model tests."""
-
     def setUp(self):
         """Sets up the tests."""
         self.user1 = User.objects.create_user('user1', 'email@example.com',
@@ -46,12 +44,11 @@ class TestAccessLogMixinCommon(TestCase):
         logs = []
 
         for i in range(num):
-            log = UasTelemetry(
-                user=user,
-                latitude=0,
-                longitude=0,
-                altitude_msl=0,
-                uas_heading=0.0)
+            log = UasTelemetry(user=user,
+                               latitude=0,
+                               longitude=0,
+                               altitude_msl=0,
+                               uas_heading=0.0)
             log.save()
             log.timestamp = start + i * delta
             log.save()
@@ -62,7 +59,6 @@ class TestAccessLogMixinCommon(TestCase):
 
 class TestAccessLogMixinBasic(TestAccessLogMixinCommon):
     """Tests the AccessLogMixin model basic functionality."""
-
     def test_no_data(self):
         self.assertEqual(None, UasTelemetry.last_for_user(self.user1))
         self.assertEqual(0, len(UasTelemetry.by_user(self.user1)))
@@ -86,9 +82,9 @@ class TestAccessLogMixinBasic(TestAccessLogMixinCommon):
         for time_periods in time_period_sets:
             for logs in UasTelemetry.by_time_period(self.user1, time_periods):
                 self.assertEqual(0, len(logs))
-            self.assertTupleEqual((delta.total_seconds(),
-                                   delta.total_seconds()),
-                                  UasTelemetry.rates(self.user1, time_periods))
+            self.assertTupleEqual(
+                (delta.total_seconds(), delta.total_seconds()),
+                UasTelemetry.rates(self.user1, time_periods))
 
         # Open time periods which can't calculate a rate.
         time_period_sets = [
@@ -134,11 +130,14 @@ class TestAccessLogMixinBasic(TestAccessLogMixinCommon):
     def test_by_user_time_restrict(self):
         start = timezone.now()
         delta = datetime.timedelta(seconds=1)
-        expect_logs = self.create_logs(
-            self.user1, num=10, start=start, delta=delta)
+        expect_logs = self.create_logs(self.user1,
+                                       num=10,
+                                       start=start,
+                                       delta=delta)
 
-        logs = UasTelemetry.by_user(
-            self.user1, start_time=start, end_time=start + delta * 10)
+        logs = UasTelemetry.by_user(self.user1,
+                                    start_time=start,
+                                    end_time=start + delta * 10)
         self.assertSequenceEqual(expect_logs, logs)
 
         logs = UasTelemetry.by_user(self.user1, start_time=start + delta * 11)
@@ -151,12 +150,13 @@ class TestAccessLogMixinBasic(TestAccessLogMixinCommon):
         delta = datetime.timedelta(seconds=1)
         logs = self.create_logs(self.user1, num=10, start=start, delta=delta)
 
-        log = UasTelemetry.last_for_user(
-            self.user1, start_time=start, end_time=start + delta * 3)
+        log = UasTelemetry.last_for_user(self.user1,
+                                         start_time=start,
+                                         end_time=start + delta * 3)
         self.assertEqual(logs[2], log)
 
-        log = UasTelemetry.last_for_user(
-            self.user1, start_time=start + delta * 11)
+        log = UasTelemetry.last_for_user(self.user1,
+                                         start_time=start + delta * 11)
         self.assertIsNone(log)
         log = UasTelemetry.last_for_user(self.user1, end_time=start - delta)
         self.assertIsNone(log)
@@ -164,7 +164,6 @@ class TestAccessLogMixinBasic(TestAccessLogMixinCommon):
 
 class TestAccessLogMixinByTimePeriod(TestAccessLogMixinCommon):
     """Test AccessLogMixin.by_time_period()"""
-
     def setUp(self):
         super(TestAccessLogMixinByTimePeriod, self).setUp()
 
@@ -237,7 +236,6 @@ class TestAccessLogMixinByTimePeriod(TestAccessLogMixinCommon):
 
 class TestAccessLogMixinRates(TestAccessLogMixinCommon):
     """Test AccessLogMixin.rates()"""
-
     def consistent_period(self, logs, delta):
         # rates() uses time between beginning/end of the period
         # and the first/last log to compute rates, so to get constant rates,
@@ -251,8 +249,8 @@ class TestAccessLogMixinRates(TestAccessLogMixinCommon):
         self.assertSequenceEqual(
             (10, 10),
             UasTelemetry.rates(
-                self.user1, [TimePeriod(self.year2000,
-                                        self.year2000 + delta)]))
+                self.user1,
+                [TimePeriod(self.year2000, self.year2000 + delta)]))
 
     def test_constant_rate(self):
         """Rates computed correctly."""
@@ -271,8 +269,10 @@ class TestAccessLogMixinRates(TestAccessLogMixinCommon):
 
         start = timezone.now()
         self.create_logs(self.user1, num=10, start=start, delta=delta)
-        self.create_logs(
-            self.user1, num=10, start=start + 10 * delta, delta=2 * delta)
+        self.create_logs(self.user1,
+                         num=10,
+                         start=start + 10 * delta,
+                         delta=2 * delta)
         period = TimePeriod(start - delta,
                             start + 10 * delta + 10 * (2 * delta))
         rates = UasTelemetry.rates(self.user1, [period])
@@ -298,8 +298,8 @@ class TestAccessLogMixinRates(TestAccessLogMixinCommon):
         unused_logs = self.create_logs(self.user1, delta=delta)
         period = self.consistent_period(used_logs, delta)
 
-        rates = UasTelemetry.rates(
-            self.user1, [period], time_period_logs=[used_logs])
+        rates = UasTelemetry.rates(self.user1, [period],
+                                   time_period_logs=[used_logs])
 
         self.assertSequenceEqual((1, 1), rates)
 
@@ -332,10 +332,14 @@ class TestAccessLogMixinRates(TestAccessLogMixinCommon):
         delta = datetime.timedelta(seconds=1)
 
         logs = [
-            self.create_logs(
-                self.user1, num=1000, start=self.year2000, delta=delta),
-            self.create_logs(
-                self.user1, num=1000, start=self.year2001, delta=delta / 2),
+            self.create_logs(self.user1,
+                             num=1000,
+                             start=self.year2000,
+                             delta=delta),
+            self.create_logs(self.user1,
+                             num=1000,
+                             start=self.year2001,
+                             delta=delta / 2),
         ]
 
         periods = [self.consistent_period(l, delta) for l in logs]

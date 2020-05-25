@@ -84,8 +84,10 @@ def create_sample_mission(superuser):
            (38.1461305555556, -76.4266527777778)]
     # yapf: enable
     for ix, (lat, lon) in enumerate(pts):
-        wpt = Waypoint(
-            latitude=lat, longitude=lon, altitude_msl=0, order=ix + 1)
+        wpt = Waypoint(latitude=lat,
+                       longitude=lon,
+                       altitude_msl=0,
+                       order=ix + 1)
         wpt.save()
         bounds.boundary_pts.add(wpt)
     bounds.save()
@@ -100,11 +102,10 @@ def create_sample_mission(superuser):
            (38.146003, -76.430733, 225, 500)]
     # yapf: enable
     for lat, lon, radius, height in pts:
-        obst = StationaryObstacle(
-            latitude=lat,
-            longitude=lon,
-            cylinder_radius=radius,
-            cylinder_height=height)
+        obst = StationaryObstacle(latitude=lat,
+                                  longitude=lon,
+                                  cylinder_radius=radius,
+                                  cylinder_height=height)
         obst.save()
         mission.stationary_obstacles.add(obst)
 
@@ -125,8 +126,10 @@ def create_sample_mission(superuser):
            (38.1446083333333, -76.4282527777778, 200)]
     # yapf: enable
     for ix, (lat, lon, alt) in enumerate(pts):
-        wpt = Waypoint(
-            latitude=lat, longitude=lon, altitude_msl=alt, order=ix + 1)
+        wpt = Waypoint(latitude=lat,
+                       longitude=lon,
+                       altitude_msl=alt,
+                       order=ix + 1)
         wpt.save()
         mission.mission_waypoints.add(wpt)
 
@@ -142,8 +145,10 @@ def create_sample_mission(superuser):
            (38.1444444444444, -76.4280916666667)]
     # yapf: enable
     for ix, (lat, lon) in enumerate(pts):
-        wpt = Waypoint(
-            latitude=lat, longitude=lon, altitude_msl=0, order=ix + 1)
+        wpt = Waypoint(latitude=lat,
+                       longitude=lon,
+                       altitude_msl=0,
+                       order=ix + 1)
         wpt.save()
         mission.search_grid_points.add(wpt)
 
@@ -154,169 +159,160 @@ def create_sample_mission(superuser):
            (38.14541666666667, -76.42661111111111)]
     # yapf: enable
     for ix, (lat, lon) in enumerate(pts):
-        wpt = Waypoint(
-            latitude=lat, longitude=lon, altitude_msl=0, order=ix + 1)
+        wpt = Waypoint(latitude=lat,
+                       longitude=lon,
+                       altitude_msl=0,
+                       order=ix + 1)
         wpt.save()
         mission.air_drop_boundary_points.add(wpt)
 
     gpos = GpsPosition(latitude=38.143844, longitude=-76.426469)
     gpos.save()
-    odlc = Odlc(
-        mission=mission,
-        user=superuser,
-        odlc_type=interop_api_pb2.Odlc.STANDARD,
-        location=gpos,
-        orientation=interop_api_pb2.Odlc.N,
-        shape=interop_api_pb2.Odlc.STAR,
-        shape_color=interop_api_pb2.Odlc.RED,
-        alphanumeric='A',
-        alphanumeric_color=interop_api_pb2.Odlc.WHITE)
+    odlc = Odlc(mission=mission,
+                user=superuser,
+                odlc_type=interop_api_pb2.Odlc.STANDARD,
+                location=gpos,
+                orientation=interop_api_pb2.Odlc.N,
+                shape=interop_api_pb2.Odlc.STAR,
+                shape_color=interop_api_pb2.Odlc.RED,
+                alphanumeric='A',
+                alphanumeric_color=interop_api_pb2.Odlc.WHITE)
     odlc.save()
     mission.odlcs.add(odlc)
 
     gpos = GpsPosition(latitude=38.141872, longitude=-76.426183)
     gpos.save()
-    odlc = Odlc(
-        mission=mission,
-        user=superuser,
-        odlc_type=interop_api_pb2.Odlc.STANDARD,
-        location=gpos,
-        orientation=interop_api_pb2.Odlc.NE,
-        shape=interop_api_pb2.Odlc.CROSS,
-        shape_color=interop_api_pb2.Odlc.BLUE,
-        alphanumeric='I',
-        alphanumeric_color=interop_api_pb2.Odlc.BLACK)
+    odlc = Odlc(mission=mission,
+                user=superuser,
+                odlc_type=interop_api_pb2.Odlc.STANDARD,
+                location=gpos,
+                orientation=interop_api_pb2.Odlc.NE,
+                shape=interop_api_pb2.Odlc.CROSS,
+                shape_color=interop_api_pb2.Odlc.BLUE,
+                alphanumeric='I',
+                alphanumeric_color=interop_api_pb2.Odlc.BLACK)
     odlc.save()
     mission.odlcs.add(odlc)
 
     gpos = GpsPosition(latitude=38.142828, longitude=-76.427644)
     gpos.save()
-    odlc = Odlc(
-        mission=mission,
-        user=superuser,
-        odlc_type=interop_api_pb2.Odlc.STANDARD,
-        location=gpos,
-        orientation=interop_api_pb2.Odlc.E,
-        shape=interop_api_pb2.Odlc.QUARTER_CIRCLE,
-        shape_color=interop_api_pb2.Odlc.YELLOW,
-        alphanumeric='R',
-        alphanumeric_color=interop_api_pb2.Odlc.ORANGE)
+    odlc = Odlc(mission=mission,
+                user=superuser,
+                odlc_type=interop_api_pb2.Odlc.STANDARD,
+                location=gpos,
+                orientation=interop_api_pb2.Odlc.E,
+                shape=interop_api_pb2.Odlc.QUARTER_CIRCLE,
+                shape_color=interop_api_pb2.Odlc.YELLOW,
+                alphanumeric='R',
+                alphanumeric_color=interop_api_pb2.Odlc.ORANGE)
     odlc.save()
     mission.odlcs.add(odlc)
 
     gpos = GpsPosition(latitude=38.144925, longitude=-76.425100)
     gpos.save()
-    odlc = Odlc(
-        mission=mission,
-        user=superuser,
-        odlc_type=interop_api_pb2.Odlc.STANDARD,
-        location=gpos,
-        orientation=interop_api_pb2.Odlc.SE,
-        shape=interop_api_pb2.Odlc.CIRCLE,
-        shape_color=interop_api_pb2.Odlc.BROWN,
-        alphanumeric='V',
-        alphanumeric_color=interop_api_pb2.Odlc.RED)
+    odlc = Odlc(mission=mission,
+                user=superuser,
+                odlc_type=interop_api_pb2.Odlc.STANDARD,
+                location=gpos,
+                orientation=interop_api_pb2.Odlc.SE,
+                shape=interop_api_pb2.Odlc.CIRCLE,
+                shape_color=interop_api_pb2.Odlc.BROWN,
+                alphanumeric='V',
+                alphanumeric_color=interop_api_pb2.Odlc.RED)
     odlc.save()
     mission.odlcs.add(odlc)
 
     gpos = GpsPosition(latitude=38.146747, longitude=-76.422131)
     gpos.save()
-    odlc = Odlc(
-        mission=mission,
-        user=superuser,
-        odlc_type=interop_api_pb2.Odlc.STANDARD,
-        location=gpos,
-        orientation=interop_api_pb2.Odlc.S,
-        shape=interop_api_pb2.Odlc.TRAPEZOID,
-        shape_color=interop_api_pb2.Odlc.WHITE,
-        alphanumeric='E',
-        alphanumeric_color=interop_api_pb2.Odlc.GRAY)
+    odlc = Odlc(mission=mission,
+                user=superuser,
+                odlc_type=interop_api_pb2.Odlc.STANDARD,
+                location=gpos,
+                orientation=interop_api_pb2.Odlc.S,
+                shape=interop_api_pb2.Odlc.TRAPEZOID,
+                shape_color=interop_api_pb2.Odlc.WHITE,
+                alphanumeric='E',
+                alphanumeric_color=interop_api_pb2.Odlc.GRAY)
     odlc.save()
     mission.odlcs.add(odlc)
 
     gpos = GpsPosition(latitude=38.144097, longitude=-76.431089)
     gpos.save()
-    odlc = Odlc(
-        mission=mission,
-        user=superuser,
-        odlc_type=interop_api_pb2.Odlc.STANDARD,
-        location=gpos,
-        orientation=interop_api_pb2.Odlc.SW,
-        shape=interop_api_pb2.Odlc.SQUARE,
-        shape_color=interop_api_pb2.Odlc.GREEN,
-        alphanumeric='H',
-        alphanumeric_color=interop_api_pb2.Odlc.BLUE)
+    odlc = Odlc(mission=mission,
+                user=superuser,
+                odlc_type=interop_api_pb2.Odlc.STANDARD,
+                location=gpos,
+                orientation=interop_api_pb2.Odlc.SW,
+                shape=interop_api_pb2.Odlc.SQUARE,
+                shape_color=interop_api_pb2.Odlc.GREEN,
+                alphanumeric='H',
+                alphanumeric_color=interop_api_pb2.Odlc.BLUE)
     odlc.save()
     mission.odlcs.add(odlc)
 
     gpos = GpsPosition(latitude=38.144878, longitude=-76.423681)
     gpos.save()
-    odlc = Odlc(
-        mission=mission,
-        user=superuser,
-        odlc_type=interop_api_pb2.Odlc.STANDARD,
-        location=gpos,
-        orientation=interop_api_pb2.Odlc.W,
-        shape=interop_api_pb2.Odlc.RECTANGLE,
-        shape_color=interop_api_pb2.Odlc.PURPLE,
-        alphanumeric='I',
-        alphanumeric_color=interop_api_pb2.Odlc.GREEN)
+    odlc = Odlc(mission=mission,
+                user=superuser,
+                odlc_type=interop_api_pb2.Odlc.STANDARD,
+                location=gpos,
+                orientation=interop_api_pb2.Odlc.W,
+                shape=interop_api_pb2.Odlc.RECTANGLE,
+                shape_color=interop_api_pb2.Odlc.PURPLE,
+                alphanumeric='I',
+                alphanumeric_color=interop_api_pb2.Odlc.GREEN)
     odlc.save()
     mission.odlcs.add(odlc)
 
     gpos = GpsPosition(latitude=38.142819, longitude=-76.432375)
     gpos.save()
-    odlc = Odlc(
-        mission=mission,
-        user=superuser,
-        odlc_type=interop_api_pb2.Odlc.STANDARD,
-        location=gpos,
-        orientation=interop_api_pb2.Odlc.NW,
-        shape=interop_api_pb2.Odlc.SEMICIRCLE,
-        shape_color=interop_api_pb2.Odlc.ORANGE,
-        alphanumeric='C',
-        alphanumeric_color=interop_api_pb2.Odlc.YELLOW)
+    odlc = Odlc(mission=mission,
+                user=superuser,
+                odlc_type=interop_api_pb2.Odlc.STANDARD,
+                location=gpos,
+                orientation=interop_api_pb2.Odlc.NW,
+                shape=interop_api_pb2.Odlc.SEMICIRCLE,
+                shape_color=interop_api_pb2.Odlc.ORANGE,
+                alphanumeric='C',
+                alphanumeric_color=interop_api_pb2.Odlc.YELLOW)
     odlc.save()
     mission.odlcs.add(odlc)
 
     gpos = GpsPosition(latitude=38.141639, longitude=-76.429347)
     gpos.save()
-    odlc = Odlc(
-        mission=mission,
-        user=superuser,
-        odlc_type=interop_api_pb2.Odlc.STANDARD,
-        location=gpos,
-        orientation=interop_api_pb2.Odlc.N,
-        shape=interop_api_pb2.Odlc.TRIANGLE,
-        shape_color=interop_api_pb2.Odlc.BLACK,
-        alphanumeric='L',
-        alphanumeric_color=interop_api_pb2.Odlc.PURPLE)
+    odlc = Odlc(mission=mission,
+                user=superuser,
+                odlc_type=interop_api_pb2.Odlc.STANDARD,
+                location=gpos,
+                orientation=interop_api_pb2.Odlc.N,
+                shape=interop_api_pb2.Odlc.TRIANGLE,
+                shape_color=interop_api_pb2.Odlc.BLACK,
+                alphanumeric='L',
+                alphanumeric_color=interop_api_pb2.Odlc.PURPLE)
     odlc.save()
     mission.odlcs.add(odlc)
 
     gpos = GpsPosition(latitude=38.142478, longitude=-76.424967)
     gpos.save()
-    odlc = Odlc(
-        mission=mission,
-        user=superuser,
-        odlc_type=interop_api_pb2.Odlc.STANDARD,
-        location=gpos,
-        orientation=interop_api_pb2.Odlc.NE,
-        shape=interop_api_pb2.Odlc.PENTAGON,
-        shape_color=interop_api_pb2.Odlc.GRAY,
-        alphanumeric='E',
-        alphanumeric_color=interop_api_pb2.Odlc.BROWN)
+    odlc = Odlc(mission=mission,
+                user=superuser,
+                odlc_type=interop_api_pb2.Odlc.STANDARD,
+                location=gpos,
+                orientation=interop_api_pb2.Odlc.NE,
+                shape=interop_api_pb2.Odlc.PENTAGON,
+                shape_color=interop_api_pb2.Odlc.GRAY,
+                alphanumeric='E',
+                alphanumeric_color=interop_api_pb2.Odlc.BROWN)
     odlc.save()
     mission.odlcs.add(odlc)
 
     gpos = GpsPosition(latitude=38.143411, longitude=-76.424489)
     gpos.save()
-    odlc = Odlc(
-        mission=mission,
-        user=superuser,
-        odlc_type=interop_api_pb2.Odlc.EMERGENT,
-        location=gpos,
-        description='Randy the backpacker.')
+    odlc = Odlc(mission=mission,
+                user=superuser,
+                odlc_type=interop_api_pb2.Odlc.EMERGENT,
+                location=gpos,
+                description='Randy the backpacker.')
     odlc.save()
     mission.odlcs.add(odlc)
 
@@ -338,10 +334,9 @@ def simulate_telemetry(test, client, mission, hit_waypoint):
         t.longitude = random.uniform(0, 180)
         t.altitude = random.uniform(0, 800)
         t.heading = random.uniform(0, 360)
-    r = client.post(
-        telemetry_url,
-        data=json_format.MessageToJson(t),
-        content_type='application/json')
+    r = client.post(telemetry_url,
+                    data=json_format.MessageToJson(t),
+                    content_type='application/json')
     test.assertEqual(r.status_code, 200, r.content)
 
 
@@ -376,10 +371,9 @@ def simulate_odlc(test, client, mission, actual):
             interop_api_pb2.Odlc.Color.values())
         o.autonomous = random.random() < 0.1
         o.description = str(random.random())
-    r = client.post(
-        odlcs_url,
-        data=json_format.MessageToJson(o),
-        content_type='application/json')
+    r = client.post(odlcs_url,
+                    data=json_format.MessageToJson(o),
+                    content_type='application/json')
     test.assertEqual(r.status_code, 200, r.content)
 
 
@@ -403,8 +397,10 @@ def simulate_team_mission(test, mission, superuser, user):
     # Send telemetry during flight.
     TakeoffOrLandingEvent(user=user, mission=mission, uas_in_air=True).save()
     for i in range(total_telem):
-        simulate_telemetry(
-            test, client=c, mission=mission, hit_waypoint=i < waypoints_hit)
+        simulate_telemetry(test,
+                           client=c,
+                           mission=mission,
+                           hit_waypoint=i < waypoints_hit)
     TakeoffOrLandingEvent(user=user, mission=mission, uas_in_air=False).save()
 
     # Submit ODLCs.
@@ -441,8 +437,7 @@ def simulate_team_mission(test, mission, superuser, user):
         review.odlc.id = pk
         review.thumbnail_approved = True
         review.description_approved = True
-        r = client.put(
-            odlc_review_id_url(args=[pk]),
-            data=json_format.MessageToJson(review),
-            content_type='application/json')
+        r = client.put(odlc_review_id_url(args=[pk]),
+                       data=json_format.MessageToJson(review),
+                       content_type='application/json')
         test.assertEqual(r.status_code, 200, r.content)

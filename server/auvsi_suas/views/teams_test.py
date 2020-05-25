@@ -27,10 +27,10 @@ class TestTeamsViewLoggedOut(TestCase):
 
 class TestTeamsView(TestCase):
     """Tests the teams view."""
-
     def setUp(self):
-        self.superuser = User.objects.create_superuser(
-            'superuser', 'email@example.com', 'superpass')
+        self.superuser = User.objects.create_superuser('superuser',
+                                                       'email@example.com',
+                                                       'superpass')
         self.superuser.save()
         self.client.force_login(self.superuser)
 
@@ -68,27 +68,29 @@ class TestTeamsView(TestCase):
         self.mission.save()
 
         # user1 is flying
-        event = TakeoffOrLandingEvent(
-            user=self.user1, mission=self.mission, uas_in_air=True)
+        event = TakeoffOrLandingEvent(user=self.user1,
+                                      mission=self.mission,
+                                      uas_in_air=True)
         event.save()
 
         # user2 has landed
-        event = TakeoffOrLandingEvent(
-            user=self.user2, mission=self.mission, uas_in_air=True)
+        event = TakeoffOrLandingEvent(user=self.user2,
+                                      mission=self.mission,
+                                      uas_in_air=True)
         event.save()
-        event = TakeoffOrLandingEvent(
-            user=self.user2, mission=self.mission, uas_in_air=False)
+        event = TakeoffOrLandingEvent(user=self.user2,
+                                      mission=self.mission,
+                                      uas_in_air=False)
         event.save()
 
         # user2 is active
         self.timestamp = timezone.now()
 
-        self.telem = UasTelemetry(
-            user=self.user2,
-            latitude=38.6462,
-            longitude=-76.2452,
-            altitude_msl=0,
-            uas_heading=90)
+        self.telem = UasTelemetry(user=self.user2,
+                                  latitude=38.6462,
+                                  longitude=-76.2452,
+                                  altitude_msl=0,
+                                  uas_heading=90)
         self.telem.save()
         self.telem.timestamp = dateutil.parser.parse(
             u'2016-10-01T00:00:00.0+00:00')
@@ -157,12 +159,13 @@ class TestTeamsView(TestCase):
 
         user2 = data[names.index('user2')]
         self.assertEqual(False, user2['inAir'])
-        self.assertEqual({
-            u'latitude': 38.6462,
-            u'longitude': -76.2452,
-            u'altitude': 0.0,
-            u'heading': 90.0,
-        }, user2['telemetry'])
+        self.assertEqual(
+            {
+                u'latitude': 38.6462,
+                u'longitude': -76.2452,
+                u'altitude': 0.0,
+                u'heading': 90.0,
+            }, user2['telemetry'])
         self.assertEqual(int(user2['telemetryId']), self.telem.pk)
         self.assertGreater(user2['telemetryAgeSec'], 0)
         self.assertEqual(user2['telemetryTimestamp'],
@@ -178,14 +181,14 @@ class TestTeamViewLoggedOut(TestCase):
 
 class TestTeamView(TestCase):
     """Tests the teams-by-id view."""
-
     def setUp(self):
         self.user1 = User.objects.create_user('user1', 'email@example.com',
                                               'testpass')
         self.user1.save()
 
-        self.superuser = User.objects.create_superuser(
-            'superuser', 'email@example.com', 'superpass')
+        self.superuser = User.objects.create_superuser('superuser',
+                                                       'email@example.com',
+                                                       'superpass')
         self.superuser.save()
         self.client.force_login(self.superuser)
 

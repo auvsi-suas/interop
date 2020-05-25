@@ -13,7 +13,6 @@ def require_login(func):
     Raises:
         PermissionDenied: User is not authenticated.
     """
-
     def check_login(user):
         if not user.is_authenticated:
             raise PermissionDenied('Login required.')
@@ -29,7 +28,6 @@ def require_superuser(func):
     Raises:
         PermissionDenied: User is not a superuser.
     """
-
     def check_superuser(user):
         if not user.is_superuser:
             raise PermissionDenied('Only superusers allowed.')

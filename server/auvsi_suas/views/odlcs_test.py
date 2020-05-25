@@ -24,7 +24,6 @@ odlcs_review_id_url = functools.partial(reverse, 'auvsi_suas:odlcs_review_id')
 
 class TestOdlcsCommon(TestCase):
     """Common functionality for ODLC tests."""
-
     def setUp(self):
         # Mission
         pos = GpsPosition()
@@ -64,7 +63,6 @@ class TestOdlcsCommon(TestCase):
 
 class TestOdlcsLoggedOut(TestOdlcsCommon):
     """Tests logged out odlcs."""
-
     def test_not_authenticated(self):
         """Unauthenticated requests should fail."""
         odlc = {
@@ -74,8 +72,9 @@ class TestOdlcsLoggedOut(TestOdlcsCommon):
             'longitude': -76,
         }
 
-        response = self.client.post(
-            odlcs_url, data=json.dumps(odlc), content_type='application/json')
+        response = self.client.post(odlcs_url,
+                                    data=json.dumps(odlc),
+                                    content_type='application/json')
         self.assertEqual(403, response.status_code)
 
         response = self.client.get(odlcs_url)
@@ -84,7 +83,6 @@ class TestOdlcsLoggedOut(TestOdlcsCommon):
 
 class TestGetOdlc(TestOdlcsCommon):
     """Tests GETing the odlcs view."""
-
     def setUp(self):
         """Creates user and logs in."""
         super(TestGetOdlc, self).setUp()
@@ -100,62 +98,58 @@ class TestGetOdlc(TestOdlcsCommon):
 
     def test_get_odlcs(self):
         """We get back the odlcs we own."""
-        t1 = Odlc(
-            mission=self.mission,
-            user=self.user,
-            odlc_type=interop_api_pb2.Odlc.STANDARD)
+        t1 = Odlc(mission=self.mission,
+                  user=self.user,
+                  odlc_type=interop_api_pb2.Odlc.STANDARD)
         t1.save()
 
-        t2 = Odlc(
-            mission=self.mission,
-            user=self.user,
-            odlc_type=interop_api_pb2.Odlc.STANDARD)
+        t2 = Odlc(mission=self.mission,
+                  user=self.user,
+                  odlc_type=interop_api_pb2.Odlc.STANDARD)
         t2.save()
 
-        t3 = Odlc(
-            mission=self.mission,
-            user=self.user,
-            odlc_type=interop_api_pb2.Odlc.EMERGENT)
+        t3 = Odlc(mission=self.mission,
+                  user=self.user,
+                  odlc_type=interop_api_pb2.Odlc.EMERGENT)
         t3.save()
 
-        t4 = Odlc(
-            mission=self.mission2,
-            user=self.user,
-            odlc_type=interop_api_pb2.Odlc.STANDARD)
+        t4 = Odlc(mission=self.mission2,
+                  user=self.user,
+                  odlc_type=interop_api_pb2.Odlc.STANDARD)
         t4.save()
 
         get_id = lambda x: x['id']
         response = self.client.get(odlcs_url)
         self.assertEqual(200, response.status_code)
         self.assertEqual(
-            sorted(
-                [
-                    {
-                        'id': t4.pk,
-                        'mission': self.mission2.pk,
-                        'type': 'STANDARD',
-                        'autonomous': False,
-                    },
-                    {
-                        'id': t3.pk,
-                        'mission': self.mission.pk,
-                        'type': 'EMERGENT',
-                        'autonomous': False,
-                    },
-                    {
-                        'id': t2.pk,
-                        'mission': self.mission.pk,
-                        'type': 'STANDARD',
-                        'autonomous': False,
-                    },
-                    {
-                        'id': t1.pk,
-                        'mission': self.mission.pk,
-                        'type': 'STANDARD',
-                        'autonomous': False,
-                    },
-                ],
-                key=get_id), sorted(json.loads(response.content), key=get_id))
+            sorted([
+                {
+                    'id': t4.pk,
+                    'mission': self.mission2.pk,
+                    'type': 'STANDARD',
+                    'autonomous': False,
+                },
+                {
+                    'id': t3.pk,
+                    'mission': self.mission.pk,
+                    'type': 'EMERGENT',
+                    'autonomous': False,
+                },
+                {
+                    'id': t2.pk,
+                    'mission': self.mission.pk,
+                    'type': 'STANDARD',
+                    'autonomous': False,
+                },
+                {
+                    'id': t1.pk,
+                    'mission': self.mission.pk,
+                    'type': 'STANDARD',
+                    'autonomous': False,
+                },
+            ],
+                   key=get_id), sorted(json.loads(response.content),
+                                       key=get_id))
 
         response = self.client.get(odlcs_url +
                                    '?mission=%d' % self.mission2.pk)
@@ -174,15 +168,13 @@ class TestGetOdlc(TestOdlcsCommon):
         user2 = User.objects.create_user('testuser2', 'testemail@x.com',
                                          'testpass')
 
-        mine = Odlc(
-            mission=self.mission,
-            user=self.user,
-            odlc_type=interop_api_pb2.Odlc.STANDARD)
+        mine = Odlc(mission=self.mission,
+                    user=self.user,
+                    odlc_type=interop_api_pb2.Odlc.STANDARD)
         mine.save()
-        theirs = Odlc(
-            mission=self.mission,
-            user=user2,
-            odlc_type=interop_api_pb2.Odlc.STANDARD)
+        theirs = Odlc(mission=self.mission,
+                      user=user2,
+                      odlc_type=interop_api_pb2.Odlc.STANDARD)
         theirs.save()
 
         response = self.client.get(odlcs_url)
@@ -199,7 +191,6 @@ class TestGetOdlc(TestOdlcsCommon):
 
 class TestPostOdlc(TestOdlcsCommon):
     """Tests POSTing the odlcs view."""
-
     def setUp(self):
         """Creates user and logs in."""
         super(TestPostOdlc, self).setUp()
@@ -224,8 +215,9 @@ class TestPostOdlc(TestOdlcsCommon):
             'autonomous': False,
         }
 
-        response = self.client.post(
-            odlcs_url, data=json.dumps(odlc), content_type='application/json')
+        response = self.client.post(odlcs_url,
+                                    data=json.dumps(odlc),
+                                    content_type='application/json')
         self.assertEqual(200, response.status_code)
 
         # Check that returned odlc matches
@@ -253,8 +245,9 @@ class TestPostOdlc(TestOdlcsCommon):
             'type': 'STANDARD',
         }
 
-        response = self.client.post(
-            odlcs_url, data=json.dumps(odlc), content_type='application/json')
+        response = self.client.post(odlcs_url,
+                                    data=json.dumps(odlc),
+                                    content_type='application/json')
         self.assertEqual(200, response.status_code)
 
         # Check that returned odlc matches
@@ -286,16 +279,16 @@ class TestPostOdlc(TestOdlcsCommon):
             'description': 'Best odlc',
         }
 
-        response = self.client.post(
-            odlcs_url, data=json.dumps(odlc), content_type='application/json')
+        response = self.client.post(odlcs_url,
+                                    data=json.dumps(odlc),
+                                    content_type='application/json')
         self.assertEqual(400, response.status_code)
 
     def test_invalid_json(self):
         """Request body must contain valid JSON."""
-        response = self.client.post(
-            odlcs_url,
-            data='type=STANDARD&longitude=-76',
-            content_type='multipart/form-data')
+        response = self.client.post(odlcs_url,
+                                    data='type=STANDARD&longitude=-76',
+                                    content_type='multipart/form-data')
         self.assertEqual(400, response.status_code)
 
     def test_invalid_mission(self):
@@ -305,8 +298,9 @@ class TestPostOdlc(TestOdlcsCommon):
             'type': 'STANDARD',
         }
 
-        response = self.client.post(
-            odlcs_url, data=json.dumps(odlc), content_type='application/json')
+        response = self.client.post(odlcs_url,
+                                    data=json.dumps(odlc),
+                                    content_type='application/json')
         self.assertEqual(400, response.status_code)
 
     def test_missing_latitude(self):
@@ -317,16 +311,18 @@ class TestPostOdlc(TestOdlcsCommon):
             'longitude': -76
         }
 
-        response = self.client.post(
-            odlcs_url, data=json.dumps(odlc), content_type='application/json')
+        response = self.client.post(odlcs_url,
+                                    data=json.dumps(odlc),
+                                    content_type='application/json')
         self.assertEqual(400, response.status_code)
 
     def test_missing_longitude(self):
         """Odlc longitude required if latitude specified."""
         odlc = {'type': 'STANDARD', 'latitude': 38}
 
-        response = self.client.post(
-            odlcs_url, data=json.dumps(odlc), content_type='application/json')
+        response = self.client.post(odlcs_url,
+                                    data=json.dumps(odlc),
+                                    content_type='application/json')
         self.assertEqual(400, response.status_code)
 
     def test_invalid_type(self):
@@ -341,10 +337,9 @@ class TestPostOdlc(TestOdlcsCommon):
                 'longitude': -76
             }
 
-            response = self.client.post(
-                odlcs_url,
-                data=json.dumps(odlc),
-                content_type='application/json')
+            response = self.client.post(odlcs_url,
+                                        data=json.dumps(odlc),
+                                        content_type='application/json')
             self.assertEqual(400, response.status_code)
 
     def test_invalid_latitude(self):
@@ -359,10 +354,9 @@ class TestPostOdlc(TestOdlcsCommon):
                 'longitude': -76
             }
 
-            response = self.client.post(
-                odlcs_url,
-                data=json.dumps(odlc),
-                content_type='application/json')
+            response = self.client.post(odlcs_url,
+                                        data=json.dumps(odlc),
+                                        content_type='application/json')
             self.assertEqual(400, response.status_code)
 
     def test_invalid_longitude(self):
@@ -377,10 +371,9 @@ class TestPostOdlc(TestOdlcsCommon):
                 'longitude': b
             }
 
-            response = self.client.post(
-                odlcs_url,
-                data=json.dumps(odlc),
-                content_type='application/json')
+            response = self.client.post(odlcs_url,
+                                        data=json.dumps(odlc),
+                                        content_type='application/json')
             self.assertEqual(400, response.status_code)
 
     def test_invalid_shape(self):
@@ -394,10 +387,9 @@ class TestPostOdlc(TestOdlcsCommon):
                 'shape': b,
             }
 
-            response = self.client.post(
-                odlcs_url,
-                data=json.dumps(odlc),
-                content_type='application/json')
+            response = self.client.post(odlcs_url,
+                                        data=json.dumps(odlc),
+                                        content_type='application/json')
             self.assertEqual(400, response.status_code)
 
     def test_invalid_shape_color(self):
@@ -411,10 +403,9 @@ class TestPostOdlc(TestOdlcsCommon):
                 'shapeColor': b,
             }
 
-            response = self.client.post(
-                odlcs_url,
-                data=json.dumps(odlc),
-                content_type='application/json')
+            response = self.client.post(odlcs_url,
+                                        data=json.dumps(odlc),
+                                        content_type='application/json')
             self.assertEqual(400, response.status_code)
 
     def test_invalid_alphanumeric(self):
@@ -428,10 +419,9 @@ class TestPostOdlc(TestOdlcsCommon):
                 'alphanumeric': b,
             }
 
-            response = self.client.post(
-                odlcs_url,
-                data=json.dumps(odlc),
-                content_type='application/json')
+            response = self.client.post(odlcs_url,
+                                        data=json.dumps(odlc),
+                                        content_type='application/json')
             self.assertEqual(400, response.status_code)
 
     def test_invalid_alphanumeric_color(self):
@@ -445,10 +435,9 @@ class TestPostOdlc(TestOdlcsCommon):
                 'alphanumericColor': b,
             }
 
-            response = self.client.post(
-                odlcs_url,
-                data=json.dumps(odlc),
-                content_type='application/json')
+            response = self.client.post(odlcs_url,
+                                        data=json.dumps(odlc),
+                                        content_type='application/json')
             self.assertEqual(400, response.status_code)
 
     def test_invalid_orientation(self):
@@ -462,10 +451,9 @@ class TestPostOdlc(TestOdlcsCommon):
                 'orientation': b,
             }
 
-            response = self.client.post(
-                odlcs_url,
-                data=json.dumps(odlc),
-                content_type='application/json')
+            response = self.client.post(odlcs_url,
+                                        data=json.dumps(odlc),
+                                        content_type='application/json')
             self.assertEqual(400, response.status_code)
 
     def test_invalid_autonomous(self):
@@ -479,10 +467,9 @@ class TestPostOdlc(TestOdlcsCommon):
                 'autonomous': b,
             }
 
-            response = self.client.post(
-                odlcs_url,
-                data=json.dumps(odlc),
-                content_type='application/json')
+            response = self.client.post(odlcs_url,
+                                        data=json.dumps(odlc),
+                                        content_type='application/json')
             self.assertEqual(400, response.status_code)
 
     def test_too_many(self):
@@ -495,18 +482,18 @@ class TestPostOdlc(TestOdlcsCommon):
                 'mission': self.mission.pk,
                 'type': 'STANDARD',
             }
-            self.client.post(
-                odlcs_url,
-                data=json.dumps(odlc),
-                content_type='application/json')
+            self.client.post(odlcs_url,
+                             data=json.dumps(odlc),
+                             content_type='application/json')
 
         # Upload past too many should fail.
         odlc = {
             'mission': self.mission.pk,
             'type': 'STANDARD',
         }
-        response = self.client.post(
-            odlcs_url, data=json.dumps(odlc), content_type='application/json')
+        response = self.client.post(odlcs_url,
+                                    data=json.dumps(odlc),
+                                    content_type='application/json')
         self.assertEqual(400, response.status_code)
 
         # An upload for mission 2 should succeed.
@@ -514,14 +501,14 @@ class TestPostOdlc(TestOdlcsCommon):
             'mission': self.mission2.pk,
             'type': 'STANDARD',
         }
-        response = self.client.post(
-            odlcs_url, data=json.dumps(odlc), content_type='application/json')
+        response = self.client.post(odlcs_url,
+                                    data=json.dumps(odlc),
+                                    content_type='application/json')
         self.assertEqual(200, response.status_code)
 
 
 class TestOdlcsIdLoggedOut(TestOdlcsCommon):
     """Tests logged out odlcs_id."""
-
     def test_not_authenticated(self):
         """Unauthenticated requests should fail."""
         response = self.client.get(odlcs_id_url(args=[1]))
@@ -530,7 +517,6 @@ class TestOdlcsIdLoggedOut(TestOdlcsCommon):
 
 class TestOdlcId(TestOdlcsCommon):
     """Tests GET/PUT/DELETE specific odlcs."""
-
     def setUp(self):
         """Creates user and logs in."""
         super(TestOdlcId, self).setUp()
@@ -547,10 +533,9 @@ class TestOdlcId(TestOdlcsCommon):
         """Test GETting a odlc owned by a different user."""
         user2 = User.objects.create_user('testuser2', 'testemail@x.com',
                                          'testpass')
-        t = Odlc(
-            mission=self.mission,
-            user=user2,
-            odlc_type=interop_api_pb2.Odlc.STANDARD)
+        t = Odlc(mission=self.mission,
+                 user=user2,
+                 odlc_type=interop_api_pb2.Odlc.STANDARD)
         t.save()
 
         response = self.client.get(odlcs_id_url(args=[t.pk]))
@@ -558,28 +543,27 @@ class TestOdlcId(TestOdlcsCommon):
 
     def test_get_own(self):
         """Test GETting a odlc owned by the correct user."""
-        t = Odlc(
-            mission=self.mission,
-            user=self.user,
-            odlc_type=interop_api_pb2.Odlc.STANDARD)
+        t = Odlc(mission=self.mission,
+                 user=self.user,
+                 odlc_type=interop_api_pb2.Odlc.STANDARD)
         t.save()
 
         response = self.client.get(odlcs_id_url(args=[t.pk]))
         self.assertEqual(200, response.status_code)
 
-        self.assertEqual({
-            'mission': self.mission.pk,
-            'id': t.pk,
-            'type': 'STANDARD',
-            'autonomous': False,
-        }, json.loads(response.content))
+        self.assertEqual(
+            {
+                'mission': self.mission.pk,
+                'id': t.pk,
+                'type': 'STANDARD',
+                'autonomous': False,
+            }, json.loads(response.content))
 
     def test_put_append(self):
         """PUT sets a new field that wasn't set before."""
-        t = Odlc(
-            mission=self.mission,
-            user=self.user,
-            odlc_type=interop_api_pb2.Odlc.STANDARD)
+        t = Odlc(mission=self.mission,
+                 user=self.user,
+                 odlc_type=interop_api_pb2.Odlc.STANDARD)
         t.save()
 
         data = {
@@ -588,8 +572,8 @@ class TestOdlcId(TestOdlcsCommon):
             'description': 'Hello'
         }
 
-        response = self.client.put(
-            odlcs_id_url(args=[t.pk]), data=json.dumps(data))
+        response = self.client.put(odlcs_id_url(args=[t.pk]),
+                                   data=json.dumps(data))
         self.assertEqual(200, response.status_code)
 
         t.refresh_from_db()
@@ -597,10 +581,9 @@ class TestOdlcId(TestOdlcsCommon):
 
     def test_put_changes_last_modified(self):
         """PUT sets a new field that wasn't set before."""
-        t = Odlc(
-            mission=self.mission,
-            user=self.user,
-            odlc_type=interop_api_pb2.Odlc.STANDARD)
+        t = Odlc(mission=self.mission,
+                 user=self.user,
+                 odlc_type=interop_api_pb2.Odlc.STANDARD)
         t.save()
         orig_last_modified = t.last_modified_time
 
@@ -610,8 +593,8 @@ class TestOdlcId(TestOdlcsCommon):
             'description': 'Hello'
         }
 
-        response = self.client.put(
-            odlcs_id_url(args=[t.pk]), data=json.dumps(data))
+        response = self.client.put(odlcs_id_url(args=[t.pk]),
+                                   data=json.dumps(data))
         self.assertEqual(200, response.status_code)
 
         t.refresh_from_db()
@@ -622,17 +605,16 @@ class TestOdlcId(TestOdlcsCommon):
         l = GpsPosition(latitude=38, longitude=-76)
         l.save()
 
-        t = Odlc(
-            mission=self.mission,
-            user=self.user,
-            odlc_type=interop_api_pb2.Odlc.STANDARD,
-            location=l,
-            orientation=interop_api_pb2.Odlc.S,
-            shape=interop_api_pb2.Odlc.SQUARE,
-            shape_color=interop_api_pb2.Odlc.WHITE,
-            alphanumeric='ABC',
-            alphanumeric_color=interop_api_pb2.Odlc.BLACK,
-            description='Test odlc')
+        t = Odlc(mission=self.mission,
+                 user=self.user,
+                 odlc_type=interop_api_pb2.Odlc.STANDARD,
+                 location=l,
+                 orientation=interop_api_pb2.Odlc.S,
+                 shape=interop_api_pb2.Odlc.SQUARE,
+                 shape_color=interop_api_pb2.Odlc.WHITE,
+                 alphanumeric='ABC',
+                 alphanumeric_color=interop_api_pb2.Odlc.BLACK,
+                 description='Test odlc')
         t.save()
 
         updated = {
@@ -649,8 +631,8 @@ class TestOdlcId(TestOdlcsCommon):
             'autonomous': False,
         }
 
-        response = self.client.put(
-            odlcs_id_url(args=[t.pk]), data=json.dumps(updated))
+        response = self.client.put(odlcs_id_url(args=[t.pk]),
+                                   data=json.dumps(updated))
         self.assertEqual(200, response.status_code)
 
         t.refresh_from_db()
@@ -671,17 +653,16 @@ class TestOdlcId(TestOdlcsCommon):
         l = GpsPosition(latitude=38, longitude=-76)
         l.save()
 
-        t = Odlc(
-            mission=self.mission,
-            user=self.user,
-            odlc_type=interop_api_pb2.Odlc.STANDARD,
-            location=l,
-            orientation=interop_api_pb2.Odlc.S,
-            shape=interop_api_pb2.Odlc.SQUARE,
-            shape_color=interop_api_pb2.Odlc.WHITE,
-            alphanumeric='ABC',
-            alphanumeric_color=interop_api_pb2.Odlc.BLACK,
-            description='Test odlc')
+        t = Odlc(mission=self.mission,
+                 user=self.user,
+                 odlc_type=interop_api_pb2.Odlc.STANDARD,
+                 location=l,
+                 orientation=interop_api_pb2.Odlc.S,
+                 shape=interop_api_pb2.Odlc.SQUARE,
+                 shape_color=interop_api_pb2.Odlc.WHITE,
+                 alphanumeric='ABC',
+                 alphanumeric_color=interop_api_pb2.Odlc.BLACK,
+                 description='Test odlc')
         t.save()
 
         updated = {
@@ -689,8 +670,8 @@ class TestOdlcId(TestOdlcsCommon):
             'type': 'STANDARD',
         }
 
-        response = self.client.put(
-            odlcs_id_url(args=[t.pk]), data=json.dumps(updated))
+        response = self.client.put(odlcs_id_url(args=[t.pk]),
+                                   data=json.dumps(updated))
         self.assertEqual(200, response.status_code)
 
         t.refresh_from_db()
@@ -706,10 +687,9 @@ class TestOdlcId(TestOdlcsCommon):
 
     def test_delete_own(self):
         """Test DELETEing a odlc owned by the correct user."""
-        t = Odlc(
-            mission=self.mission,
-            user=self.user,
-            odlc_type=interop_api_pb2.Odlc.STANDARD)
+        t = Odlc(mission=self.mission,
+                 user=self.user,
+                 odlc_type=interop_api_pb2.Odlc.STANDARD)
         t.save()
 
         pk = t.pk
@@ -726,10 +706,9 @@ class TestOdlcId(TestOdlcsCommon):
         """Test DELETEing a odlc owned by another user."""
         user2 = User.objects.create_user('testuser2', 'testemail@x.com',
                                          'testpass')
-        t = Odlc(
-            mission=self.mission,
-            user=user2,
-            odlc_type=interop_api_pb2.Odlc.STANDARD)
+        t = Odlc(mission=self.mission,
+                 user=user2,
+                 odlc_type=interop_api_pb2.Odlc.STANDARD)
         t.save()
 
         response = self.client.delete(odlcs_id_url(args=[t.pk]))
@@ -737,10 +716,9 @@ class TestOdlcId(TestOdlcsCommon):
 
     def test_get_after_delete_own(self):
         """Test GETting a odlc after DELETE."""
-        t = Odlc(
-            mission=self.mission,
-            user=self.user,
-            odlc_type=interop_api_pb2.Odlc.STANDARD)
+        t = Odlc(mission=self.mission,
+                 user=self.user,
+                 odlc_type=interop_api_pb2.Odlc.STANDARD)
         t.save()
 
         pk = t.pk
@@ -753,19 +731,17 @@ class TestOdlcId(TestOdlcsCommon):
 
     def test_delete_thumb(self):
         """Test DELETEing a odlc with thumbnail."""
-        t = Odlc(
-            mission=self.mission,
-            user=self.user,
-            odlc_type=interop_api_pb2.Odlc.STANDARD)
+        t = Odlc(mission=self.mission,
+                 user=self.user,
+                 odlc_type=interop_api_pb2.Odlc.STANDARD)
         t.save()
 
         pk = t.pk
 
         with open(test_image("A.jpg"), 'rb') as f:
-            response = self.client.post(
-                odlcs_id_image_url(args=[pk]),
-                data=f.read(),
-                content_type="image/jpeg")
+            response = self.client.post(odlcs_id_image_url(args=[pk]),
+                                        data=f.read(),
+                                        content_type="image/jpeg")
             self.assertEqual(200, response.status_code)
 
         t.refresh_from_db()
@@ -785,7 +761,6 @@ def test_image(name):
 
 class TestOdlcIdImage(TestOdlcsCommon):
     """Tests GET/PUT/DELETE odlc image."""
-
     def setUp(self):
         """Creates user and logs in."""
         super(TestOdlcIdImage, self).setUp()
@@ -794,13 +769,12 @@ class TestOdlcIdImage(TestOdlcsCommon):
         self.client.force_login(self.user)
 
         # Create a odlc
-        response = self.client.post(
-            odlcs_url,
-            data=json.dumps({
-                'mission': self.mission.pk,
-                'type': 'STANDARD'
-            }),
-            content_type='application/json')
+        response = self.client.post(odlcs_url,
+                                    data=json.dumps({
+                                        'mission': self.mission.pk,
+                                        'type': 'STANDARD'
+                                    }),
+                                    content_type='application/json')
         self.assertEqual(200, response.status_code)
         self.odlc_id = json.loads(response.content)['id']
         self.odlc = Odlc.objects.get(pk=self.odlc_id)
@@ -820,10 +794,9 @@ class TestOdlcIdImage(TestOdlcsCommon):
         """Test GETting a thumbnail owned by a different user."""
         user2 = User.objects.create_user('testuser2', 'testemail@x.com',
                                          'testpass')
-        t = Odlc(
-            mission=self.mission,
-            user=user2,
-            odlc_type=interop_api_pb2.Odlc.STANDARD)
+        t = Odlc(mission=self.mission,
+                 user=user2,
+                 odlc_type=interop_api_pb2.Odlc.STANDARD)
         t.save()
 
         response = self.client.get(odlcs_id_image_url(args=[t.pk]))
@@ -831,10 +804,9 @@ class TestOdlcIdImage(TestOdlcsCommon):
 
     def test_post_bad_image(self):
         """Try to upload bad image"""
-        response = self.client.post(
-            odlcs_id_image_url(args=[self.odlc_id]),
-            data='Hahaha',
-            content_type='image/jpeg')
+        response = self.client.post(odlcs_id_image_url(args=[self.odlc_id]),
+                                    data='Hahaha',
+                                    content_type='image/jpeg')
         self.assertEqual(400, response.status_code)
 
     def upload_image(self, name, method='POST', content_type='image/jpeg'):
@@ -852,10 +824,9 @@ class TestOdlcIdImage(TestOdlcsCommon):
                 data=data,
                 content_type=content_type)
         else:
-            response = self.client.put(
-                odlcs_id_image_url(args=[self.odlc_id]),
-                data=data,
-                content_type=content_type)
+            response = self.client.put(odlcs_id_image_url(args=[self.odlc_id]),
+                                       data=data,
+                                       content_type=content_type)
         self.assertEqual(200, response.status_code)
 
         # Validate can retrieve image with uploaded contents.
@@ -970,7 +941,6 @@ class TestOdlcIdImage(TestOdlcsCommon):
 
 class TestOdlcsAdminReviewNotAdmin(TestOdlcsCommon):
     """Tests admin review when not logged in as admin."""
-
     def test_not_authenticated(self):
         """Unauthenticated requests should fail."""
         response = self.client.get(odlcs_review_url)
@@ -994,12 +964,12 @@ class TestOdlcsAdminReviewNotAdmin(TestOdlcsCommon):
 
 class TestOdlcsAdminReview(TestOdlcsCommon):
     """Tests GET/PUT admin review of odlcs."""
-
     def setUp(self):
         """Creates user and logs in."""
         super(TestOdlcsAdminReview, self).setUp()
-        self.user = User.objects.create_superuser(
-            'testuser', 'testemail@x.com', 'testpass')
+        self.user = User.objects.create_superuser('testuser',
+                                                  'testemail@x.com',
+                                                  'testpass')
         self.team = User.objects.create_user('testuser2', 'testemail@x.com',
                                              'testpass')
         self.client.force_login(self.user)
@@ -1012,10 +982,9 @@ class TestOdlcsAdminReview(TestOdlcsCommon):
 
     def test_get_without_thumbnail(self):
         """Test GET when there are odlcs without thumbnail."""
-        odlc = Odlc(
-            mission=self.mission,
-            user=self.team,
-            odlc_type=interop_api_pb2.Odlc.STANDARD)
+        odlc = Odlc(mission=self.mission,
+                    user=self.team,
+                    odlc_type=interop_api_pb2.Odlc.STANDARD)
         odlc.save()
 
         response = self.client.get(odlcs_review_url)
@@ -1025,10 +994,9 @@ class TestOdlcsAdminReview(TestOdlcsCommon):
 
     def test_get(self):
         """Test GET when there are odlcs."""
-        odlc = Odlc(
-            mission=self.mission,
-            user=self.team,
-            odlc_type=interop_api_pb2.Odlc.STANDARD)
+        odlc = Odlc(mission=self.mission,
+                    user=self.team,
+                    odlc_type=interop_api_pb2.Odlc.STANDARD)
         odlc.save()
 
         with open(test_image('A.jpg'), 'rb') as f:
@@ -1045,10 +1013,9 @@ class TestOdlcsAdminReview(TestOdlcsCommon):
 
     def test_put_review_no_approved(self):
         """Test PUT review with no approved field."""
-        odlc = Odlc(
-            mission=self.mission,
-            user=self.team,
-            odlc_type=interop_api_pb2.Odlc.STANDARD)
+        odlc = Odlc(mission=self.mission,
+                    user=self.team,
+                    odlc_type=interop_api_pb2.Odlc.STANDARD)
         odlc.save()
 
         response = self.client.put(odlcs_review_id_url(args=[odlc.pk]))
@@ -1056,28 +1023,25 @@ class TestOdlcsAdminReview(TestOdlcsCommon):
 
     def test_put_invalid_pk(self):
         """Test PUT reivew with invalid pk."""
-        response = self.client.put(
-            odlcs_review_id_url(args=[1]),
-            data=json.dumps({
-                'thumbnailApproved': True,
-                'descriptionApproved': True,
-            }))
+        response = self.client.put(odlcs_review_id_url(args=[1]),
+                                   data=json.dumps({
+                                       'thumbnailApproved': True,
+                                       'descriptionApproved': True,
+                                   }))
         self.assertEqual(404, response.status_code)
 
     def test_put_review(self):
         """Test PUT review is saved."""
-        odlc = Odlc(
-            mission=self.mission,
-            user=self.team,
-            odlc_type=interop_api_pb2.Odlc.STANDARD)
+        odlc = Odlc(mission=self.mission,
+                    user=self.team,
+                    odlc_type=interop_api_pb2.Odlc.STANDARD)
         odlc.save()
 
-        response = self.client.put(
-            odlcs_review_id_url(args=[odlc.pk]),
-            data=json.dumps({
-                'thumbnailApproved': True,
-                'descriptionApproved': True,
-            }))
+        response = self.client.put(odlcs_review_id_url(args=[odlc.pk]),
+                                   data=json.dumps({
+                                       'thumbnailApproved': True,
+                                       'descriptionApproved': True,
+                                   }))
         self.assertEqual(200, response.status_code)
         data = json.loads(response.content)
         self.assertIn('odlc', data)

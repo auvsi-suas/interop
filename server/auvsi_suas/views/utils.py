@@ -29,7 +29,6 @@ INTEROP_TEAM_STATIC_RANGE_MAX = '10.10.130.119'
 
 class GpsConversion(View):
     """Converts GPS from string to decimal."""
-
     @method_decorator(require_superuser)
     def dispatch(self, *args, **kwargs):
         return super(GpsConversion, self).dispatch(*args, **kwargs)
@@ -50,21 +49,19 @@ class GpsConversion(View):
             latlon = string2latlon(request_proto.latitude,
                                    request_proto.longitude, LATLON_FORMAT)
         except Exception as e:
-            return HttpResponseBadRequest(
-                'Failed to convert GPS. Error: %s' % str(e))
+            return HttpResponseBadRequest('Failed to convert GPS. Error: %s' %
+                                          str(e))
 
         response = interop_admin_api_pb2.GpsConversionResponse()
         response.latitude = latlon.lat.decimal_degree
         response.longitude = latlon.lon.decimal_degree
 
-        return HttpResponse(
-            json_format.MessageToJson(response),
-            content_type="application/json")
+        return HttpResponse(json_format.MessageToJson(response),
+                            content_type="application/json")
 
 
 class BulkCreateTeams(View):
     """Creates teams based on CSV file and renders a printable webpage."""
-
     @method_decorator(require_superuser)
     def dispatch(self, *args, **kwargs):
         return super(BulkCreateTeams, self).dispatch(*args, **kwargs)

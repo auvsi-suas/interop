@@ -8,7 +8,6 @@ logger = logging.getLogger(__name__)
 
 class LoggingMiddleware(object):
     """Logging middleware for custom request/response logging."""
-
     def __init__(self, get_response):
         self.get_response = get_response
 
@@ -27,7 +26,7 @@ class LoggingMiddleware(object):
 
         delta_time = '%.4fs' % (time.time() - start_time)
         req_logger('[%d] %s (%s)\n>>>\n%s\n===\n%s\n<<<', response.status_code,
-                   request.get_full_path(), delta_time,
-                   str(request), str(response))
+                   request.get_full_path(), delta_time, str(request),
+                   str(response))
 
         return response

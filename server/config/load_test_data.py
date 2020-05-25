@@ -23,8 +23,9 @@ def main():
 
     testadmin = get_user_model().objects.create_superuser(
         username='testadmin', password='testpass', email='test@test.com')
-    testuser = get_user_model().objects.create_user(
-        username='testuser', password='testpass', email='test@test.com')
+    testuser = get_user_model().objects.create_user(username='testuser',
+                                                    password='testpass',
+                                                    email='test@test.com')
 
     test_utils.create_sample_mission(testadmin)
 

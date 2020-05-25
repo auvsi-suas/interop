@@ -6,7 +6,6 @@ from django.test import TestCase
 
 class TestGpsPositionModel(TestCase):
     """Tests the GpsPosition model."""
-
     def assert_distance_equal(self, pos1, pos2, dist, threshold=10):
         """GpsPosition distances are within threshold (ft)."""
         self.assertAlmostEqual(pos1.distance_to(pos2), dist, delta=threshold)

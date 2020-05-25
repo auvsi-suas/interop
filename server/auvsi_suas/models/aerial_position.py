@@ -49,8 +49,8 @@ class AerialPositionMixin(GpsPositionMixin):
         Returns:
             True if they are equal.
         """
-        return (super(AerialPositionMixin, self).duplicate(other) and
-                self.altitude_msl == other.altitude_msl)
+        return (super(AerialPositionMixin, self).duplicate(other)
+                and self.altitude_msl == other.altitude_msl)
 
 
 class AerialPosition(AerialPositionMixin):

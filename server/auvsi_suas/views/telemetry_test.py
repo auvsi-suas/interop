@@ -20,7 +20,6 @@ class TestTelemetryViewLoggedOut(TestCase):
 
 class TestTelemetryPost(TestCase):
     """Tests the Telemetry view POST."""
-
     def setUp(self):
         """Sets up the client, server info URL, and user."""
         self.user = User.objects.create_user('testuser', 'testemail@x.com',
@@ -40,8 +39,9 @@ class TestTelemetryPost(TestCase):
             proto.heading = head
         proto_json = json_format.MessageToJson(proto)
 
-        return self.client.post(
-            telemetry_url, data=proto_json, content_type='application/json')
+        return self.client.post(telemetry_url,
+                                data=proto_json,
+                                content_type='application/json')
 
     def test_invalid_request(self):
         """Tests an invalid request by mis-specifying parameters."""
@@ -71,9 +71,9 @@ class TestTelemetryPost(TestCase):
             (0, 0, 0, 370)
         ]  # yapf: disable
         for (lat, lon, alt, head) in TEST_DATA:
-            self.assertEqual(400,
-                             self.telemetry_request(lat, lon, alt,
-                                                    head).status_code)
+            self.assertEqual(
+                400,
+                self.telemetry_request(lat, lon, alt, head).status_code)
 
     def test_upload_and_store(self):
         """Tests correct upload and storage of data."""

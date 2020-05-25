@@ -24,8 +24,9 @@ def fixed_str(self):
         angle_str = ' '.join(map(str, angle))
         buf.append("<gx:angles>{0}</gx:angles>".format(angle_str))
     for gxcoord in self.gxcoords:
-        buf.append(("<gx:coord>{0}</gx:coord>"
-                    .format(gxcoord.__str__().replace(',', ' '))))
+        buf.append(
+            ("<gx:coord>{0}</gx:coord>".format(gxcoord.__str__().replace(
+                ',', ' '))))
     buf.append(super(GxTrack, self).__str__())
     buf.append('</gx:Track>')
     return "".join(buf)

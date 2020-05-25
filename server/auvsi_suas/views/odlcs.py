@@ -75,18 +75,18 @@ def validate_odlc_proto(odlc_proto):
     if odlc_proto.HasField('latitude') != odlc_proto.HasField('longitude'):
         raise ValueError('Must specify both latitude and longitude.')
 
-    if odlc_proto.HasField('latitude') and (odlc_proto.latitude < -90 or
-                                            odlc_proto.latitude > 90):
+    if odlc_proto.HasField('latitude') and (odlc_proto.latitude < -90
+                                            or odlc_proto.latitude > 90):
         raise ValueError('Invalid latitude "%f", must be -90 <= lat <= 90' %
                          odlc_proto.latitude)
 
-    if odlc_proto.HasField('longitude') and (odlc_proto.longitude < -180 or
-                                             odlc_proto.longitude > 180):
+    if odlc_proto.HasField('longitude') and (odlc_proto.longitude < -180
+                                             or odlc_proto.longitude > 180):
         raise ValueError('Invalid longitude "%s", must be -180 <= lat <= 180' %
                          odlc_proto.longitude)
 
-    if (odlc_proto.HasField('alphanumeric') and
-            ALPHANUMERIC_RE.fullmatch(odlc_proto.alphanumeric) is None):
+    if (odlc_proto.HasField('alphanumeric')
+            and ALPHANUMERIC_RE.fullmatch(odlc_proto.alphanumeric) is None):
         raise ValueError('Alphanumeric is invalid.')
 
 
@@ -97,8 +97,8 @@ def update_odlc_from_proto(odlc, odlc_proto):
 
     if odlc_proto.HasField('latitude') and odlc_proto.HasField('longitude'):
         if odlc.location is None:
-            l = GpsPosition(
-                latitude=odlc_proto.latitude, longitude=odlc_proto.longitude)
+            l = GpsPosition(latitude=odlc_proto.latitude,
+                            longitude=odlc_proto.longitude)
             l.save()
             odlc.location = l
         else:
@@ -148,7 +148,6 @@ def update_odlc_from_proto(odlc, odlc_proto):
 
 class Odlcs(View):
     """POST new odlc."""
-
     @method_decorator(require_login)
     def dispatch(self, *args, **kwargs):
         return super(Odlcs, self).dispatch(*args, **kwargs)
@@ -167,9 +166,8 @@ class Odlcs(View):
         odlcs = odlcs.all()[:100]
 
         odlc_protos = [odlc_to_proto(o) for o in odlcs]
-        return HttpResponse(
-            json.dumps(odlc_protos, cls=ProtoJsonEncoder),
-            content_type="application/json")
+        return HttpResponse(json.dumps(odlc_protos, cls=ProtoJsonEncoder),
+                            content_type="application/json")
 
     def post(self, request):
         odlc_proto = interop_api_pb2.Odlc()
@@ -201,9 +199,8 @@ class Odlcs(View):
         update_odlc_from_proto(odlc, odlc_proto)
         odlc.save()
 
-        return HttpResponse(
-            json_format.MessageToJson(odlc_to_proto(odlc)),
-            content_type="application/json")
+        return HttpResponse(json_format.MessageToJson(odlc_to_proto(odlc)),
+                            content_type="application/json")
 
 
 def find_odlc(request, pk):
@@ -230,7 +227,6 @@ def find_odlc(request, pk):
 
 class OdlcsId(View):
     """Get or update a specific odlc."""
-
     @method_decorator(require_login)
     def dispatch(self, *args, **kwargs):
         return super(OdlcsId, self).dispatch(*args, **kwargs)
@@ -243,9 +239,8 @@ class OdlcsId(View):
         except ValueError as e:
             return HttpResponseForbidden(str(e))
 
-        return HttpResponse(
-            json_format.MessageToJson(odlc_to_proto(odlc)),
-            content_type="application/json")
+        return HttpResponse(json_format.MessageToJson(odlc_to_proto(odlc)),
+                            content_type="application/json")
 
     def put(self, request, pk):
         try:
@@ -275,9 +270,8 @@ class OdlcsId(View):
         odlc.update_last_modified()
         odlc.save()
 
-        return HttpResponse(
-            json_format.MessageToJson(odlc_to_proto(odlc)),
-            content_type="application/json")
+        return HttpResponse(json_format.MessageToJson(odlc_to_proto(odlc)),
+                            content_type="application/json")
 
     def delete(self, request, pk):
         try:
@@ -303,7 +297,6 @@ class OdlcsId(View):
 
 class OdlcsIdImage(View):
     """Get or add/update odlc image."""
-
     @method_decorator(require_login)
     def dispatch(self, *args, **kwargs):
         return super(OdlcsIdImage, self).dispatch(*args, **kwargs)
@@ -425,7 +418,6 @@ def update_odlc_from_review_proto(odlc, review_proto):
 
 class OdlcsAdminReview(View):
     """Get or update review status for odlcs."""
-
     @method_decorator(require_superuser)
     def dispatch(self, *args, **kwargs):
         return super(OdlcsAdminReview, self).dispatch(*args, **kwargs)
@@ -441,9 +433,9 @@ class OdlcsAdminReview(View):
         # Convert to review protos.
         odlc_review_protos = [odlc_to_review_proto(odlc) for odlc in odlcs]
 
-        return HttpResponse(
-            json.dumps(odlc_review_protos, cls=ProtoJsonEncoder),
-            content_type="application/json")
+        return HttpResponse(json.dumps(odlc_review_protos,
+                                       cls=ProtoJsonEncoder),
+                            content_type="application/json")
 
     def put(self, request, pk):
         """Updates the review status of a odlc."""
@@ -463,6 +455,6 @@ class OdlcsAdminReview(View):
         update_odlc_from_review_proto(odlc, review_proto)
         odlc.save()
 
-        return HttpResponse(
-            json_format.MessageToJson(odlc_to_review_proto(odlc)),
-            content_type="application/json")
+        return HttpResponse(json_format.MessageToJson(
+            odlc_to_review_proto(odlc)),
+                            content_type="application/json")

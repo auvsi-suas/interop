@@ -88,8 +88,9 @@ def generate_feedback(mission_config, user, team_eval):
     uas_logs = list(itertools.chain.from_iterable(uas_period_logs))
 
     # Determine interop telemetry rates.
-    telem_max, telem_avg = UasTelemetry.rates(
-        user, flight_periods, time_period_logs=uas_period_logs)
+    telem_max, telem_avg = UasTelemetry.rates(user,
+                                              flight_periods,
+                                              time_period_logs=uas_period_logs)
     if telem_max:
         feedback.uas_telemetry_time_max_sec = telem_max
     if telem_avg:
@@ -109,8 +110,8 @@ def generate_feedback(mission_config, user, team_eval):
             team_eval.warnings.append(
                 'Odlc thumbnail review not set, may need to review ODLCs.')
             break
-    evaluator = OdlcEvaluator(user_odlcs,
-                              mission_config.odlcs.all(), flight_periods)
+    evaluator = OdlcEvaluator(user_odlcs, mission_config.odlcs.all(),
+                              flight_periods)
     feedback.odlc.CopyFrom(evaluator.evaluate())
 
     # Determine collisions with stationary.
@@ -148,8 +149,8 @@ def score_team(team_eval):
 
     # Determine telemetry prerequisite.
     telem_prereq = False
-    if (feedback.HasField('uas_telemetry_time_avg_sec') and
-            feedback.uas_telemetry_time_avg_sec > 0):
+    if (feedback.HasField('uas_telemetry_time_avg_sec')
+            and feedback.uas_telemetry_time_avg_sec > 0):
         telem_prereq = feedback.uas_telemetry_time_avg_sec <= INTEROP_TELEM_THRESHOLD_TIME_SEC
 
     def points_for_time_sec(flight_sec, process_sec):
@@ -162,15 +163,15 @@ def score_team(team_eval):
                                       feedback.judge.post_process_time_sec)
     max_time_points = points_for_time_sec(FLIGHT_TIME_MAX_SEC,
                                           PROCESS_TIME_MAX_SEC)
-    timeline.mission_time = max(
-        0, (max_time_points - time_points) / max_time_points)
+    timeline.mission_time = max(0, (max_time_points - time_points) /
+                                max_time_points)
     timeline.mission_penalty = MISSION_TIME_PENALTY_FROM_SEC * (
-        max(0, feedback.judge.flight_time_sec - FLIGHT_TIME_MAX_SEC) + max(
-            0, feedback.judge.post_process_time_sec - PROCESS_TIME_MAX_SEC))
+        max(0, feedback.judge.flight_time_sec - FLIGHT_TIME_MAX_SEC) +
+        max(0, feedback.judge.post_process_time_sec - PROCESS_TIME_MAX_SEC))
     timeline.timeout = 0 if feedback.judge.used_timeout else 1
-    timeline.score_ratio = (
-        (MISSION_TIME_WEIGHT * timeline.mission_time) +
-        (TIMEOUT_WEIGHT * timeline.timeout) - timeline.mission_penalty)
+    timeline.score_ratio = ((MISSION_TIME_WEIGHT * timeline.mission_time) +
+                            (TIMEOUT_WEIGHT * timeline.timeout) -
+                            timeline.mission_penalty)
 
     # Score autonomous flight.
     flight = score.autonomous_flight
@@ -192,18 +193,20 @@ def score_team(team_eval):
         flight.crashed_penalty = CRASH_PENALTY
     else:
         flight.crashed_penalty = 0
-    flight.score_ratio = (
-        WAYPOINT_ACCURACY_WEIGHT * flight.waypoint_accuracy -
-        flight.safety_pilot_takeover_penalty - flight.out_of_bounds_penalty -
-        flight.things_fell_off_penalty - flight.crashed_penalty)
+    flight.score_ratio = (WAYPOINT_ACCURACY_WEIGHT * flight.waypoint_accuracy -
+                          flight.safety_pilot_takeover_penalty -
+                          flight.out_of_bounds_penalty -
+                          flight.things_fell_off_penalty -
+                          flight.crashed_penalty)
 
     # Score obstacle avoidance.
     avoid = score.obstacle_avoidance
     avoid.telemetry_prerequisite = telem_prereq
     if telem_prereq:
         avoid.score_ratio = pow(
-            sum([0.0 if o.hit else 1.0 for o in feedback.stationary_obstacles])
-            / len(feedback.stationary_obstacles), 3)
+            sum([0.0 if o.hit else 1.0
+                 for o in feedback.stationary_obstacles]) /
+            len(feedback.stationary_obstacles), 3)
     else:
         avoid.score_ratio = 0
 

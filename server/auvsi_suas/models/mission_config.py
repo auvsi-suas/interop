@@ -17,10 +17,9 @@ class MissionConfig(models.Model):
     """The details for the mission."""
 
     # The home position for use as a reference point.
-    home_pos = models.ForeignKey(
-        GpsPosition,
-        related_name="missionconfig_home_pos",
-        on_delete=models.CASCADE)
+    home_pos = models.ForeignKey(GpsPosition,
+                                 related_name="missionconfig_home_pos",
+                                 on_delete=models.CASCADE)
     # The lost comms RTH/RTL and flight termination position.
     lost_comms_pos = models.ForeignKey(
         GpsPosition,
@@ -35,8 +34,9 @@ class MissionConfig(models.Model):
     search_grid_points = models.ManyToManyField(
         Waypoint, related_name='missionconfig_search_grid_points')
     # The judge created objects for detection.
-    odlcs = models.ManyToManyField(
-        Odlc, related_name='missionconfig_odlc', blank=True)
+    odlcs = models.ManyToManyField(Odlc,
+                                   related_name='missionconfig_odlc',
+                                   blank=True)
     # The last known position of the emergent object.
     emergent_last_known_pos = models.ForeignKey(
         GpsPosition,
@@ -51,10 +51,9 @@ class MissionConfig(models.Model):
     air_drop_boundary_points = models.ManyToManyField(
         Waypoint, related_name='missionconfig_air_drop_boundary_points')
     # The air drop position.
-    air_drop_pos = models.ForeignKey(
-        GpsPosition,
-        related_name='missionconfig_air_drop_pos',
-        on_delete=models.CASCADE)
+    air_drop_pos = models.ForeignKey(GpsPosition,
+                                     related_name='missionconfig_air_drop_pos',
+                                     on_delete=models.CASCADE)
     # The position the UGV must drive to.
     ugv_drive_pos = models.ForeignKey(
         GpsPosition,
@@ -73,4 +72,7 @@ class MissionConfigModelAdmin(admin.ModelAdmin):
                      "off_axis_odlc_pos", "air_drop_pos")
     filter_horizontal = ("fly_zones", "mission_waypoints",
                          "search_grid_points", "odlcs", "stationary_obstacles")
-    list_display = ('pk', 'home_pos', )
+    list_display = (
+        'pk',
+        'home_pos',
+    )

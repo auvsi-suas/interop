@@ -14,7 +14,6 @@ logger = logging.getLogger(__name__)
 
 class Login(View):
     """Logs the user in with a POST request using the given parameters."""
-
     def post(self, request):
         creds = Credentials()
         try:

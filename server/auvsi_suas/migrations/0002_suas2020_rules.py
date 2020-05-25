@@ -14,14 +14,18 @@ class Migration(migrations.Migration):
     operations = [
         migrations.RemoveField(
             model_name='missionjudgefeedback',
-            name='waypoints_captured', ),
+            name='waypoints_captured',
+        ),
         migrations.RemoveField(
             model_name='odlc',
-            name='actionable_override', ),
+            name='actionable_override',
+        ),
         migrations.AlterField(
             model_name='missionjudgefeedback',
             name='air_drop_accuracy',
             field=models.IntegerField(
-                choices=[(0, 'NO_POINTS'), (1, 'WITHIN_05_FT'),
-                         (2, 'WITHIN_15_FT'), (3, 'WITHIN_40_FT')]), ),
+                choices=[(0,
+                          'NO_POINTS'), (1, 'WITHIN_05_FT'), (
+                              2, 'WITHIN_15_FT'), (3, 'WITHIN_40_FT')]),
+        ),
     ]

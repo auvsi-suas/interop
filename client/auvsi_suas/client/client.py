@@ -24,7 +24,6 @@ class Client(object):
     interoperability server. This is the base core implementation. The
     AsyncClient uses this base Client to add performance features.
     """
-
     def __init__(self,
                  url,
                  username,
@@ -48,10 +47,10 @@ class Client(object):
         self.max_concurrent = 128
 
         self.session = requests.Session()
-        self.session.mount('http://',
-                           requests.adapters.HTTPAdapter(
-                               pool_maxsize=max_concurrent,
-                               max_retries=max_retries))
+        self.session.mount(
+            'http://',
+            requests.adapters.HTTPAdapter(pool_maxsize=max_concurrent,
+                                          max_retries=max_retries))
 
         # All endpoints require authentication, so always login.
         creds = interop_api_pb2.Credentials()
@@ -232,8 +231,8 @@ class Client(object):
             requests.Timeout: Request timeout.
             ValueError or AttributeError: Malformed response from server.
         """
-        r = self.put(
-            '/api/odlcs/%d' % odlc_id, data=json_format.MessageToJson(odlc))
+        r = self.put('/api/odlcs/%d' % odlc_id,
+                     data=json_format.MessageToJson(odlc))
         odlc = interop_api_pb2.Odlc()
         json_format.Parse(r.text, odlc)
         return odlc
@@ -311,7 +310,6 @@ class AsyncClient(object):
     and errors appropriately. If serial request execution is desired, ensure the
     Future response or error is received prior to making another request.
     """
-
     def __init__(self,
                  url,
                  username,

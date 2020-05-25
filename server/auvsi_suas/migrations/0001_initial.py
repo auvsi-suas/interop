@@ -20,308 +20,357 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='AerialPosition',
             fields=[
-                ('id', models.AutoField(
-                    auto_created=True,
-                    primary_key=True,
-                    serialize=False,
-                    verbose_name='ID')),
-                ('latitude', models.FloatField(validators=[
-                    django.core.validators.MinValueValidator(-90),
-                    django.core.validators.MaxValueValidator(90)
-                ])),
-                ('longitude', models.FloatField(validators=[
-                    django.core.validators.MinValueValidator(-180),
-                    django.core.validators.MaxValueValidator(180)
-                ])),
-                ('altitude_msl', models.FloatField(validators=[
-                    django.core.validators.MinValueValidator(-2000),
-                    django.core.validators.MaxValueValidator(396000)
-                ])),
+                ('id',
+                 models.AutoField(auto_created=True,
+                                  primary_key=True,
+                                  serialize=False,
+                                  verbose_name='ID')),
+                ('latitude',
+                 models.FloatField(validators=[
+                     django.core.validators.MinValueValidator(-90),
+                     django.core.validators.MaxValueValidator(90)
+                 ])),
+                ('longitude',
+                 models.FloatField(validators=[
+                     django.core.validators.MinValueValidator(-180),
+                     django.core.validators.MaxValueValidator(180)
+                 ])),
+                ('altitude_msl',
+                 models.FloatField(validators=[
+                     django.core.validators.MinValueValidator(-2000),
+                     django.core.validators.MaxValueValidator(396000)
+                 ])),
             ],
             options={
                 'abstract': False,
-            }, ),
+            },
+        ),
         migrations.CreateModel(
             name='FlyZone',
             fields=[
-                ('id', models.AutoField(
-                    auto_created=True,
-                    primary_key=True,
-                    serialize=False,
-                    verbose_name='ID')),
-                ('altitude_msl_min', models.FloatField(validators=[
-                    django.core.validators.MinValueValidator(-2000),
-                    django.core.validators.MaxValueValidator(396000)
-                ])),
-                ('altitude_msl_max', models.FloatField(validators=[
-                    django.core.validators.MinValueValidator(-2000),
-                    django.core.validators.MaxValueValidator(396000)
-                ])),
-            ], ),
+                ('id',
+                 models.AutoField(auto_created=True,
+                                  primary_key=True,
+                                  serialize=False,
+                                  verbose_name='ID')),
+                ('altitude_msl_min',
+                 models.FloatField(validators=[
+                     django.core.validators.MinValueValidator(-2000),
+                     django.core.validators.MaxValueValidator(396000)
+                 ])),
+                ('altitude_msl_max',
+                 models.FloatField(validators=[
+                     django.core.validators.MinValueValidator(-2000),
+                     django.core.validators.MaxValueValidator(396000)
+                 ])),
+            ],
+        ),
         migrations.CreateModel(
             name='GpsPosition',
             fields=[
-                ('id', models.AutoField(
-                    auto_created=True,
-                    primary_key=True,
-                    serialize=False,
-                    verbose_name='ID')),
-                ('latitude', models.FloatField(validators=[
-                    django.core.validators.MinValueValidator(-90),
-                    django.core.validators.MaxValueValidator(90)
-                ])),
-                ('longitude', models.FloatField(validators=[
-                    django.core.validators.MinValueValidator(-180),
-                    django.core.validators.MaxValueValidator(180)
-                ])),
+                ('id',
+                 models.AutoField(auto_created=True,
+                                  primary_key=True,
+                                  serialize=False,
+                                  verbose_name='ID')),
+                ('latitude',
+                 models.FloatField(validators=[
+                     django.core.validators.MinValueValidator(-90),
+                     django.core.validators.MaxValueValidator(90)
+                 ])),
+                ('longitude',
+                 models.FloatField(validators=[
+                     django.core.validators.MinValueValidator(-180),
+                     django.core.validators.MaxValueValidator(180)
+                 ])),
             ],
             options={
                 'abstract': False,
-            }, ),
+            },
+        ),
         migrations.CreateModel(
             name='MissionConfig',
             fields=[
-                ('id', models.AutoField(
-                    auto_created=True,
-                    primary_key=True,
-                    serialize=False,
-                    verbose_name='ID')),
-                ('air_drop_pos', models.ForeignKey(
-                    on_delete=django.db.models.deletion.CASCADE,
-                    related_name='missionconfig_air_drop_pos',
-                    to='auvsi_suas.GpsPosition')),
-                ('emergent_last_known_pos', models.ForeignKey(
-                    on_delete=django.db.models.deletion.CASCADE,
-                    related_name='missionconfig_emergent_last_known_pos',
-                    to='auvsi_suas.GpsPosition')),
+                ('id',
+                 models.AutoField(auto_created=True,
+                                  primary_key=True,
+                                  serialize=False,
+                                  verbose_name='ID')),
+                ('air_drop_pos',
+                 models.ForeignKey(on_delete=django.db.models.deletion.CASCADE,
+                                   related_name='missionconfig_air_drop_pos',
+                                   to='auvsi_suas.GpsPosition')),
+                ('emergent_last_known_pos',
+                 models.ForeignKey(
+                     on_delete=django.db.models.deletion.CASCADE,
+                     related_name='missionconfig_emergent_last_known_pos',
+                     to='auvsi_suas.GpsPosition')),
                 ('fly_zones', models.ManyToManyField(to='auvsi_suas.FlyZone')),
-                ('home_pos', models.ForeignKey(
-                    on_delete=django.db.models.deletion.CASCADE,
-                    related_name='missionconfig_home_pos',
-                    to='auvsi_suas.GpsPosition')),
-            ], ),
+                ('home_pos',
+                 models.ForeignKey(on_delete=django.db.models.deletion.CASCADE,
+                                   related_name='missionconfig_home_pos',
+                                   to='auvsi_suas.GpsPosition')),
+            ],
+        ),
         migrations.CreateModel(
             name='MissionJudgeFeedback',
             fields=[
-                ('id', models.AutoField(
-                    auto_created=True,
-                    primary_key=True,
-                    serialize=False,
-                    verbose_name='ID')),
+                ('id',
+                 models.AutoField(auto_created=True,
+                                  primary_key=True,
+                                  serialize=False,
+                                  verbose_name='ID')),
                 ('flight_time', models.DurationField()),
                 ('post_process_time', models.DurationField()),
                 ('used_timeout', models.BooleanField()),
                 ('min_auto_flight_time', models.BooleanField()),
-                ('safety_pilot_takeovers', models.IntegerField(
-                    validators=[django.core.validators.MinValueValidator(0)])),
-                ('waypoints_captured', models.IntegerField(
-                    validators=[django.core.validators.MinValueValidator(0)])),
-                ('out_of_bounds', models.IntegerField(
-                    validators=[django.core.validators.MinValueValidator(0)])),
-                ('unsafe_out_of_bounds', models.IntegerField(
-                    validators=[django.core.validators.MinValueValidator(0)])),
+                ('safety_pilot_takeovers',
+                 models.IntegerField(
+                     validators=[django.core.validators.MinValueValidator(0)])
+                 ),
+                ('waypoints_captured',
+                 models.IntegerField(
+                     validators=[django.core.validators.MinValueValidator(0)])
+                 ),
+                ('out_of_bounds',
+                 models.IntegerField(
+                     validators=[django.core.validators.MinValueValidator(0)])
+                 ),
+                ('unsafe_out_of_bounds',
+                 models.IntegerField(
+                     validators=[django.core.validators.MinValueValidator(0)])
+                 ),
                 ('things_fell_off_uas', models.BooleanField()),
                 ('crashed', models.BooleanField()),
-                ('air_drop_accuracy', models.IntegerField(
-                    choices=[(0, 'INSUFFICIENT_ACCURACY'), (1, 'WITHIN_05_FT'),
-                             (2, 'WITHIN_25_FT'), (3, 'WITHIN_75_FT')])),
+                ('air_drop_accuracy',
+                 models.IntegerField(
+                     choices=[(0, 'INSUFFICIENT_ACCURACY'), (
+                         1, 'WITHIN_05_FT'), (
+                             2, 'WITHIN_25_FT'), (3, 'WITHIN_75_FT')])),
                 ('ugv_drove_to_location', models.BooleanField()),
-                ('operational_excellence_percent', models.FloatField(
-                    validators=[
-                        django.core.validators.MinValueValidator(0),
-                        django.core.validators.MaxValueValidator(100)
-                    ])),
-                ('mission', models.ForeignKey(
-                    on_delete=django.db.models.deletion.CASCADE,
-                    to='auvsi_suas.MissionConfig')),
-                ('user', models.ForeignKey(
-                    on_delete=django.db.models.deletion.CASCADE,
-                    to=settings.AUTH_USER_MODEL)),
-            ], ),
+                ('operational_excellence_percent',
+                 models.FloatField(validators=[
+                     django.core.validators.MinValueValidator(0),
+                     django.core.validators.MaxValueValidator(100)
+                 ])),
+                ('mission',
+                 models.ForeignKey(on_delete=django.db.models.deletion.CASCADE,
+                                   to='auvsi_suas.MissionConfig')),
+                ('user',
+                 models.ForeignKey(on_delete=django.db.models.deletion.CASCADE,
+                                   to=settings.AUTH_USER_MODEL)),
+            ],
+        ),
         migrations.CreateModel(
             name='Odlc',
             fields=[
-                ('id', models.AutoField(
-                    auto_created=True,
-                    primary_key=True,
-                    serialize=False,
-                    verbose_name='ID')),
-                ('odlc_type', models.IntegerField(choices=[(1, 'STANDARD'),
-                                                           (4, 'EMERGENT')])),
-                ('orientation', models.IntegerField(
-                    blank=True,
-                    choices=[(1, 'N'), (2, 'NE'), (3, 'E'), (4, 'SE'),
-                             (5, 'S'), (6, 'SW'), (7, 'W'), (8, 'NW')],
-                    null=True)),
-                ('shape', models.IntegerField(
-                    blank=True,
-                    choices=[(1, 'CIRCLE'), (2, 'SEMICIRCLE'),
-                             (3, 'QUARTER_CIRCLE'), (4, 'TRIANGLE'),
-                             (5, 'SQUARE'), (6, 'RECTANGLE'), (7, 'TRAPEZOID'),
-                             (8, 'PENTAGON'), (9, 'HEXAGON'), (10, 'HEPTAGON'),
-                             (11, 'OCTAGON'), (12, 'STAR'), (13, 'CROSS')],
-                    null=True)),
-                ('shape_color', models.IntegerField(
-                    blank=True,
-                    choices=[(1, 'WHITE'), (2, 'BLACK'), (3, 'GRAY'),
-                             (4, 'RED'), (5, 'BLUE'), (6, 'GREEN'), (7,
-                                                                     'YELLOW'),
-                             (8, 'PURPLE'), (9, 'BROWN'), (10, 'ORANGE')],
-                    null=True)),
+                ('id',
+                 models.AutoField(auto_created=True,
+                                  primary_key=True,
+                                  serialize=False,
+                                  verbose_name='ID')),
+                ('odlc_type',
+                 models.IntegerField(choices=[(1, 'STANDARD'), (4,
+                                                                'EMERGENT')])),
+                ('orientation',
+                 models.IntegerField(blank=True,
+                                     choices=[(1, 'N'), (2, 'NE'), (3, 'E'),
+                                              (4, 'SE'), (5, 'S'), (6, 'SW'),
+                                              (7, 'W'), (8, 'NW')],
+                                     null=True)),
+                ('shape',
+                 models.IntegerField(blank=True,
+                                     choices=[(1, 'CIRCLE'), (2, 'SEMICIRCLE'),
+                                              (3, 'QUARTER_CIRCLE'),
+                                              (4, 'TRIANGLE'), (5, 'SQUARE'),
+                                              (6, 'RECTANGLE'),
+                                              (7, 'TRAPEZOID'), (8,
+                                                                 'PENTAGON'),
+                                              (9, 'HEXAGON'), (10, 'HEPTAGON'),
+                                              (11, 'OCTAGON'), (12, 'STAR'),
+                                              (13, 'CROSS')],
+                                     null=True)),
+                ('shape_color',
+                 models.IntegerField(blank=True,
+                                     choices=[(1, 'WHITE'), (2, 'BLACK'),
+                                              (3, 'GRAY'), (4, 'RED'),
+                                              (5, 'BLUE'), (6, 'GREEN'),
+                                              (7, 'YELLOW'), (8, 'PURPLE'),
+                                              (9, 'BROWN'), (10, 'ORANGE')],
+                                     null=True)),
                 ('alphanumeric', models.TextField(blank=True, default='')),
-                ('alphanumeric_color', models.IntegerField(
-                    blank=True,
-                    choices=[(1, 'WHITE'), (2, 'BLACK'), (3, 'GRAY'),
-                             (4, 'RED'), (5, 'BLUE'), (6, 'GREEN'), (7,
-                                                                     'YELLOW'),
-                             (8, 'PURPLE'), (9, 'BROWN'), (10, 'ORANGE')],
-                    null=True)),
+                ('alphanumeric_color',
+                 models.IntegerField(blank=True,
+                                     choices=[(1, 'WHITE'), (2, 'BLACK'),
+                                              (3, 'GRAY'), (4, 'RED'),
+                                              (5, 'BLUE'), (6, 'GREEN'),
+                                              (7, 'YELLOW'), (8, 'PURPLE'),
+                                              (9, 'BROWN'), (10, 'ORANGE')],
+                                     null=True)),
                 ('description', models.TextField(blank=True, default='')),
                 ('description_approved', models.NullBooleanField()),
                 ('autonomous', models.BooleanField(default=False)),
-                ('thumbnail', models.ImageField(
-                    blank=True, upload_to='objects')),
+                ('thumbnail', models.ImageField(blank=True,
+                                                upload_to='objects')),
                 ('thumbnail_approved', models.NullBooleanField()),
                 ('creation_time', models.DateTimeField()),
                 ('last_modified_time', models.DateTimeField()),
                 ('actionable_override', models.BooleanField(default=False)),
-                ('location', models.ForeignKey(
-                    blank=True,
-                    null=True,
-                    on_delete=django.db.models.deletion.CASCADE,
-                    to='auvsi_suas.GpsPosition')),
-                ('mission', models.ForeignKey(
-                    on_delete=django.db.models.deletion.CASCADE,
-                    to='auvsi_suas.MissionConfig')),
-                ('user', models.ForeignKey(
-                    on_delete=django.db.models.deletion.CASCADE,
-                    to=settings.AUTH_USER_MODEL)),
-            ], ),
+                ('location',
+                 models.ForeignKey(blank=True,
+                                   null=True,
+                                   on_delete=django.db.models.deletion.CASCADE,
+                                   to='auvsi_suas.GpsPosition')),
+                ('mission',
+                 models.ForeignKey(on_delete=django.db.models.deletion.CASCADE,
+                                   to='auvsi_suas.MissionConfig')),
+                ('user',
+                 models.ForeignKey(on_delete=django.db.models.deletion.CASCADE,
+                                   to=settings.AUTH_USER_MODEL)),
+            ],
+        ),
         migrations.CreateModel(
             name='StationaryObstacle',
             fields=[
-                ('id', models.AutoField(
-                    auto_created=True,
-                    primary_key=True,
-                    serialize=False,
-                    verbose_name='ID')),
-                ('latitude', models.FloatField(validators=[
-                    django.core.validators.MinValueValidator(-90),
-                    django.core.validators.MaxValueValidator(90)
-                ])),
-                ('longitude', models.FloatField(validators=[
-                    django.core.validators.MinValueValidator(-180),
-                    django.core.validators.MaxValueValidator(180)
-                ])),
-                ('cylinder_radius', models.FloatField(validators=[
-                    django.core.validators.MinValueValidator(30),
-                    django.core.validators.MaxValueValidator(300)
-                ])),
+                ('id',
+                 models.AutoField(auto_created=True,
+                                  primary_key=True,
+                                  serialize=False,
+                                  verbose_name='ID')),
+                ('latitude',
+                 models.FloatField(validators=[
+                     django.core.validators.MinValueValidator(-90),
+                     django.core.validators.MaxValueValidator(90)
+                 ])),
+                ('longitude',
+                 models.FloatField(validators=[
+                     django.core.validators.MinValueValidator(-180),
+                     django.core.validators.MaxValueValidator(180)
+                 ])),
+                ('cylinder_radius',
+                 models.FloatField(validators=[
+                     django.core.validators.MinValueValidator(30),
+                     django.core.validators.MaxValueValidator(300)
+                 ])),
                 ('cylinder_height', models.FloatField()),
             ],
             options={
                 'abstract': False,
-            }, ),
+            },
+        ),
         migrations.CreateModel(
             name='TakeoffOrLandingEvent',
             fields=[
-                ('id', models.AutoField(
-                    auto_created=True,
-                    primary_key=True,
-                    serialize=False,
-                    verbose_name='ID')),
+                ('id',
+                 models.AutoField(auto_created=True,
+                                  primary_key=True,
+                                  serialize=False,
+                                  verbose_name='ID')),
                 ('timestamp', models.DateTimeField(db_index=True)),
                 ('uas_in_air', models.BooleanField()),
-                ('mission', models.ForeignKey(
-                    on_delete=django.db.models.deletion.CASCADE,
-                    to='auvsi_suas.MissionConfig')),
-                ('user', models.ForeignKey(
-                    on_delete=django.db.models.deletion.CASCADE,
-                    to=settings.AUTH_USER_MODEL)),
-            ], ),
+                ('mission',
+                 models.ForeignKey(on_delete=django.db.models.deletion.CASCADE,
+                                   to='auvsi_suas.MissionConfig')),
+                ('user',
+                 models.ForeignKey(on_delete=django.db.models.deletion.CASCADE,
+                                   to=settings.AUTH_USER_MODEL)),
+            ],
+        ),
         migrations.CreateModel(
             name='UasTelemetry',
             fields=[
-                ('id', models.AutoField(
-                    auto_created=True,
-                    primary_key=True,
-                    serialize=False,
-                    verbose_name='ID')),
-                ('latitude', models.FloatField(validators=[
-                    django.core.validators.MinValueValidator(-90),
-                    django.core.validators.MaxValueValidator(90)
-                ])),
-                ('longitude', models.FloatField(validators=[
-                    django.core.validators.MinValueValidator(-180),
-                    django.core.validators.MaxValueValidator(180)
-                ])),
-                ('altitude_msl', models.FloatField(validators=[
-                    django.core.validators.MinValueValidator(-2000),
-                    django.core.validators.MaxValueValidator(396000)
-                ])),
+                ('id',
+                 models.AutoField(auto_created=True,
+                                  primary_key=True,
+                                  serialize=False,
+                                  verbose_name='ID')),
+                ('latitude',
+                 models.FloatField(validators=[
+                     django.core.validators.MinValueValidator(-90),
+                     django.core.validators.MaxValueValidator(90)
+                 ])),
+                ('longitude',
+                 models.FloatField(validators=[
+                     django.core.validators.MinValueValidator(-180),
+                     django.core.validators.MaxValueValidator(180)
+                 ])),
+                ('altitude_msl',
+                 models.FloatField(validators=[
+                     django.core.validators.MinValueValidator(-2000),
+                     django.core.validators.MaxValueValidator(396000)
+                 ])),
                 ('timestamp', models.DateTimeField(db_index=True)),
-                ('uas_heading', models.FloatField(validators=[
-                    django.core.validators.MinValueValidator(0),
-                    django.core.validators.MaxValueValidator(360)
-                ])),
-                ('user', models.ForeignKey(
-                    on_delete=django.db.models.deletion.CASCADE,
-                    to=settings.AUTH_USER_MODEL)),
+                ('uas_heading',
+                 models.FloatField(validators=[
+                     django.core.validators.MinValueValidator(0),
+                     django.core.validators.MaxValueValidator(360)
+                 ])),
+                ('user',
+                 models.ForeignKey(on_delete=django.db.models.deletion.CASCADE,
+                                   to=settings.AUTH_USER_MODEL)),
             ],
             options={
                 'abstract': False,
-            }, ),
+            },
+        ),
         migrations.CreateModel(
             name='Waypoint',
             fields=[
-                ('id', models.AutoField(
-                    auto_created=True,
-                    primary_key=True,
-                    serialize=False,
-                    verbose_name='ID')),
-                ('latitude', models.FloatField(validators=[
-                    django.core.validators.MinValueValidator(-90),
-                    django.core.validators.MaxValueValidator(90)
-                ])),
-                ('longitude', models.FloatField(validators=[
-                    django.core.validators.MinValueValidator(-180),
-                    django.core.validators.MaxValueValidator(180)
-                ])),
-                ('altitude_msl', models.FloatField(validators=[
-                    django.core.validators.MinValueValidator(-2000),
-                    django.core.validators.MaxValueValidator(396000)
-                ])),
+                ('id',
+                 models.AutoField(auto_created=True,
+                                  primary_key=True,
+                                  serialize=False,
+                                  verbose_name='ID')),
+                ('latitude',
+                 models.FloatField(validators=[
+                     django.core.validators.MinValueValidator(-90),
+                     django.core.validators.MaxValueValidator(90)
+                 ])),
+                ('longitude',
+                 models.FloatField(validators=[
+                     django.core.validators.MinValueValidator(-180),
+                     django.core.validators.MaxValueValidator(180)
+                 ])),
+                ('altitude_msl',
+                 models.FloatField(validators=[
+                     django.core.validators.MinValueValidator(-2000),
+                     django.core.validators.MaxValueValidator(396000)
+                 ])),
                 ('order', models.IntegerField(db_index=True)),
             ],
             options={
                 'abstract': False,
-            }, ),
+            },
+        ),
         migrations.AddField(
             model_name='missionconfig',
             name='mission_waypoints',
             field=models.ManyToManyField(
                 related_name='missionconfig_mission_waypoints',
-                to='auvsi_suas.Waypoint'), ),
+                to='auvsi_suas.Waypoint'),
+        ),
         migrations.AddField(
             model_name='missionconfig',
             name='odlcs',
-            field=models.ManyToManyField(
-                blank=True,
-                related_name='missionconfig_odlc',
-                to='auvsi_suas.Odlc'), ),
+            field=models.ManyToManyField(blank=True,
+                                         related_name='missionconfig_odlc',
+                                         to='auvsi_suas.Odlc'),
+        ),
         migrations.AddField(
             model_name='missionconfig',
             name='off_axis_odlc_pos',
             field=models.ForeignKey(
                 on_delete=django.db.models.deletion.CASCADE,
                 related_name='missionconfig_off_axis_odlc_pos',
-                to='auvsi_suas.GpsPosition'), ),
+                to='auvsi_suas.GpsPosition'),
+        ),
         migrations.AddField(
             model_name='missionconfig',
             name='search_grid_points',
             field=models.ManyToManyField(
                 related_name='missionconfig_search_grid_points',
-                to='auvsi_suas.Waypoint'), ),
+                to='auvsi_suas.Waypoint'),
+        ),
         migrations.AddField(
             model_name='missionconfig',
             name='stationary_obstacles',
@@ -330,15 +379,19 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='flyzone',
             name='boundary_pts',
-            field=models.ManyToManyField(to='auvsi_suas.Waypoint'), ),
+            field=models.ManyToManyField(to='auvsi_suas.Waypoint'),
+        ),
         migrations.AlterIndexTogether(
             name='uastelemetry',
-            index_together=set([('user', 'timestamp')]), ),
+            index_together=set([('user', 'timestamp')]),
+        ),
         migrations.AlterIndexTogether(
             name='takeofforlandingevent',
             index_together=set([('mission', 'user', 'timestamp'),
-                                ('user', 'timestamp')]), ),
+                                ('user', 'timestamp')]),
+        ),
         migrations.AlterUniqueTogether(
             name='missionjudgefeedback',
-            unique_together=set([('mission', 'user')]), ),
+            unique_together=set([('mission', 'user')]),
+        ),
     ]

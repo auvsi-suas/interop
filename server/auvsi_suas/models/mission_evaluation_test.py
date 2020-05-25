@@ -11,7 +11,6 @@ from auvsi_suas.proto import interop_admin_api_pb2
 
 class TestMissionScoring(TestCase):
     """Tests the score conversion for the mission_evaluation module."""
-
     def setUp(self):
         """Create a base evaluation to save redefining it."""
         self.eval = interop_admin_api_pb2.MissionEvaluation()
@@ -270,29 +269,27 @@ class TestMissionScoring(TestCase):
 
 class TestMissionEvaluation(TestCase):
     """Tests the mission_evaluation module."""
-
     def setUp(self):
-        self.superuser = User.objects.create_superuser(
-            username='superuser', password='testpass', email='test@test.com')
+        self.superuser = User.objects.create_superuser(username='superuser',
+                                                       password='testpass',
+                                                       email='test@test.com')
         self.superuser.save()
         self.mission = test_utils.create_sample_mission(self.superuser)
 
-        self.user0 = User.objects.create_user(
-            username='user0',
-            password='testpass',
-            email='test@test.com',
-            first_name='Foo',
-            last_name='Bar')
+        self.user0 = User.objects.create_user(username='user0',
+                                              password='testpass',
+                                              email='test@test.com',
+                                              first_name='Foo',
+                                              last_name='Bar')
         self.user0.save()
         test_utils.simulate_team_mission(self, self.mission, self.superuser,
                                          self.user0)
 
-        self.user1 = User.objects.create_user(
-            username='user1',
-            password='testpass',
-            email='test@test.com',
-            first_name='Bar',
-            last_name='Baz')
+        self.user1 = User.objects.create_user(username='user1',
+                                              password='testpass',
+                                              email='test@test.com',
+                                              first_name='Bar',
+                                              last_name='Baz')
         self.user1.save()
 
     def test_evaluate_teams(self):

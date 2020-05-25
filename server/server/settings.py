@@ -165,7 +165,8 @@ STATICFILES_STORAGE = 'pipeline.storage.PipelineStorage'
 STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
-    'pipeline.finders.PipelineFinder', )
+    'pipeline.finders.PipelineFinder',
+)
 
 PIPELINE = {
     'STYLESHEETS': {

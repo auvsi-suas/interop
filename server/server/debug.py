@@ -11,7 +11,6 @@ class NonHtmlDebugToolbarMiddleware(object):
 
     Based on http://stackoverflow.com/a/19249559/10817
     """
-
     @staticmethod
     def process_response(request, response):
         if request.GET.get('debug') == '':

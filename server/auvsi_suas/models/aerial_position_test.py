@@ -7,7 +7,6 @@ from django.test import TestCase
 
 class TestAerialPositionModel(TestCase):
     """Tests the AerialPosition model."""
-
     def assertDistanceEqual(self, pos1, pos2, dist, threshold=10):
         """AerialPosition distances are within threshold (ft)."""
         self.assertAlmostEqual(pos1.distance_to(pos2), dist, delta=threshold)
@@ -16,10 +15,12 @@ class TestAerialPositionModel(TestCase):
     def evaluate_distance_inputs(self, io_list):
         """Evaluates the distance_to calc with the given input list."""
         for (lon1, lat1, alt1, lon2, lat2, alt2, dist_actual) in io_list:
-            pos1 = AerialPosition(
-                latitude=lat1, longitude=lon1, altitude_msl=alt1)
-            pos2 = AerialPosition(
-                latitude=lat2, longitude=lon2, altitude_msl=alt2)
+            pos1 = AerialPosition(latitude=lat1,
+                                  longitude=lon1,
+                                  altitude_msl=alt1)
+            pos2 = AerialPosition(latitude=lat2,
+                                  longitude=lon2,
+                                  altitude_msl=alt2)
             self.assertDistanceEqual(pos1, pos2, dist_actual)
 
     def test_clean(self):

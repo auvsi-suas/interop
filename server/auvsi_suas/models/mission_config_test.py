@@ -8,8 +8,9 @@ from django.test import TestCase
 
 class TestMissionConfigModelSampleMission(TestCase):
     def setUp(self):
-        superuser = User.objects.create_superuser(
-            username='testadmin', password='testpass', email='test@test.com')
+        superuser = User.objects.create_superuser(username='testadmin',
+                                                  password='testpass',
+                                                  email='test@test.com')
         superuser.save()
         test_utils.create_sample_mission(superuser)
 

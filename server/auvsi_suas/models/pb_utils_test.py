@@ -7,7 +7,6 @@ from django.test import TestCase
 
 def TestFieldChociesFromEnum(TestCase):
     """Tests the FieldChoicesFromEnum utility."""
-
     def test_generates_choices(self):
         """Tests generates choices for a sample enum."""
         self.assertEqual([(1, 'N'), (2, 'NE'), (3, 'E'), (4, 'SE'), (5, 'S'),
