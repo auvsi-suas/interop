@@ -744,178 +744,15 @@ HTTP/1.1 200 OK
 Content-Type: application/json
 
 {
+  "id": 1,
   "lostCommsPos": {
-    "latitude": 38.145103,
-    "longitude": 38.145103
-  },
-  "offAxisOdlcPos": {
-    "latitude": 38.145111,
-    "longitude": -76.427861
-  },
-  "stationaryObstacles": [
-    {
-      "latitude": 38.146689,
-      "radius": 150.0,
-      "longitude": -76.426475,
-      "height": 750.0
-    },
-    {
-      "latitude": 38.142914,
-      "radius": 300.0,
-      "longitude": -76.430297,
-      "height": 300.0
-    },
-    {
-      "latitude": 38.149504,
-      "radius": 100.0,
-      "longitude": -76.43311,
-      "height": 750.0
-    },
-    {
-      "latitude": 38.148711,
-      "radius": 300.0,
-      "longitude": -76.429061,
-      "height": 750.0
-    },
-    {
-      "latitude": 38.144203,
-      "radius": 50.0,
-      "longitude": -76.426155,
-      "height": 400.0
-    },
-    {
-      "latitude": 38.146003,
-      "radius": 225.0,
-      "longitude": -76.430733,
-      "height": 500.0
-    }
-  ],
-  "searchGridPoints": [
-    {
-      "latitude": 38.1444444444444,
-      "longitude": -76.4280916666667
-    },
-    {
-      "latitude": 38.1459444444444,
-      "longitude": -76.4237944444445
-    },
-    {
-      "latitude": 38.1439305555556,
-      "longitude": -76.4227444444444
-    },
-    {
-      "latitude": 38.1417138888889,
-      "longitude": -76.4253805555556
-    },
-    {
-      "latitude": 38.1412111111111,
-      "longitude": -76.4322361111111
-    },
-    {
-      "latitude": 38.1431055555556,
-      "longitude": -76.4335972222222
-    },
-    {
-      "latitude": 38.1441805555556,
-      "longitude": -76.4320111111111
-    },
-    {
-      "latitude": 38.1452611111111,
-      "longitude": -76.4289194444444
-    },
-    {
-      "latitude": 38.1444444444444,
-      "longitude": -76.4280916666667
-    }
-  ],
-  "waypoints": [
-    {
-      "latitude": 38.1446916666667,
-      "altitude": 200.0,
-      "longitude": -76.4279944444445
-    },
-    {
-      "latitude": 38.1461944444444,
-      "altitude": 300.0,
-      "longitude": -76.4237138888889
-    },
-    {
-      "latitude": 38.1438972222222,
-      "altitude": 400.0,
-      "longitude": -76.42255
-    },
-    {
-      "latitude": 38.1417722222222,
-      "altitude": 400.0,
-      "longitude": -76.4251083333333
-    },
-    {
-      "latitude": 38.14535,
-      "altitude": 300.0,
-      "longitude": -76.428675
-    },
-    {
-      "latitude": 38.1508972222222,
-      "altitude": 300.0,
-      "longitude": -76.4292972222222
-    },
-    {
-      "latitude": 38.1514944444444,
-      "altitude": 300.0,
-      "longitude": -76.4313833333333
-    },
-    {
-      "latitude": 38.1505333333333,
-      "altitude": 300.0,
-      "longitude": -76.434175
-    },
-    {
-      "latitude": 38.1479472222222,
-      "altitude": 200.0,
-      "longitude": -76.4316055555556
-    },
-    {
-      "latitude": 38.1443333333333,
-      "altitude": 200.0,
-      "longitude": -76.4322888888889
-    },
-    {
-      "latitude": 38.1433166666667,
-      "altitude": 300.0,
-      "longitude": -76.4337111111111
-    },
-    {
-      "latitude": 38.1410944444444,
-      "altitude": 400.0,
-      "longitude": -76.4321555555556
-    },
-    {
-      "latitude": 38.1415777777778,
-      "altitude": 400.0,
-      "longitude": -76.4252472222222
-    },
-    {
-      "latitude": 38.1446083333333,
-      "altitude": 200.0,
-      "longitude": -76.4282527777778
-    }
-  ],
-  "airDropPos": {
-    "latitude": 38.1458416666667,
-    "longitude": -76.426375
-  },
-  "emergentLastKnownPos": {
-    "latitude": 38.145111,
-    "longitude": -76.427861
-  },
-  "ugvDrivePos": {
-    "latitude": 38.145103,
-    "longitude": -76.427856
+    "latitude": 38.144778,
+    "longitude": -76.429417
   },
   "flyZones": [
     {
-      "altitudeMax": 750.0,
       "altitudeMin": 100.0,
+      "altitudeMax": 750.0,
       "boundaryPoints": [
         {
           "latitude": 38.1462694444444,
@@ -968,9 +805,194 @@ Content-Type: application/json
       ]
     }
   ],
-  "id": 1
+  "waypoints": [
+    {
+      "latitude": 38.1446916666667,
+      "longitude": -76.4279944444445,
+      "altitude": 200.0
+    },
+    {
+      "latitude": 38.1461944444444,
+      "longitude": -76.4237138888889,
+      "altitude": 300.0
+    },
+    {
+      "latitude": 38.1438972222222,
+      "longitude": -76.42255,
+      "altitude": 400.0
+    },
+    {
+      "latitude": 38.1417722222222,
+      "longitude": -76.4251083333333,
+      "altitude": 400.0
+    },
+    {
+      "latitude": 38.14535,
+      "longitude": -76.428675,
+      "altitude": 300.0
+    },
+    {
+      "latitude": 38.1508972222222,
+      "longitude": -76.4292972222222,
+      "altitude": 300.0
+    },
+    {
+      "latitude": 38.1514944444444,
+      "longitude": -76.4313833333333,
+      "altitude": 300.0
+    },
+    {
+      "latitude": 38.1505333333333,
+      "longitude": -76.434175,
+      "altitude": 300.0
+    },
+    {
+      "latitude": 38.1479472222222,
+      "longitude": -76.4316055555556,
+      "altitude": 200.0
+    },
+    {
+      "latitude": 38.1443333333333,
+      "longitude": -76.4322888888889,
+      "altitude": 200.0
+    },
+    {
+      "latitude": 38.1433166666667,
+      "longitude": -76.4337111111111,
+      "altitude": 300.0
+    },
+    {
+      "latitude": 38.1410944444444,
+      "longitude": -76.4321555555556,
+      "altitude": 400.0
+    },
+    {
+      "latitude": 38.1415777777778,
+      "longitude": -76.4252472222222,
+      "altitude": 400.0
+    },
+    {
+      "latitude": 38.1446083333333,
+      "longitude": -76.4282527777778,
+      "altitude": 200.0
+    }
+  ],
+  "searchGridPoints": [
+    {
+      "latitude": 38.1444444444444,
+      "longitude": -76.4280916666667
+    },
+    {
+      "latitude": 38.1459444444444,
+      "longitude": -76.4237944444445
+    },
+    {
+      "latitude": 38.1439305555556,
+      "longitude": -76.4227444444444
+    },
+    {
+      "latitude": 38.1417138888889,
+      "longitude": -76.4253805555556
+    },
+    {
+      "latitude": 38.1412111111111,
+      "longitude": -76.4322361111111
+    },
+    {
+      "latitude": 38.1431055555556,
+      "longitude": -76.4335972222222
+    },
+    {
+      "latitude": 38.1441805555556,
+      "longitude": -76.4320111111111
+    },
+    {
+      "latitude": 38.1452611111111,
+      "longitude": -76.4289194444444
+    },
+    {
+      "latitude": 38.1444444444444,
+      "longitude": -76.4280916666667
+    }
+  ],
+  "offAxisOdlcPos": {
+    "latitude": 38.145111,
+    "longitude": -76.427861
+  },
+  "emergentLastKnownPos": {
+    "latitude": 38.145111,
+    "longitude": -76.427861
+  },
+  "airDropBoundaryPoints": [
+    {
+      "latitude": 38.14616666666666,
+      "longitude": -76.42666666666668
+    },
+    {
+      "latitude": 38.14636111111111,
+      "longitude": -76.42616666666667
+    },
+    {
+      "latitude": 38.14558333333334,
+      "longitude": -76.42608333333334
+    },
+    {
+      "latitude": 38.14541666666667,
+      "longitude": -76.42661111111111
+    }
+  ],
+  "airDropPos": {
+    "latitude": 38.145848,
+    "longitude": -76.426374
+  },
+  "ugvDrivePos": {
+    "latitude": 38.146152,
+    "longitude": -76.426396
+  },
+  "stationaryObstacles": [
+    {
+      "latitude": 38.146689,
+      "longitude": -76.426475,
+      "radius": 150.0,
+      "height": 750.0
+    },
+    {
+      "latitude": 38.142914,
+      "longitude": -76.430297,
+      "radius": 300.0,
+      "height": 300.0
+    },
+    {
+      "latitude": 38.149504,
+      "longitude": -76.43311,
+      "radius": 100.0,
+      "height": 750.0
+    },
+    {
+      "latitude": 38.148711,
+      "longitude": -76.429061,
+      "radius": 300.0,
+      "height": 750.0
+    },
+    {
+      "latitude": 38.144203,
+      "longitude": -76.426155,
+      "radius": 50.0,
+      "height": 400.0
+    },
+    {
+      "latitude": 38.146003,
+      "longitude": -76.430733,
+      "radius": 225.0,
+      "height": 500.0
+    }
+  ],
+  "mapCenterPos": {
+    "latitude": 38.145103,
+    "longitude": -76.427856
+  },
+  "mapHeight": 1200.0
 }
-
 ```
 
 #### UAS Telemetry

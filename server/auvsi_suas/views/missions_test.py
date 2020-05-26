@@ -126,6 +126,12 @@ class TestMissionsViewSampleMission(TestMissionsViewCommon):
         self.assertIn('latitude', data['offAxisOdlcPos'])
         self.assertIn('longitude', data['offAxisOdlcPos'])
 
+        self.assertIn('mapCenterPos', data)
+        self.assertIn('latitude', data['mapCenterPos'])
+        self.assertIn('longitude', data['mapCenterPos'])
+
+        self.assertIn('mapHeight', data)
+
         self.assertIn('emergentLastKnownPos', data)
         self.assertIn('latitude', data['emergentLastKnownPos'])
         self.assertIn('longitude', data['emergentLastKnownPos'])
@@ -253,6 +259,8 @@ class TestGenerateLiveKML(TestMissionsViewCommon):
         config.lost_comms_pos = pos
         config.emergent_last_known_pos = pos
         config.off_axis_odlc_pos = pos
+        config.map_center_pos = pos
+        config.map_height_ft = 1
         config.air_drop_pos = pos
         config.ugv_drive_pos = pos
         config.save()

@@ -7,7 +7,9 @@ import pyproj
 from auvsi_suas.models import units
 
 logger = logging.getLogger(__name__)
-wgs84 = pyproj.Proj(init="epsg:4326")
+
+proj_wgs84 = pyproj.Proj(init="epsg:4326")
+proj_web_mercator = pyproj.Proj(init="epsg:3857")
 
 
 def haversine(lon1, lat1, lon2, lat2):
@@ -61,25 +63,20 @@ def distance_to(latitude_1, longitude_1, altitude_1, latitude_2, longitude_2,
     return math.hypot(gps_dist_ft, alt_dist_ft)
 
 
-def utm_zone(lat, lon):
-    """Determine the UTM zone for a given latitude and longitude.
-
-    Based on http://gis.stackexchange.com/a/13292
+def proj_utm(lat, lon):
+    """Proj instance for the given zone.
 
     Args:
         lat: Latitude
         lon: Longitude
 
     Returns:
-        zone number: UTM zone number lat/lon falls in
-        north: bool indicating North/South
+        pyproj.Proj instance for the given zone
     """
     zone = math.floor((lon + 180) / 6.0) + 1
-
     # Special cases for Norway and Svalbard
     if lat >= 56 and lat < 64 and lon >= 3 and lon < 12:
         zone = 32
-
     if lat >= 72 and lat < 84:
         if lon >= 0 and lon < 9:
             zone = 31
@@ -90,91 +87,9 @@ def utm_zone(lat, lon):
         elif lon >= 33 and lon < 42:
             zone = 37
 
-    return zone, lat > 0
+    north = (lat > 0)
 
-
-def proj_utm(zone, north):
-    """Proj instance for the given zone.
-
-    Args:
-        zone: UTM zone
-        north: North zone or south zone
-
-    Returns:
-        pyproj.Proj instance for the given zone
-    """
     ref = "+proj=utm +zone=%d +ellps=WGS84" % zone
     if not north:
         ref += " +south"
     return pyproj.Proj(ref)
-
-
-def distance_to_line(start, end, point, utm):
-    """Compute the closest distance from point to a line segment.
-
-    Based on the point-line distance derived in:
-    http://mathworld.wolfram.com/Point-LineDistance3-Dimensional.html
-
-          (l_1 - p) dot (l_2 - p)
-    t = - -----------------------
-               |l_2 - l_1|^2
-
-    We clamp t to 0 <= t <= 1 to ensure we calculate distance to a point on
-    the line segment.
-
-    The closest point can be determined using t:
-
-    p_c = l_1 + t * (l_2 - l_1)
-
-    And the distance is:
-
-    d = |p - p_c|
-
-    Arguments are points in the form (lat, lon, alt MSL (ft)).
-
-    Args:
-        start: Defines the start of the line.
-        end: Defines the end of the line.
-        point: Free point to compute distance from.
-        utm: The UTM Proj projection to project into. If start, end, or point
-             are well outside of this projection, this function returns
-             infinite.
-
-    Returns:
-        Closest distance in ft from point to the line.
-    """
-    try:
-        # Convert points to UTM projection.
-        # We need a cartesian coordinate system to perform the calculation.
-        lat, lon, ftmsl = start
-        x, y = pyproj.transform(wgs84, utm, lon, lat)
-        l1 = np.array([x, y, units.feet_to_meters(ftmsl)])
-
-        lat, lon, ftmsl = end
-        x, y = pyproj.transform(wgs84, utm, lon, lat)
-        l2 = np.array([x, y, units.feet_to_meters(ftmsl)])
-
-        lat, lon, ftmsl = point
-        x, y = pyproj.transform(wgs84, utm, lon, lat)
-        p = np.array([x, y, units.feet_to_meters(ftmsl)])
-    except RuntimeError:
-        # pyproj throws RuntimeError if the coordinates are grossly beyond the
-        # bounds of the projection. We simplify this to "infinite" distance.
-        return float("inf")
-
-    d1 = l1 - p
-    d2 = l2 - l1
-    num = np.dot(d1, d2)
-    dem = np.linalg.norm(l2 - l1)**2
-    t = -num / dem
-
-    if t < 0:
-        t = 0
-    elif t > 1:
-        t = 1
-
-    p_c = l1 + t * (l2 - l1)
-
-    dist = np.linalg.norm(p - p_c)
-
-    return units.meters_to_feet(dist)

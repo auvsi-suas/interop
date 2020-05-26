@@ -69,6 +69,12 @@ message Mission {
     // Position of the off-axis ODLC.
     // Required.
     optional Position off_axis_odlc_pos = 6;
+    // Desired position of the generated map.
+    // Required.
+    optional Position map_center_pos = 12;
+    // Desired height of the generated map in feet.
+    // Required.
+    optional double map_height = 13;
     // Last known position of the emergent ODLC.
     // Required.
     optional Position emergent_last_known_pos = 7;

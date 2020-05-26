@@ -7,6 +7,7 @@ import json
 import logging
 import math
 import numpy as np
+import pyproj
 import zipfile
 from auvsi_suas.models import distance
 from auvsi_suas.models import mission_evaluation
@@ -45,6 +46,7 @@ KML_DROP_ICON = 'http://maps.google.com/mapfiles/kml/shapes/target.png'
 KML_HOME_ICON = 'http://maps.google.com/mapfiles/kml/paddle/grn-circle.png'
 KML_OBST_NUM_POINTS = 20
 KML_ODLC_ICON = 'http://maps.google.com/mapfiles/kml/shapes/donut.png'
+KML_MAP_CENTER_ICON = 'http://maps.google.com/mapfiles/kml/shapes/square.png'
 KML_PLANE_ICON = 'http://maps.google.com/mapfiles/kml/shapes/airports.png'
 KML_WAYPOINT_ICON = 'http://maps.google.com/mapfiles/kml/paddle/blu-circle.png'
 
@@ -79,6 +81,10 @@ def mission_proto(mission):
 
     mission_proto.off_axis_odlc_pos.latitude = mission.off_axis_odlc_pos.latitude
     mission_proto.off_axis_odlc_pos.longitude = mission.off_axis_odlc_pos.longitude
+
+    mission_proto.map_center_pos.latitude = mission.map_center_pos.latitude
+    mission_proto.map_center_pos.longitude = mission.map_center_pos.longitude
+    mission_proto.map_height = mission.map_height_ft
 
     mission_proto.emergent_last_known_pos.latitude = mission.emergent_last_known_pos.latitude
     mission_proto.emergent_last_known_pos.longitude = mission.emergent_last_known_pos.longitude
@@ -175,6 +181,15 @@ def mission_kml(mission, kml, kml_doc):
     mission_name = 'Mission {}'.format(mission.pk)
     kml_folder = kml.newfolder(name=mission_name)
 
+    # Transform from WGS84 to UTM at home position.
+    wgs_to_utm = pyproj.transformer.Transformer.from_proj(
+        distance.proj_wgs84,
+        distance.proj_utm(mission.home_pos.latitude,
+                          mission.home_pos.longitude))
+    # Transform from WGS84 to Web Mercator.
+    wgs_to_web_mercator = pyproj.transformer.Transformer.from_proj(
+        distance.proj_wgs84, distance.proj_web_mercator)
+
     # Flight boundaries.
     fly_zone_folder = kml_folder.newfolder(name='Fly Zones')
     for flyzone in mission.fly_zones.all():
@@ -186,6 +201,7 @@ def mission_kml(mission, kml, kml_doc):
         ('Emergent LKP', mission.emergent_last_known_pos, KML_ODLC_ICON),
         ('Off Axis', mission.off_axis_odlc_pos, KML_ODLC_ICON),
         ('Air Drop', mission.air_drop_pos, KML_DROP_ICON),
+        ('Map Center', mission.map_center_pos, KML_MAP_CENTER_ICON),
     ]
     for key, point, icon in locations:
         gps = (point.longitude, point.latitude)
@@ -238,20 +254,43 @@ def mission_kml(mission, kml, kml_doc):
         pol.style.linestyle.width = 2
         pol.style.polystyle.color = Color.changealphaint(50, Color.blue)
 
+    # Map Area
+    map_x, map_y = wgs_to_web_mercator.transform(
+        mission.map_center_pos.longitude, mission.map_center_pos.latitude)
+    map_height = units.feet_to_meters(mission.map_height_ft)
+    map_width = (map_height * 16) / 9
+    map_points = [
+        (map_x - map_width / 2, map_y - map_height / 2),
+        (map_x + map_width / 2, map_y - map_height / 2),
+        (map_x + map_width / 2, map_y + map_height / 2),
+        (map_x - map_width / 2, map_y + map_height / 2),
+        (map_x - map_width / 2, map_y - map_height / 2),
+    ]
+    map_points = [
+        wgs_to_web_mercator.transform(
+            px, py, direction=pyproj.enums.TransformDirection.INVERSE)
+        for (px, py) in map_points
+    ]
+    map_points = [(x, y, 0) for (x, y) in map_points]
+    map_pol = kml_folder.newpolygon(name='Map')
+    map_pol.outerboundaryis = map_points
+    map_pol.style.linestyle.color = Color.green
+    map_pol.style.linestyle.width = 2
+    map_pol.style.polystyle.color = Color.changealphaint(50, Color.green)
+
     # Stationary Obstacles.
     stationary_obstacles_folder = kml_folder.newfolder(
         name='Stationary Obstacles')
     for obst in mission.stationary_obstacles.all():
-        zone, north = distance.utm_zone(obst.latitude, obst.longitude)
-        proj = distance.proj_utm(zone, north)
-        cx, cy = proj(obst.longitude, obst.latitude)
+        cx, cy = wgs_to_utm.transform(obst.longitude, obst.latitude)
         rm = units.feet_to_meters(obst.cylinder_radius)
         hm = units.feet_to_meters(obst.cylinder_height)
         obst_points = []
         for angle in np.linspace(0, 2 * math.pi, num=KML_OBST_NUM_POINTS):
             px = cx + rm * math.cos(angle)
             py = cy + rm * math.sin(angle)
-            lon, lat = proj(px, py, inverse=True)
+            lon, lat = wgs_to_utm.transform(
+                px, py, direction=pyproj.enums.TransformDirection.INVERSE)
             obst_points.append((lon, lat, hm))
         pol = stationary_obstacles_folder.newpolygon(name='Obstacle %d' %
                                                      obst.pk)

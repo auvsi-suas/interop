@@ -51,9 +51,14 @@ def create_sample_mission(superuser):
     gpos.save()
     mission.emergent_last_known_pos = gpos
 
-    gpos = GpsPosition(latitude=38.145111, longitude=-76.427861)
+    gpos = GpsPosition(latitude=38.146747, longitude=-76.422131)
     gpos.save()
     mission.off_axis_odlc_pos = gpos
+
+    gpos = GpsPosition(latitude=38.144680, longitude=-76.428022)
+    gpos.save()
+    mission.map_center_pos = gpos
+    mission.map_height_ft = 1200
 
     gpos = GpsPosition(latitude=38.145848, longitude=-76.426374)
     gpos.save()

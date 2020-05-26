@@ -60,6 +60,8 @@ class TestTeamsView(TestCase):
         self.mission.lost_comms_pos = pos
         self.mission.emergent_last_known_pos = pos
         self.mission.off_axis_odlc_pos = pos
+        self.mission.map_center_pos = pos
+        self.mission.map_height_ft = 1
         self.mission.air_drop_pos = pos
         self.mission.ugv_drive_pos = pos
         self.mission.save()

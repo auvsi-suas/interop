@@ -47,6 +47,15 @@ class MissionConfig(models.Model):
         GpsPosition,
         related_name='missionconfig_off_axis_odlc_pos',
         on_delete=models.CASCADE)
+    # The desired center position of the generated map.
+    map_center_pos = models.ForeignKey(
+        GpsPosition,
+        related_name='missionconfig_map_center_pos',
+        on_delete=models.CASCADE)
+    # The desired height in feet of the generated map.
+    map_height_ft = models.FloatField(validators=[
+        validators.MinValueValidator(1),
+    ])
     # The boundary the air drop and UGV drive must be within.
     air_drop_boundary_points = models.ManyToManyField(
         Waypoint, related_name='missionconfig_air_drop_boundary_points')
@@ -69,7 +78,7 @@ class MissionConfig(models.Model):
 @admin.register(MissionConfig)
 class MissionConfigModelAdmin(admin.ModelAdmin):
     raw_id_fields = ("home_pos", "emergent_last_known_pos",
-                     "off_axis_odlc_pos", "air_drop_pos")
+                     "off_axis_odlc_pos", "map_center_pos", "air_drop_pos")
     filter_horizontal = ("fly_zones", "mission_waypoints",
                          "search_grid_points", "odlcs", "stationary_obstacles")
     list_display = (
