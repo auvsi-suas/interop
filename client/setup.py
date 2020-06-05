@@ -44,7 +44,7 @@ if __name__ == '__main__':
         name='auvsi_suas',
         description='AUVSI SUAS interoperability client library.',
         license='Apache 2.0',
-        packages=['auvsi_suas'],
+        packages=setuptools.find_packages(),
         cmdclass = { 'clean': clean, 'build_py': build_py },
         install_requires=reqs,
     )  # yapf: disable
