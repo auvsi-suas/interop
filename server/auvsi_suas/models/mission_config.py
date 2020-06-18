@@ -77,10 +77,10 @@ class MissionConfig(models.Model):
 
 @admin.register(MissionConfig)
 class MissionConfigModelAdmin(admin.ModelAdmin):
-    raw_id_fields = ("home_pos", "emergent_last_known_pos",
-                     "off_axis_odlc_pos", "map_center_pos", "air_drop_pos")
-    filter_horizontal = ("fly_zones", "mission_waypoints",
-                         "search_grid_points", "odlcs", "stationary_obstacles")
+    raw_id_fields = ('home_pos', 'emergent_last_known_pos',
+                     'off_axis_odlc_pos', 'map_center_pos', 'air_drop_pos')
+    filter_horizontal = ('fly_zones', 'mission_waypoints',
+                         'search_grid_points', 'odlcs', 'stationary_obstacles')
     list_display = (
         'pk',
         'home_pos',

@@ -50,7 +50,9 @@ class MapImage(View):
         mission_pk = int(mission_pk)
 
         if username != request.user.username and not request.user.is_superuser:
-            return HttpResponseForbidden('User [%s] is not able to access maps owned by user [%s]' % (request.user.username, username))
+            return HttpResponseForbidden(
+                'User [%s] is not able to access maps owned by user [%s]' %
+                (request.user.username, username))
 
         try:
             m = find_map(mission_pk, request.user.pk)
@@ -67,7 +69,9 @@ class MapImage(View):
         mission_pk = int(mission_pk)
 
         if username != request.user.username and not request.user.is_superuser:
-            return HttpResponseForbidden('User [%s] is not able to access maps owned by user [%s]' % (request.user.username, username))
+            return HttpResponseForbidden(
+                'User [%s] is not able to access maps owned by user [%s]' %
+                (request.user.username, username))
 
         try:
             m = find_map(mission_pk, request.user.pk)
@@ -97,7 +101,8 @@ class MapImage(View):
 
         # Save the map, note old path.
         old_path = m.uploaded_map.path if m.uploaded_map else None
-        m.uploaded_map.save('%d-%d.%s' % (mission_pk, request.user.pk, i.format), ImageFile(f))
+        m.uploaded_map.save(
+            '%d-%d.%s' % (mission_pk, request.user.pk, i.format), ImageFile(f))
 
         # Map has been updated.
         m.save()
@@ -115,7 +120,9 @@ class MapImage(View):
         mission_pk = int(mission_pk)
 
         if username != request.user.username and not request.user.is_superuser:
-            return HttpResponseForbidden('User [%s] is not able to access maps owned by user [%s]' % (request.user.username, username))
+            return HttpResponseForbidden(
+                'User [%s] is not able to access maps owned by user [%s]' %
+                (request.user.username, username))
 
         try:
             m = find_map(mission_pk, request.user.pk)

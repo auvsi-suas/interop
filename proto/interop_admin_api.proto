@@ -59,10 +59,10 @@ message MissionFeedback {
     optional MultiOdlcEvaluation odlc = 6;
 
     // Map evaluation data.
-    optional MapEvaluation map = 8;
+    optional MapEvaluation map = 7;
 
     // Feedback from judges.
-    optional MissionJudgeFeedback judge = 7;
+    optional MissionJudgeFeedback judge = 8;
 }
 
 // Evaluation data for multiple odlcs.

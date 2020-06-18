@@ -52,7 +52,7 @@ COPY proto auvsi_suas/proto
 RUN protoc --python_out=. auvsi_suas/proto/*.proto
 
 # Host-mountable sections.
-VOLUME /var/log/uwsgi /var/lib/postgresql /var/www/media/objects
+VOLUME /var/log/uwsgi /var/lib/postgresql /var/www/media
 
 # Commands to execute on startup.
 CMD uwsgi --ini config/uwsgi.ini && \

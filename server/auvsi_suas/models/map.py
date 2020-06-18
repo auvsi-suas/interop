@@ -31,6 +31,6 @@ class Map(models.Model):
 
 
 @admin.register(Map)
-class OdlcModelAdmin(admin.ModelAdmin):
-    show_full_result_count = False
+class MapModelAdmin(admin.ModelAdmin):
+    raw_id_fields = ('mission', )
     list_display = ('pk', 'mission', 'user', 'quality')

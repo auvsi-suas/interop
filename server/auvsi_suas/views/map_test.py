@@ -68,7 +68,6 @@ class TestMapCommon(TestCase):
 
 class TestMapLoggedOut(TestMapCommon):
     """Tests logged out map."""
-
     def test_not_authenticated(self):
         """Unauthenticated requests should fail."""
         response = self.client.put(self.filled_url(),
@@ -90,7 +89,6 @@ def test_image(name):
 
 class TestMapImage(TestMapCommon):
     """Tests GET/PUT/DELETE map image."""
-
     def setUp(self):
         """Creates user and logs in."""
         super(TestMapImage, self).setUp()
@@ -110,7 +108,8 @@ class TestMapImage(TestMapCommon):
         """Test GETting a thumbnail owned by a different user."""
         user2 = User.objects.create_user('testuser2', 'testemail@x.com',
                                          'testpass')
-        response = self.client.get(map_url(args=[self.mission.pk, user2.username]))
+        response = self.client.get(
+            map_url(args=[self.mission.pk, user2.username]))
         self.assertEqual(403, response.status_code)
 
     def test_put_bad_image(self):
@@ -128,10 +127,9 @@ class TestMapImage(TestMapCommon):
             data = f.read()
 
         # Upload image.
-        response = self.client.put(
-            self.filled_url(),
-            data=data,
-            content_type=content_type)
+        response = self.client.put(self.filled_url(),
+                                   data=data,
+                                   content_type=content_type)
         self.assertEqual(200, response.status_code)
 
         # Validate can retrieve image with uploaded contents.
@@ -151,10 +149,9 @@ class TestMapImage(TestMapCommon):
     def test_put_gif(self):
         """GIF upload not allowed"""
         with open(test_image('A.gif'), 'rb') as f:
-            response = self.client.put(
-                self.filled_url(),
-                data=f.read(),
-                content_type='image/gif')
+            response = self.client.put(self.filled_url(),
+                                       data=f.read(),
+                                       content_type='image/gif')
             self.assertEqual(400, response.status_code)
 
     def test_get_image(self):
