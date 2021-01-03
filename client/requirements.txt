@@ -4,6 +4,6 @@ futures
 lxml
 nose
 protobuf>=3.2
-pymavlink==2.4.8
+pymavlink==2.4.14
 pyserial
 requests
