@@ -38,6 +38,15 @@ def odlcs(args, client):
             print(json_format.MessageToJson(odlc))
 
 
+def maps(args, client):
+    if args.map_filepath:
+        with open(args.map_filepath, 'rb') as img:
+            logger.info('Uploading map %s', args.map_filepath)
+            client.put_map_image(args.mission_id, img.read()).result()
+    else:
+        print(client.get_map_image(args.mission_id).result())
+
+
 def probe(args, client):
     while True:
         start_time = datetime.datetime.now()
@@ -121,6 +130,23 @@ unique odlcs, if the tool is run multiple times.''',
     subparser.add_argument(
         '--odlc_dir',
         help='Enables odlc upload. Directory containing odlc data.')
+
+    subparser = subparsers.add_parser(
+        'map',
+        help='Upload maps.',
+        description='''Download or upload map images to/from the server.
+
+With just the mission specified it prints the imagery data. With a image
+filepath specified, it uploads the map to the server.''',
+        formatter_class=argparse.RawDescriptionHelpFormatter)
+    subparser.set_defaults(func=maps)
+    subparser.add_argument('--mission_id',
+                           type=int,
+                           help='Mission ID for the map.',
+                           required=True)
+    subparser.add_argument('--map_filepath',
+                           type=str,
+                           help='Filepath to the image to upload.')
 
     subparser = subparsers.add_parser('probe', help='Send dummy requests.')
     subparser.set_defaults(func=probe)

@@ -179,3 +179,20 @@ class TestClient(unittest.TestCase):
         self.assertNotIn(post_odlc, self.client.get_odlcs())
         self.assertNotIn(async_post_odlc,
                          self.async_client.get_odlcs().result())
+
+    def test_map(self):
+        """Test map workflow."""
+        test_image_filepath = os.path.join(os.path.dirname(__file__),
+                                           "testdata/A.jpg")
+        with open(test_image_filepath, 'rb') as f:
+            image_data = f.read()
+
+        self.client.put_map_image(1, image_data)
+        get_image = self.client.get_map_image(1)
+        self.assertEqual(image_data, get_image)
+        self.client.delete_map_image(1)
+
+        self.async_client.put_map_image(1, image_data).result()
+        get_image = self.async_client.get_map_image(1).result()
+        self.assertEqual(image_data, get_image)
+        self.async_client.delete_map_image(1).result()

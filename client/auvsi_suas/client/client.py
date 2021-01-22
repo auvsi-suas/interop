@@ -43,6 +43,7 @@ class Client(object):
             max_retries: Maximum attempts to establish a connection.
         """
         self.url = url
+        self.username = username
         self.timeout = timeout
         self.max_concurrent = 128
 
@@ -296,6 +297,44 @@ class Client(object):
         """
         self.delete('/api/odlcs/%d/image' % odlc_id)
 
+    def get_map_image(self, mission_id):
+        """GET map image.
+
+        Args:
+            mission_id: The mission for which to get the uploaded map.
+        Returns:
+            The image data that was previously uploaded.
+        Raises:
+            InteropError: Error from server.
+            requests.Timeout: Request timeout.
+        """
+        return self.get('/api/maps/%d/%s' %
+                        (mission_id, self.username)).content
+
+    def put_map_image(self, mission_id, image_data):
+        """PUT map image. Image must be PNG or JPEG data.
+
+        Args:
+            mission_id: The mission for which to upload a map.
+            image_data: The image data (bytes loaded from file) to upload.
+        Raises:
+            InteropError: Error from server.
+            requests.Timeout: Request timeout.
+        """
+        self.put('/api/maps/%d/%s' % (mission_id, self.username),
+                 data=image_data)
+
+    def delete_map_image(self, mission_id):
+        """DELETE map image.
+
+        Args:
+            mission_id: The mission for which to delete an uploaded a map.
+        Raises:
+            InteropError: Error from server.
+            requests.Timeout: Request timeout.
+        """
+        self.delete('/api/maps/%d/%s' % (mission_id, self.username))
+
 
 class AsyncClient(object):
     """Client which uses the base to be more performant.
@@ -466,3 +505,38 @@ class AsyncClient(object):
             underlying Client.
         """
         return self.executor.submit(self.client.delete_odlc_image, odlc_id)
+
+    def get_map_image(self, mission_id):
+        """GET map image.
+
+        Args:
+            mission_id: The mission for which to get the uploaded map.
+        Returns:
+            Future object which contains the return value or error from the
+            underlying Client.
+        """
+        return self.executor.submit(self.client.get_map_image, mission_id)
+
+    def put_map_image(self, mission_id, image_data):
+        """PUT map image. Image must be PNG or JPEG data.
+
+        Args:
+            mission_id: The mission for which to upload a map.
+            image_data: The image data (bytes loaded from file) to upload.
+        Returns:
+            Future object which contains the return value or error from the
+            underlying Client.
+        """
+        return self.executor.submit(self.client.put_map_image, mission_id,
+                                    image_data)
+
+    def delete_map_image(self, mission_id):
+        """DELETE map image.
+
+        Args:
+            mission_id: The mission for which to delete an uploaded a map.
+        Returns:
+            Future object which contains the return value or error from the
+            underlying Client.
+        """
+        return self.executor.submit(self.client.delete_map_image, mission_id)

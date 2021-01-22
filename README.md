@@ -301,7 +301,7 @@ Example JSON file:
 }
 ```
 
-Exaxmple command to upload:
+Example command to upload:
 
 ```bash
 ./tools/interop_cli.py \
@@ -309,6 +309,22 @@ Exaxmple command to upload:
     --username testuser \
     odlcs \
     --odlc_dir /path/to/object/directory
+```
+
+##### Upload Map
+
+The client image provides a script to upload a map to the interop server from
+an image file.
+
+Example command to upload:
+
+```bash
+./tools/interop_cli.py \
+    --url http://10.10.130.2:8000 \
+    --username testuser \
+    map \
+    --mission_id 1 \
+    --map_filepath /path/to/map.jpg
 ```
 
 #### Continuous Integration
@@ -489,6 +505,16 @@ odlc = client.post_odlc(odlc)
 with open('path/to/image/A.jpg', 'rb') as f:
     image_data = f.read()
     client.put_odlc_image(odlc.id, image_data)
+```
+
+The following shows how to upload a map image.
+
+```python
+mission_id = 1
+
+with open('path/to/image/A.jpg', 'rb') as f:
+    image_data = f.read()
+    client.put_map_image(mission_id, image_data)
 ```
 
 For more details on the API, see the code

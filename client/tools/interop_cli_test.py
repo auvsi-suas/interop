@@ -53,6 +53,22 @@ class TestOdlcs(InteropCliTestBase):
                          ['odlcs', '--odlc_dir', self.odlc_dir])
 
 
+class TestMaps(InteropCliTestBase):
+    """Test able to upload maps."""
+    def setUp(self):
+        """Compute the testdata folder."""
+        super(TestMaps, self).setUp()
+        self.map_dir = os.path.join(os.path.dirname(__file__), "testdata")
+
+    def test_upload_and_get_map(self):
+        """Test uploading and then getting a map."""
+        self.assertCliOk(self.cli_base_args + [
+            'map', '--mission_id', '1', '--map_filepath',
+            os.path.join(self.map_dir, '1.jpg')
+        ])
+        self.assertCliOk(self.cli_base_args + ['map', '--mission_id', '1'])
+
+
 class TestProbe(InteropCliTestBase):
     """Test able to probe server."""
     def setUp(self):
