@@ -57,7 +57,7 @@ learn these technologies.
 
 * [Ubuntu](http://www.ubuntu.com/download/desktop/install-ubuntu-desktop)
 * [Ubuntu Terminal](https://help.ubuntu.com/community/UsingTheTerminal)
-* [Linux Shell](http://linuxcommand.org/learning_the_shell.php)
+* [Linux Shell](https://linuxcommand.org/lc3_learning_the_shell.php)
 * [Git](https://git-scm.com/doc)
 * [Github](https://guides.github.com/activities/hello-world)
 * [Docker](https://docs.docker.com/engine/getstarted)
@@ -503,11 +503,11 @@ interoperability server.
 ##### MavProxy
 
 The competition recommends using
-[MavProxy](https://github.com/ArduPilot/MAVProxy>) to tee traffic, so that
+[MavProxy](https://github.com/ArduPilot/MAVProxy) to tee traffic, so that
 telemetry goes to the Ground Control Station (e.g. [Mission
 Planner](http://ardupilot.org/planner/docs/mission-planner-overview.html)) and
 also to the `interop_cli.py` tool. See the [Getting
-Started](http://ardupilot.github.io/MAVProxy/html/getting_started/download_and_installation.html)
+Started](https://ardupilot.org/mavproxy/docs/getting_started/index.html)
 guide for how to install and use the proxy. The specific command to use depends
 on the setup. An example invocation to proxy one input stream to two output
 streams:
