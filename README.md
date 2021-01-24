@@ -590,6 +590,18 @@ Mission Dashboard, and then use the menu `Mission > Review Objects`. Click on a
 object ID to see the image and details, and then approve or reject the image,
 and if applicable the emergent description.
 
+#### Review Map Imagery
+
+The third step is to review any map imagery provided. This is used to review
+the quality of the map. Go to `System > Edit Data > Map` and navigate to each
+map listed. You can view the uploaded map at
+`/api/maps/(int:mission_id)/(str:username)`, replacing the path components
+based on the `Map` object's values. On the `Map` object, mark the `quality`
+field and hit save.
+
+Note: this is temporary until a dedicated review dashboard can be built similar
+to the ODLC dashboard.
+
 #### Automatic Evaluation
 
 The third step is to run the automatic evaluator.  Use the menu `Mission >

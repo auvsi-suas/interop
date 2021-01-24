@@ -5,10 +5,12 @@ import datetime
 import functools
 import json
 import logging
+import os
 import random
 from auvsi_suas.models.aerial_position import AerialPosition
 from auvsi_suas.models.fly_zone import FlyZone
 from auvsi_suas.models.gps_position import GpsPosition
+from auvsi_suas.models.map import Map
 from auvsi_suas.models.mission_config import MissionConfig
 from auvsi_suas.models.mission_judge_feedback import MissionJudgeFeedback
 from auvsi_suas.models.odlc import Odlc
@@ -17,6 +19,7 @@ from auvsi_suas.models.takeoff_or_landing_event import TakeoffOrLandingEvent
 from auvsi_suas.models.waypoint import Waypoint
 from auvsi_suas.proto import interop_admin_api_pb2
 from auvsi_suas.proto import interop_api_pb2
+from django.conf import settings
 from django.test import Client
 from django.urls import reverse
 from google.protobuf import json_format
@@ -26,6 +29,7 @@ logger = logging.getLogger(__name__)
 odlcs_review_url = reverse('auvsi_suas:odlcs_review')
 odlcs_review_id_url = functools.partial(reverse, 'auvsi_suas:odlcs_review_id')
 odlcs_url = reverse('auvsi_suas:odlcs')
+map_url = functools.partial(reverse, 'auvsi_suas:map')
 telemetry_url = reverse('auvsi_suas:telemetry')
 
 
@@ -382,6 +386,19 @@ def simulate_odlc(test, client, mission, actual):
     test.assertEqual(r.status_code, 200, r.content)
 
 
+def simulate_map(test, client, mission, user):
+    """Simulates sending map."""
+    path = os.path.join(settings.BASE_DIR, 'auvsi_suas/testdata/A.jpg')
+    data = None
+    with open(path, 'rb') as f:
+        data = f.read()
+
+    r = client.put(map_url(args=[mission.pk, user.username]),
+                   data=data,
+                   content_type='image/jpeg')
+    test.assertEqual(r.status_code, 200, r.content)
+
+
 def simulate_team_mission(test, mission, superuser, user):
     """Simulates a team's mission demonstration.
 
@@ -413,6 +430,9 @@ def simulate_team_mission(test, mission, superuser, user):
         simulate_odlc(test, c, mission, actual=True)
     for _ in range(odlcs_incorrect):
         simulate_odlc(test, c, mission, actual=False)
+
+    # Submit map.
+    simulate_map(test, c, mission, user)
 
     # Judge feedback submitted.
     feedback = MissionJudgeFeedback()
@@ -446,3 +466,8 @@ def simulate_team_mission(test, mission, superuser, user):
                        data=json_format.MessageToJson(review),
                        content_type='application/json')
         test.assertEqual(r.status_code, 200, r.content)
+
+    # Map reviewed.
+    m = Map.objects.get(mission_id=mission.pk, user_id=user.pk)
+    m.quality = interop_admin_api_pb2.MapEvaluation.MapQuality.MEDIUM
+    m.save()

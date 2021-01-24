@@ -2,6 +2,7 @@
 
 import itertools
 import logging
+from auvsi_suas.models.map import Map
 from auvsi_suas.models.mission_judge_feedback import MissionJudgeFeedback
 from auvsi_suas.models.odlc import Odlc
 from auvsi_suas.models.odlc import OdlcEvaluator
@@ -42,6 +43,13 @@ CRASH_PENALTY = 0.50
 # Weight of accuracy points to all autonomous flight.
 WAYPOINT_ACCURACY_WEIGHT = 1.0
 
+# Map quality to point ratio.
+MAP_QUALITY_POINT_RATIO = {
+    interop_admin_api_pb2.MapEvaluation.MapQuality.INSUFFICIENT: 0,
+    interop_admin_api_pb2.MapEvaluation.MapQuality.MEDIUM: 0.5,
+    interop_admin_api_pb2.MapEvaluation.MapQuality.HIGH: 1.0,
+}
+
 # Weight of air drop points for accuracy.
 AIR_DROP_ACCURACY_WEIGHT = 0.5
 # Weight of air drop points for UGV driving to location.
@@ -57,8 +65,9 @@ AIR_DROP_DISTANCE_POINT_RATIO = {
 # Scoring weights.
 TIMELINE_WEIGHT = 0.1
 AUTONOMOUS_WEIGHT = 0.2
-OBSTACLE_WEIGHT = 0.2
+OBSTACLE_WEIGHT = 0.1
 OBJECT_WEIGHT = 0.2
+MAP_WEIGHT = 0.1
 AIR_DROP_WEIGHT = 0.2
 OPERATIONAL_WEIGHT = 0.1
 
@@ -113,6 +122,13 @@ def generate_feedback(mission_config, user, team_eval):
     evaluator = OdlcEvaluator(user_odlcs, mission_config.odlcs.all(),
                               flight_periods)
     feedback.odlc.CopyFrom(evaluator.evaluate())
+
+    # Add map feedback if it exists.
+    try:
+        m = Map.objects.get(mission_id=mission_config.pk, user=user)
+        feedback.map.quality = m.quality
+    except Map.DoesNotExist:
+        pass
 
     # Determine collisions with stationary.
     for obst in mission_config.stationary_obstacles.all():
@@ -229,6 +245,14 @@ def score_team(team_eval):
     objects.extra_object_penalty = object_eval.extra_object_penalty_ratio
     objects.score_ratio = object_eval.score_ratio
 
+    # Score map.
+    m = score.map
+    m_eval = feedback.map
+    if m_eval.HasField('quality'):
+        m.score_ratio = MAP_QUALITY_POINT_RATIO[m_eval.quality]
+    else:
+        m.score_ratio = 0
+
     # Score air drop.
     air = score.air_drop
     air.drop_accuracy = AIR_DROP_DISTANCE_POINT_RATIO[
@@ -248,6 +272,7 @@ def score_team(team_eval):
             AUTONOMOUS_WEIGHT * score.autonomous_flight.score_ratio +
             OBSTACLE_WEIGHT * score.obstacle_avoidance.score_ratio +
             OBJECT_WEIGHT * score.object.score_ratio +
+            MAP_WEIGHT * score.map.score_ratio +
             AIR_DROP_WEIGHT * score.air_drop.score_ratio +
             OPERATIONAL_WEIGHT * score.operational_excellence.score_ratio)
     else:

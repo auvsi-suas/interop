@@ -29,6 +29,8 @@ class TestMissionScoring(TestCase):
         odlcs = feedback.odlc
         odlcs.score_ratio = 0.46
         odlcs.extra_object_penalty_ratio = 0.1
+        m = feedback.map
+        m.quality = interop_admin_api_pb2.MapEvaluation.MapQuality.MEDIUM
         t = odlcs.odlcs.add()
         t.score_ratio = 0.96
         t.classifications_score_ratio = 0.6
@@ -188,6 +190,23 @@ class TestMissionScoring(TestCase):
         self.assertAlmostEqual(0, objects.extra_object_penalty)
         self.assertAlmostEqual(0, objects.score_ratio)
 
+    def test_map(self):
+        """Test the map scoring."""
+        mf = self.eval.feedback.map
+        me = self.eval.score.map
+
+        mf.quality = interop_admin_api_pb2.MapEvaluation.MapQuality.INSUFFICIENT
+        mission_evaluation.score_team(self.eval)
+        self.assertAlmostEqual(0.0, me.score_ratio)
+
+        mf.quality = interop_admin_api_pb2.MapEvaluation.MapQuality.MEDIUM
+        mission_evaluation.score_team(self.eval)
+        self.assertAlmostEqual(0.5, me.score_ratio)
+
+        mf.quality = interop_admin_api_pb2.MapEvaluation.MapQuality.HIGH
+        mission_evaluation.score_team(self.eval)
+        self.assertAlmostEqual(1.0, me.score_ratio)
+
     def test_air_drop(self):
         """Test the air drop scoring."""
         judge = self.eval.feedback.judge
@@ -222,7 +241,7 @@ class TestMissionScoring(TestCase):
     def test_total(self):
         """Test the total scoring."""
         mission_evaluation.score_team(self.eval)
-        self.assertAlmostEqual(0.09666666666666665,
+        self.assertAlmostEqual(0.13416666666666666,
                                self.eval.score.score_ratio)
 
     def test_non_negative(self):
@@ -318,6 +337,8 @@ class TestMissionEvaluation(TestCase):
 
         self.assertTrue(feedback.odlc.HasField('score_ratio'))
 
+        self.assertTrue(feedback.map.HasField('quality'))
+
         self.assertGreater(len(feedback.stationary_obstacles), 0)
         for obst in feedback.stationary_obstacles:
             self.assertGreaterEqual(obst.id, 0)
@@ -345,6 +366,10 @@ class TestMissionEvaluation(TestCase):
         self.assertTrue(odlc.HasField('autonomy'))
         self.assertTrue(odlc.HasField('extra_object_penalty'))
         self.assertTrue(odlc.HasField('score_ratio'))
+
+        m = score.map
+        self.assertTrue(m.HasField('score_ratio'))
+        self.assertGreater(m.score_ratio, 0)
 
         drop = score.air_drop
         self.assertTrue(drop.HasField('drop_accuracy'))
