@@ -6,11 +6,11 @@ LOG_NAME=setup_tools
 source ${TOOLS}/common.sh
 
 log "Installing APT packages."
-apt-get -qq update
-apt-get -qq install -y \
+sudo apt-get -qq update
+sudo apt-get -qq install -y \
     parallel \
     protobuf-compiler \
-    python-virtualenv \
+    python3-virtualenv \
     python3-pip
 
 log "Building tools virtualenv."

@@ -1,0 +1,47 @@
+name: CI-CD
+on: push
+jobs:
+    cd-cd:
+        name: CI / CD
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v2
+
+            # TODO: Add super linter.
+
+            - name: Setup
+              run: ./tools/setup_tools.sh
+
+            - name: Format
+              run: ./tools/format.sh --all
+
+            - name: Build server
+              run: ./server/interop-server.sh build
+
+            - name: Build client
+              run: ./client/interop-client.sh build
+
+            - name: Create test database
+              run: ./server/interop-server.sh create_db
+
+            - name: Test server
+              run: ./server/interop-server.sh test
+
+            - name: Load test data
+              run: ./server/interop-server.sh load_test_data
+
+            - name: Start server
+              run: ./server/interop-server.sh up_d
+
+            - name: Test client
+              run: ./client/interop-client.sh test
+
+            - name: Stop server
+              run: ./server/interop-server.sh down
+
+            - name: Deploy
+              if: ${{ github.ref == 'refs/heads/main' }}
+              # TODO: Replace with actual docker deploy.
+              # run: ./tools/deploy.sh
+              run: echo "Mock deploy step."

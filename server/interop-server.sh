@@ -48,7 +48,7 @@ fi
 if [ "$1" == "up_d" ]
 then
     docker-compose up -d
-    docker-compose exec interop-server ./healthcheck.py --postgres_host interop-db --check_postgres --check_homepage
+    docker-compose exec -T interop-server ./healthcheck.py --postgres_host interop-db --check_postgres --check_homepage
 fi
 
 # Stops the interop system previously started.

@@ -36,7 +36,7 @@ fi
 # Tests the images.
 if [ "$1" == "test" ]
 then
-    docker run --net="host" -it auvsisuas/interop-client bash -c \
+    docker run --net="host" auvsisuas/interop-client bash -c \
         "export PYTHONPATH=/interop/client && \
          cd /interop/client && \
          source venv/bin/activate && \
