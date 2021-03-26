@@ -138,6 +138,22 @@ jobs:
             - name: Setup
               run: ./tools/setup_tools.sh
 
+            - name: Download server image
+              uses: actions/download-artifact@v2
+              with:
+                name: interop-server-image
+
+            - name: Download client image
+              uses: actions/download-artifact@v2
+              with:
+                name: interop-client-image
+
+            - name: Load server image
+              run: docker load -i interop-server.tar
+
+            - name: Load client image
+              run: docker load -i interop-client.tar
+
             - name: Deploy
               env:
                   DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
