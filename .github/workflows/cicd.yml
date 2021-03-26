@@ -1,32 +1,117 @@
-name: CI-CD
+name: CI / CD
 on: push
 jobs:
-    cd-cd:
-        name: CI / CD
+    lint:
+        name: Lint
         runs-on: ubuntu-latest
         steps:
             - name: Checkout
               uses: actions/checkout@v2
-
-            # TODO: Add super linter.
 
             - name: Setup
               run: ./tools/setup_tools.sh
 
             - name: Format
               run: ./tools/format.sh --all
+            # TODO: Add super linter.
+
+    build-server:
+        name: Build server
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v2
+
+            - name: Setup
+              run: ./tools/setup_tools.sh
 
             - name: Build server
               run: ./server/interop-server.sh build
 
-            - name: Build client
-              run: ./client/interop-client.sh build
+            - name: Save image
+              run: docker save -o interop-server.tar auvsisuas/interop-server:latest
 
-            - name: Create test database
-              run: ./server/interop-server.sh create_db
+            - name: Upload image
+              uses: actions/upload-artifact@v2
+              with:
+                name: interop-server-image
+                path: interop-server.tar
+                retention-days: 1
+
+    test-server:
+        name: Test server
+        needs: build-server
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v2
+
+            - name: Setup
+              run: ./tools/setup_tools.sh
+
+            - name: Download image
+              uses: actions/download-artifact@v2
+              with:
+                name: interop-server-image
+
+            - name: Load image
+              run: docker load -i interop-server.tar
 
             - name: Test server
               run: ./server/interop-server.sh test
+
+    build-client:
+        name: Build client
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v2
+
+            - name: Setup
+              run: ./tools/setup_tools.sh
+
+            - name: Build client
+              run: ./client/interop-client.sh build
+
+            - name: Save image
+              run: docker save -o interop-client.tar auvsisuas/interop-client:latest
+
+            - name: Upload image
+              uses: actions/upload-artifact@v2
+              with:
+                name: interop-client-image
+                path: interop-client.tar
+                retention-days: 1
+
+    test-client:
+        name: Test client
+        needs: [build-client, build-server]
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v2
+
+            - name: Setup
+              run: ./tools/setup_tools.sh
+
+            - name: Download server image
+              uses: actions/download-artifact@v2
+              with:
+                name: interop-server-image
+
+            - name: Download client image
+              uses: actions/download-artifact@v2
+              with:
+                name: interop-client-image
+
+            - name: Load server image
+              run: docker load -i interop-server.tar
+
+            - name: Load client image
+              run: docker load -i interop-client.tar
+
+            - name: Create test database
+              run: ./server/interop-server.sh create_db
 
             - name: Load test data
               run: ./server/interop-server.sh load_test_data
@@ -40,8 +125,19 @@ jobs:
             - name: Stop server
               run: ./server/interop-server.sh down
 
+    deploy:
+        name: Deploy
+        if: ${{ github.ref == 'refs/heads/master' }}
+        needs: [lint, build-server, test-server, build-client, test-client]
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v2
+
+            - name: Setup
+              run: ./tools/setup_tools.sh
+
             - name: Deploy
-              if: ${{ github.ref == 'refs/heads/main' }}
               # TODO: Replace with actual docker deploy.
               # run: ./tools/deploy.sh
               run: echo "Mock deploy step."

@@ -8,6 +8,10 @@ services:
         POSTGRES_PASSWORD: postgres
     volumes:
       - ./volumes/var/lib/postgresql/data:/var/lib/postgresql/data
+    healthcheck:
+        test: ["CMD-SHELL", "pg_isready", "-q"]
+        interval: 5s
+        timeout: 60s
   interop-server:
     build:
       context: ../
