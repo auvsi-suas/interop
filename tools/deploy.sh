@@ -15,5 +15,5 @@ log "Logging into Docker."
 echo "$DOCKER_PASSWORD" | docker login -u="$DOCKER_USERNAME" --password-stdin
 
 log "Pushing Docker images."
-docker push auvsisuas/interop-server
-docker push auvsisuas/interop-client
+docker push -a auvsisuas/interop-server
+docker push -a auvsisuas/interop-client
