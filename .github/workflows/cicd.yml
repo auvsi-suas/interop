@@ -138,13 +138,8 @@ jobs:
             - name: Setup
               run: ./tools/setup_tools.sh
 
-            - name: Test env
+            - name: Deploy
               env:
                   DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
                   DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
-              run: echo "USER $DOCKER_USERNAME"
-
-            - name: Deploy
-              # TODO: Replace with actual docker deploy.
-              # run: ./tools/deploy.sh
-              run: echo "Mock deploy step."
+              run: ./tools/deploy.sh

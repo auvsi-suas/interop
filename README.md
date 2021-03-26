@@ -1,6 +1,6 @@
 # AUVSI SUAS Interoperability
 
-[![Build Status](https://travis-ci.com/auvsi-suas/interop.svg?branch=master)](https://travis-ci.com/auvsi-suas/interop)
+[![CI / CD Status](https://github.com/auvsi-suas/interop/actions/workflows/cicd.yml/badge.svg?branch=master)](https://github.com/auvsi-suas/interop/actions)
 
 Repository for the Interoperability System used in the Association for Unmanned
 Vehicle Systems International (AUVSI) Student Unmanned Aerial System (SUAS)
