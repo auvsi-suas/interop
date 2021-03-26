@@ -130,12 +130,19 @@ jobs:
         if: ${{ github.ref == 'refs/heads/master' }}
         needs: [lint, build-server, test-server, build-client, test-client]
         runs-on: ubuntu-latest
+        environment: deploy
         steps:
             - name: Checkout
               uses: actions/checkout@v2
 
             - name: Setup
               run: ./tools/setup_tools.sh
+
+            - name: Test env
+              env:
+                  DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+                  DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+              run: echo "USER $DOCKER_USERNAME"
 
             - name: Deploy
               # TODO: Replace with actual docker deploy.
