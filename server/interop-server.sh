@@ -101,5 +101,6 @@ fi
 # Tests the system.
 if [ "$1" == "test" ]
 then
+    docker-compose run interop-server ./healthcheck.py --postgres_host interop-db --check_postgres
     docker-compose run interop-server ./manage.py test --parallel
 fi
