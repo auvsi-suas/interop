@@ -8,8 +8,8 @@ jobs:
             - name: Checkout
               uses: actions/checkout@v2
 
-            - name: Setup
-              run: ./tools/setup_tools.sh
+            - name: Setup yapf
+              run: ./tools/setup_yapf.sh
 
             - name: Format
               run: ./tools/format.sh --all
@@ -21,9 +21,6 @@ jobs:
         steps:
             - name: Checkout
               uses: actions/checkout@v2
-
-            - name: Setup
-              run: ./tools/setup_tools.sh
 
             - name: Build server
               run: ./server/interop-server.sh build
@@ -46,9 +43,6 @@ jobs:
             - name: Checkout
               uses: actions/checkout@v2
 
-            - name: Setup
-              run: ./tools/setup_tools.sh
-
             - name: Download image
               uses: actions/download-artifact@v2
               with:
@@ -66,9 +60,6 @@ jobs:
         steps:
             - name: Checkout
               uses: actions/checkout@v2
-
-            - name: Setup
-              run: ./tools/setup_tools.sh
 
             - name: Build client
               run: ./client/interop-client.sh build
@@ -90,9 +81,6 @@ jobs:
         steps:
             - name: Checkout
               uses: actions/checkout@v2
-
-            - name: Setup
-              run: ./tools/setup_tools.sh
 
             - name: Download server image
               uses: actions/download-artifact@v2
@@ -134,9 +122,6 @@ jobs:
         steps:
             - name: Checkout
               uses: actions/checkout@v2
-
-            - name: Setup
-              run: ./tools/setup_tools.sh
 
             - name: Download server image
               uses: actions/download-artifact@v2
